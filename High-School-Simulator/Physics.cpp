@@ -1,5 +1,11 @@
 #include "Physics.h"
 
+template<typename T>
+T round(const T& number, int place)
+{
+	return static_cast<T>(std::round(number * std::exp(10, place)) / std::exp(10, place));
+}
+
 float pythag(const sf::Vector2f& vector)
 {
 	return std::sqrt((vector.x * vector.x) + (vector.y * vector.y));

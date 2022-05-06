@@ -4,6 +4,9 @@
 #include "Includes.h"
 #include <limits>
 
+template <typename T>
+T round(const T& number, int place);
+
 float pythag(const sf::Vector2f& vector);
 
 float percentRange(float number, float percent, unsigned loop = 1);
