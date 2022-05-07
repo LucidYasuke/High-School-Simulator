@@ -1,5 +1,102 @@
-#include "GameState.h"
+﻿#include "GameState.h"
 
+
+Date::~Date()
+{
+}
+
+void Date::update(const float& dt)
+{
+	minute += sf::seconds(dt);
+
+	// 1 Game Hour ≈ 2 Real Minutes
+	// 1 Day ≈ 48 Real Minutes
+	// If the minutes is divisible by 120, then an hour has passed 
+	if (static_cast<int>(minute.asSeconds()) >= 120)
+	{
+		this->hour += static_cast<int>(minute.asSeconds()) / 120;
+		while (static_cast<int>(minute.asSeconds()) >= 120)
+		{
+			this->minute -= sf::seconds(120.f);
+		}
+	}
+
+	if (this->hour >= 24)
+	{
+		this->hour -= 24;
+		if (this->day == Day::SATURDAY)
+		{
+			this->day = Day::SUNDAY;
+		}
+		else
+		{
+			this->day = static_cast<Day>(static_cast<int>(this->day) + 1);
+		}
+	}
+}
+
+const Day& Date::getDay() const
+{
+	return day;
+}
+
+const int& Date::getHour() const
+{
+	return hour;
+}
+
+const sf::Time Date::getMinute() const
+{
+	return minute;
+}
+
+const std::string& Date::getDayAsString() const
+{
+	switch (this->day)
+	{
+	case Day::SUNDAY:
+		return "SUNDAY";
+	case Day::MONDAY:
+		return "MONDAY";
+	case Day::TUESDAY:
+		return "TUESDAY";
+	case Day::WEDNESDAY:
+		return "WEDNESDAY";
+	case Day::THURSDAY:
+		return "THURSDAY";
+	case Day::FRIDAY:
+		return "FRIDAY";
+	case Day::SATURDAY:
+		return "SATURDAY";
+	default:
+		return "NULL";
+	}
+}
+
+const std::string& Date::getHourAsString() const
+{
+	return std::to_string(this->hour);
+}
+
+const std::string& Date::getMinuteAsString() const
+{
+	return std::to_string(static_cast<int>(this->minute.asSeconds() / 2.f));
+}
+
+void Date::setDay(Day& day)
+{
+	this->day = day;
+}
+
+void Date::setHour(int& hour)
+{
+	this->hour = hour;
+}
+
+void Date::setMinute(float& minute)
+{
+	this->minute = sf::seconds(minute);
+}
 
 //===INITIALIZE FUNCTIONS===//
 void GameState::initTextures()
@@ -170,3 +267,5 @@ void GameState::render(sf::RenderTarget* target)
 		this->stateStack.top()->render(target);
 	}
 }
+
+

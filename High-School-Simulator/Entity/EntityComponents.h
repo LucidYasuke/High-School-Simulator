@@ -29,4 +29,13 @@ public:
 	void update(const float& dt);
 };
 
+class Wallet
+{
+private:
+	double amount;
+public:
+	void addMoney(double amount);
+	void subMoney(double amount);
+};
+
 #endif

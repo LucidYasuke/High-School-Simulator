@@ -5,10 +5,37 @@
 #include "../Entity/Player.h"
 #include "../TileSets/TileMap.h"
 
+enum class Day {SUNDAY=0, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY};
+
+class Date 
+{
+private:
+	Day day;
+	int hour;
+	sf::Time minute;
+public:
+	virtual ~Date();
+
+	void update(const float& dt);
+	
+	const Day& getDay() const;
+	const int& getHour() const;
+	const sf::Time getMinute() const;
+
+	const std::string& getDayAsString() const;
+	const std::string& getHourAsString() const;
+	const std::string& getMinuteAsString() const;
+
+	void setDay(Day& day);
+	void setHour(int& hour);
+	void setMinute(float& minute);
+};
 
 class GameState : public State
 {
 private:
+	Date date;
+
 	TileMap map;
 
 	//===Textures===//
@@ -49,6 +76,7 @@ public:
 	void updateLevel();
 	void updateTimers(const float& dt);
 	void updateInput() override;
+	void updateDate(const float& dt);
 	void update(const float& dt) override;
 
 	void render(sf::RenderTarget* target = NULL) override;
