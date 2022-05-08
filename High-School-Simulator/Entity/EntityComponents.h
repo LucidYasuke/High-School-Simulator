@@ -9,24 +9,55 @@ class Mood
 {
 };
 
-class Drug 
+// Drug Manipulation System
+class Toxicology 
 {
+private:
+	double sobriety;
+	double tolerance;
+
+	sf::Time lastHigh;
+	static const float lastHighMax;
+
+	sf::Time cooldownHigh;
+	static const float cooldownHighMax;
+public:
+	Toxicology();
+	virtual ~Toxicology();
+
+	void getHigh();
+	void update(const float& dt);
+
+	template <typename T>
+	const T& getSobriety() const;
+
+	template <typename T>
+	const std::string& getSobrietyAsString() const;
+
+	const float& getLastHigh() const;
+	const float& getLastHighMax() const;
 };
 
-class Brain
+class Psychology
 {
 private:
 	double intelligence;
-	sf::Time cooldownLastStudy, cooldownLastStudyMax;
+
+	sf::Time cooldownLastStudy;
+	static const float cooldownLastStudyMax;
 
 public:
-	Brain();
-	virtual ~Brain();
+	Psychology();
+	virtual ~Psychology();
 
-	const double& getIntelligence() const;
-	const int& getIntell() const;
 	void study();
 	void update(const float& dt);
+
+	template <typename T>
+	const T& getIntelligence() const;
+
+	template <typename T>
+	const std::string& getIntelligenceAsString() const;
 };
 
 class Wallet

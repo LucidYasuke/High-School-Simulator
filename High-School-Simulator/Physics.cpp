@@ -1,7 +1,7 @@
 #include "Physics.h"
 
 template<typename T>
-T round(const T& number, int place)
+T roundTo(const T& number, int place)
 {
 	return static_cast<T>(std::round(number * std::exp(10, place)) / std::exp(10, place));
 }

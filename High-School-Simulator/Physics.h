@@ -5,7 +5,7 @@
 #include <limits>
 
 template <typename T>
-T round(const T& number, int place);
+T roundTo(const T& number, int place);
 
 float pythag(const sf::Vector2f& vector);
 
