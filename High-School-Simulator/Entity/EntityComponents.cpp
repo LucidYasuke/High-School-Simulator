@@ -91,7 +91,10 @@ const float& Toxicology::getLastHighMax() const
 //===PSYCHOLOGY===//
 
 // 8 Game Hours = 16 Real Life Minutes
-const float Psychology::cooldownLastStudyMax = 960.f;
+const float Psychology::cdLastStudyMax = 960.f;
+
+// 2.5 Game Hours = 5 Real Life Minutes
+const float Psychology::cdIntelligenceDepletionMax = 300.f;
 
 template<typename T>
 inline const T& Psychology::getIntelligence() const
@@ -104,6 +107,36 @@ const std::string& Psychology::getIntelligenceAsString() const
 {
 	return std::to_string(this->getIntelligence<T>());
 }
+
+void Psychology::update(const float& dt, Toxicology& toxic)
+{
+	//===UPDATE INTELLIGENCE===//
+	this->cdLastStudy += sf::seconds(dt);
+
+	if (this->cdLastStudy.asSeconds() >= this->cdLastStudyMax)
+	{
+		this->cdIntelligenceDepletionStudy += sf::seconds(dt);
+
+		if (this->cdIntelligenceDepletionStudy.asSeconds() >= this->cdIntelligenceDepletionMax)
+		{
+			this->intelligence = percentRange(this->intelligence, -0.025);
+			this->cdIntelligenceDepletionStudy = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+
+	if (toxic.getSobriety<double>() < -20.0)
+	{
+		this->cdIntelligenceDepletionSobriety += sf::seconds(dt);
+
+		if (this->cdIntelligenceDepletionSobriety.asSeconds() >= this->cdIntelligenceDepletionMax)
+		{
+			this->intelligence = percentRange(this->intelligence, -0.025);
+			this->cdIntelligenceDepletionSobriety = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+	//---UPDATE INTELLIGENCE---//
+}
+
 //---PSYCHOLOGY---//
 
 void Wallet::addMoney(double amount)

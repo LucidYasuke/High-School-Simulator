@@ -3,7 +3,9 @@
 
 #include "../Physics.h"
 
-enum class demographic { LOWER = 0, MIDDLE, UPPER };
+enum class Demographic { LOWER = 0, MIDDLE, UPPER };
+
+enum class MindState {HAPPY=0, SAD, TIRED, DELERIOUS, BORED, INTOXICATED};
 
 class Mood
 {
@@ -42,16 +44,23 @@ class Psychology
 {
 private:
 	double intelligence;
+	double joy;
+	double sadness;
+	double fatigue;
 
-	sf::Time cooldownLastStudy;
-	static const float cooldownLastStudyMax;
+	sf::Time cdLastStudy;
+	static const float cdLastStudyMax;
+
+	sf::Time cdIntelligenceDepletionStudy;
+	sf::Time cdIntelligenceDepletionSobriety;
+	static const float cdIntelligenceDepletionMax;
 
 public:
 	Psychology();
 	virtual ~Psychology();
 
 	void study();
-	void update(const float& dt);
+	void update(const float& dt, Toxicology& toxic);
 
 	template <typename T>
 	const T& getIntelligence() const;
