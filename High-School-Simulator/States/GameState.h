@@ -14,6 +14,7 @@ private:
 	int hour;
 	sf::Time minute;
 public:
+	Date();
 	virtual ~Date();
 
 	void update(const float& dt);
@@ -22,9 +23,9 @@ public:
 	const int& getHour() const;
 	const sf::Time getMinute() const;
 
-	const std::string& getDayAsString() const;
-	const std::string& getHourAsString() const;
-	const std::string& getMinuteAsString() const;
+	const std::string getDayAsString() const;
+	const std::string getHourAsString() const;
+	const std::string getMinuteAsString() const;
 
 	void setDay(Day& day);
 	void setHour(int& hour);

@@ -7,10 +7,6 @@ enum class Demographic { LOWER = 0, MIDDLE, UPPER };
 
 enum class MindState {HAPPY=0, SAD, TIRED, DELERIOUS, BORED, INTOXICATED};
 
-class Mood
-{
-};
-
 // Drug Manipulation System
 class Toxicology 
 {
@@ -21,8 +17,8 @@ private:
 	sf::Time lastHigh;
 	static const float lastHighMax;
 
-	sf::Time cooldownHigh;
-	static const float cooldownHighMax;
+	sf::Time cdHigh;
+	static const float cdHighMax;
 public:
 	Toxicology();
 	virtual ~Toxicology();
@@ -31,12 +27,12 @@ public:
 	void update(const float& dt);
 
 	template <typename T>
-	const T& getSobriety() const;
+	T getSobriety();
 
 	template <typename T>
-	const std::string& getSobrietyAsString() const;
+	std::string getSobrietyAsString();
 
-	const float& getLastHigh() const;
+	const float getLastHigh() const;
 	const float& getLastHighMax() const;
 };
 
@@ -48,13 +44,15 @@ private:
 	double sadness;
 	double fatigue;
 
+	static const float cdStatChangeMax;
+
 	sf::Time cdLastStudy;
 	static const float cdLastStudyMax;
 
-	sf::Time cdIntelligenceDepletionStudy;
-	sf::Time cdIntelligenceDepletionSobriety;
-	static const float cdIntelligenceDepletionMax;
+	sf::Time cdIntelligenceDecrementStudy;
+	sf::Time cdIntelligenceDecrementSobriety;
 
+	sf::Time cdJoyIncrementSobriety;
 public:
 	Psychology();
 	virtual ~Psychology();
@@ -63,10 +61,10 @@ public:
 	void update(const float& dt, Toxicology& toxic);
 
 	template <typename T>
-	const T& getIntelligence() const;
+	T getIntelligence();
 
 	template <typename T>
-	const std::string& getIntelligenceAsString() const;
+	std::string getIntelligenceAsString();
 };
 
 class Wallet
@@ -79,3 +77,27 @@ public:
 };
 
 #endif
+
+template<typename T>
+inline T Toxicology::getSobriety()
+{
+	return static_cast<T>(roundTo<double>(this->sobriety, 2));
+}
+
+template<typename T>
+inline std::string Toxicology::getSobrietyAsString()
+{
+	return std::to_string(this->getSobriety<T>());
+}
+
+template<typename T>
+inline T Psychology::getIntelligence()
+{
+	return static_cast<T>(roundTo<double>(this->intelligence, 2));
+}
+
+template<typename T>
+inline std::string Psychology::getIntelligenceAsString()
+{
+	return std::to_string(this->getIntelligence<T>());
+}

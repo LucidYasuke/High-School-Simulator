@@ -1,13 +1,12 @@
 #include "EntityComponents.h"
 
-
 //===TOXICOLOGY===//
 
 // 3 Game Hours = 6 Real Life Minutes
 const float Toxicology::lastHighMax = 360.f;
 
 // 3 Game Minutes = 6 Real Life Seconds
-const float Toxicology::cooldownHighMax = 6.f;
+const float Toxicology::cdHighMax = 6.f;
 
 Toxicology::Toxicology()
 {
@@ -30,7 +29,7 @@ void Toxicology::getHigh()
 	// The higher your tolerance, the less the drugs will effect
 	this->sobriety -= 100 / this->tolerance;
 	this->tolerance = percentRange(this->tolerance, 0.015);
-	this->lastHigh = sf::seconds(0.f);
+	this->lastHigh = sf::seconds(0.f); // RESET
 
 
 	// Sobriety can't be less than -100
@@ -42,14 +41,14 @@ void Toxicology::getHigh()
 
 void Toxicology::update(const float& dt)
 {
-	this->cooldownHigh += sf::seconds(dt);
+	this->cdHigh += sf::seconds(dt);
 
 	// If greater than 3 game minute = 6 real life seconds
 	// Every 3 game minutes, your high will be decreased
-	if (this->cooldownHigh.asSeconds() >= this->cooldownHighMax && this->sobriety < 0)
+	if (this->cdHigh.asSeconds() >= this->cdHighMax && this->sobriety < 0)
 	{
 		this->sobriety += 1 * this->tolerance;
-		this->cooldownHigh -= sf::seconds(this->cooldownHighMax);
+		this->cdHigh -= sf::seconds(this->cdHighMax);
 	}
 	
 	// Sobriety can't be greater than zero
@@ -65,19 +64,7 @@ void Toxicology::update(const float& dt)
 	}
 }
 
-template<typename T>
-const T& Toxicology::getSobriety() const
-{
-	return static_cast<T>(roundTo(this->sobriety, 2));
-}
-
-template<typename T>
-const std::string& Toxicology::getSobrietyAsString() const
-{
-	return std::to_string(this->getSobriety<T>());
-}
-
-const float& Toxicology::getLastHigh() const
+const float Toxicology::getLastHigh() const
 {
 	return this->lastHigh.asSeconds();
 }
@@ -94,18 +81,14 @@ const float& Toxicology::getLastHighMax() const
 const float Psychology::cdLastStudyMax = 960.f;
 
 // 2.5 Game Hours = 5 Real Life Minutes
-const float Psychology::cdIntelligenceDepletionMax = 300.f;
+const float Psychology::cdStatChangeMax = 300.f;
 
-template<typename T>
-inline const T& Psychology::getIntelligence() const
+Psychology::Psychology()
 {
-	return static_cast<T>(roundTo(this->intelligence, 2));
 }
 
-template<typename T>
-const std::string& Psychology::getIntelligenceAsString() const
+Psychology::~Psychology()
 {
-	return std::to_string(this->getIntelligence<T>());
 }
 
 void Psychology::update(const float& dt, Toxicology& toxic)
@@ -115,26 +98,39 @@ void Psychology::update(const float& dt, Toxicology& toxic)
 
 	if (this->cdLastStudy.asSeconds() >= this->cdLastStudyMax)
 	{
-		this->cdIntelligenceDepletionStudy += sf::seconds(dt);
+		this->cdIntelligenceDecrementStudy += sf::seconds(dt);
 
-		if (this->cdIntelligenceDepletionStudy.asSeconds() >= this->cdIntelligenceDepletionMax)
+		if (this->cdIntelligenceDecrementStudy.asSeconds() >= this->cdStatChangeMax)
 		{
 			this->intelligence = percentRange(this->intelligence, -0.025);
-			this->cdIntelligenceDepletionStudy = sf::seconds(0.f); // RESET COOLDOWN
+			this->cdIntelligenceDecrementStudy = sf::seconds(0.f); // RESET COOLDOWN
 		}
 	}
 
 	if (toxic.getSobriety<double>() < -20.0)
 	{
-		this->cdIntelligenceDepletionSobriety += sf::seconds(dt);
+		this->cdIntelligenceDecrementSobriety += sf::seconds(dt);
 
-		if (this->cdIntelligenceDepletionSobriety.asSeconds() >= this->cdIntelligenceDepletionMax)
+		if (this->cdIntelligenceDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
 		{
-			this->intelligence = percentRange(this->intelligence, -0.025);
-			this->cdIntelligenceDepletionSobriety = sf::seconds(0.f); // RESET COOLDOWN
+			this->intelligence = percentRange(this->intelligence, -0.03);
+			this->cdIntelligenceDecrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
 		}
 	}
 	//---UPDATE INTELLIGENCE---//
+
+	//===UPDATE JOY===//
+	if (toxic.getSobriety<double>() < -30.0)
+	{
+		this->cdJoyIncrementSobriety += sf::seconds(dt);
+
+		if (this->cdJoyIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->joy = percentRange(this->joy, 0.03);
+			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+	//---UPDATE JOY---//
 }
 
 //---PSYCHOLOGY---//
