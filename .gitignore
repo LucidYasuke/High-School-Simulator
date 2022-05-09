@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Window Components
+High-School-Simulator.sln
+External
+
+High-School-Simulator/*.dll
+High-School-Simulator/High-School-Simulator.vcxproj
+High-School-Simulator/High-School-Simulator.vcxproj.filters
+
+# Mac Components
