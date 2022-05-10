@@ -165,13 +165,6 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 
 	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), sf::Vector2f(scaleX, scaleY), this->keyBinds, this->keyBindPressed);
 	this->player->setPosition(sf::Vector2f(this->player->getGlobalBounds().left - this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top - this->player->getGlobalBounds().height / 2.f));
-
-	double intell = 50;
-	for (int i = 0; i < 100; i++)
-	{
-		std::cout << "Intell: " << intell << std::endl;
-		intell = percentRange(intell, 0.03);
-	}
 }
 
 GameState::~GameState()
@@ -265,7 +258,7 @@ void GameState::render(sf::RenderTarget* target)
 		Player
 	*/
 
-	this->window->setView(this->player->getView());
+	//this->window->setView(this->player->getView());
 
 	target->draw(this->map);
 

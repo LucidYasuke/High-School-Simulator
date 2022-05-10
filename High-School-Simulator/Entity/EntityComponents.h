@@ -44,27 +44,43 @@ private:
 	double sadness;
 	double fatigue;
 
-	static const float cdStatChangeMax;
-
 	sf::Time cdLastStudy;
 	static const float cdLastStudyMax;
+
+	static const float cdStatChangeMax;
 
 	sf::Time cdIntelligenceDecrementStudy;
 	sf::Time cdIntelligenceDecrementSobriety;
 
 	sf::Time cdJoyIncrementSobriety;
+	sf::Time cdJoyDecrementSobriety;
+
+	sf::Time cdSadnessIncrementSobriety;
 public:
 	Psychology();
+	Psychology(Demographic demographic);
 	virtual ~Psychology();
 
 	void study();
 	void update(const float& dt, Toxicology& toxic);
 
 	template <typename T>
-	T getIntelligence();
+	T getIntelligence();	
+	template <typename T>
+	T getJoy();
+	template <typename T>
+	T getSadness();
+	template <typename T>
+	T getFatigue();
 
 	template <typename T>
-	std::string getIntelligenceAsString();
+	std::string getIntelligenceAsString();	
+	template <typename T>
+	std::string getJoyAsString();	
+	template <typename T>
+	std::string getSadnessAsString();
+	template <typename T>
+	std::string getFatigueAsString();
 };
 
 class Wallet
@@ -97,7 +113,43 @@ inline T Psychology::getIntelligence()
 }
 
 template<typename T>
+inline T Psychology::getJoy()
+{
+	return static_cast<T>(roundTo<double>(this->joy, 2));
+}
+
+template<typename T>
+inline T Psychology::getSadness()
+{
+	return static_cast<T>(roundTo<double>(this->sadness, 2));
+}
+
+template<typename T>
+inline T Psychology::getFatigue()
+{
+	return static_cast<T>(roundTo<double>(this->fatigue, 2));
+}
+
+template<typename T>
 inline std::string Psychology::getIntelligenceAsString()
 {
 	return std::to_string(this->getIntelligence<T>());
+}
+
+template<typename T>
+inline std::string Psychology::getJoyAsString()
+{
+	return std::to_string(this->getJoy<T>());
+}
+
+template<typename T>
+inline std::string Psychology::getSadnessAsString()
+{
+	return std::to_string(this->getSadness<T>());
+}
+
+template<typename T>
+inline std::string Psychology::getFatigueAsString()
+{
+	return std::string();
 }

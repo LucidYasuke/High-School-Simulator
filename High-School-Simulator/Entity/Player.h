@@ -2,10 +2,14 @@
 #define PLAYER_H
 
 #include "Entity.h"
+#include "EntityComponents.h"
 
 class Player : public Entity
 {
 private:
+	Toxicology toxic;
+	Psychology psych;
+
 	sf::View fov;
 	std::map<std::string, int>* keyBinds;
 	std::map<std::string, bool>* keyBindPressed;

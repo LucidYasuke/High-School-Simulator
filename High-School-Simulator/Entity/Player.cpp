@@ -98,6 +98,8 @@ void Player::updateCollision(const sf::FloatRect& bounds)
 
 void Player::update(const float& dt)
 {
+	this->toxic.update(dt);
+	this->psych.update(dt, this->toxic);
 	this->updateMovement(dt);
 }
 

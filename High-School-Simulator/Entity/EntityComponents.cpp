@@ -58,7 +58,7 @@ void Toxicology::update(const float& dt)
 	}
 
 	// When the player comes down from their high, the last high meter time increases
-	if (this->sobriety > -20 )
+	if (this->sobriety >= -20 )
 	{
 		this->lastHigh += sf::seconds(dt);
 	}
@@ -85,6 +85,29 @@ const float Psychology::cdStatChangeMax = 300.f;
 
 Psychology::Psychology()
 {
+	this->intelligence = 65.0;
+	this->joy = 75.0;
+	this->sadness = 0.0;
+	this->fatigue = 20.0;
+}
+
+Psychology::Psychology(Demographic demographic)
+{
+	switch (demographic)
+	{
+	case Demographic::LOWER:
+		break;
+	case Demographic::MIDDLE:
+		this->intelligence = rand() % 16 + 55; // Random from 55 to 70
+		this->joy = roundTo<double>(50.0 / (this->intelligence / 100), 2); // Base joy is 50, the lower your intelligence the higher it will be
+		this->sadness = roundTo<double>(30.0 * (this->intelligence / 100), 2); // Base sadness is 30, the higher your intelligence the higher you sadness
+		this->fatigue = rand() % 16 + 5; // Random from 5 to 20
+		break;
+	case Demographic::UPPER:
+		break;
+	default:
+		break;
+	}
 }
 
 Psychology::~Psychology()
@@ -130,7 +153,32 @@ void Psychology::update(const float& dt, Toxicology& toxic)
 			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
 		}
 	}
+
+	// While it's been more than 3 Game Hours since last intoxicated
+	if(toxic.getLastHighMax() - toxic.getLastHigh() > 0 && toxic.getSobriety<double>() >= -20.0)
+	{
+		this->cdJoyDecrementSobriety += sf::seconds(dt);
+
+		if (this->cdJoyDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->joy = percentRange(this->joy, -0.010);
+			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
 	//---UPDATE JOY---//
+
+	//===UPDATE SADNESS===//
+	if (toxic.getLastHighMax() - toxic.getLastHigh() > 0 && toxic.getSobriety<double>() >= -20.0)
+	{
+		this->cdSadnessIncrementSobriety += sf::seconds(dt);
+
+		if (this->cdSadnessIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->sadness = percentRange(this->sadness, 0.015);
+			this->cdSadnessIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+	//---UPDATE SAD---//
 }
 
 //---PSYCHOLOGY---//
