@@ -10,8 +10,8 @@ const float Toxicology::cdHighMax = 6.f;
 
 Toxicology::Toxicology()
 {
-	// Last High Default | Default is Last High Max
-	this->lastHigh = sf::seconds(this->lastHighMax);
+	// Last High Default | Default is Last High Max + 1.f
+	this->lastHigh = sf::seconds(this->lastHighMax + 1.f);
 
 	// Tolerance default
 	this->tolerance = 1.0;
@@ -58,7 +58,7 @@ void Toxicology::update(const float& dt)
 	}
 
 	// When the player comes down from their high, the last high meter time increases
-	if (this->sobriety >= -20 )
+	if (this->sobriety >= -20)
 	{
 		this->lastHigh += sf::seconds(dt);
 	}
@@ -85,10 +85,10 @@ const float Psychology::cdStatChangeMax = 300.f;
 
 Psychology::Psychology()
 {
-	this->intelligence = 65.0;
-	this->joy = 75.0;
-	this->sadness = 0.0;
-	this->fatigue = 20.0;
+	this->intelligence = 55.0;
+	this->joy = 80.0;
+	this->sadness = 15;
+	this->fatigue = 10;
 }
 
 Psychology::Psychology(Demographic demographic)
@@ -96,18 +96,20 @@ Psychology::Psychology(Demographic demographic)
 	switch (demographic)
 	{
 	case Demographic::LOWER:
+		this->intelligence = rand() % 11 + 65; // Random from 65 to 75
 		break;
 	case Demographic::MIDDLE:
-		this->intelligence = rand() % 16 + 55; // Random from 55 to 70
-		this->joy = roundTo<double>(50.0 / (this->intelligence / 100), 2); // Base joy is 50, the lower your intelligence the higher it will be
-		this->sadness = roundTo<double>(30.0 * (this->intelligence / 100), 2); // Base sadness is 30, the higher your intelligence the higher you sadness
-		this->fatigue = rand() % 16 + 5; // Random from 5 to 20
+		this->intelligence = rand() % 21 + 55; // Random from 55 to 75
 		break;
 	case Demographic::UPPER:
+		this->intelligence = rand() % 31 + 45; // Random from 45 to 75
 		break;
 	default:
 		break;
 	}
+	this->joy = roundTo<double>(45.0 / (this->intelligence / 100), 2); // Base joy is 45, the lower your intelligence the higher it will be
+	this->sadness = roundTo<double>(25.0 * (this->intelligence / 100), 2); // Base sadness is 25, the higher your intelligence the higher you sadness
+	this->fatigue = roundTo<double>(20.0 * (this->intelligence / 100) - (this->joy / 20.0), 2); // Base fatigue is 20, the higher your intelligence and lower your joy, the higehr your fatigue 
 }
 
 Psychology::~Psychology()

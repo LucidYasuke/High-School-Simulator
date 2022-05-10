@@ -14,7 +14,11 @@ Player::Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
 	this->keyBindPressed = keyBindPressed;
 
 	this->fov.setCenter(sf::Vector2f(this->getGlobalBounds().left + this->getGlobalBounds().width / 2.f, this->getGlobalBounds().top + this->getGlobalBounds().height / 2.f));
-	this->fov.setSize(sf::Vector2f(1280.f * .70f * scale.x, 720.f * .70f * scale.y));
+	this->fov.setSize(sf::Vector2f(1280.f * scale.x, 720.f * scale.y));
+
+
+	//this->fov.setViewport(sf::FloatRect(0.f, 0.f, 0.5f, 0.5f));
+
 }
 
 Player::~Player()

@@ -32,6 +32,7 @@ void TitleState::initTitle()
 
 	// Copying Objects with same configs
 	this->textTitle[1] = this->textTitle[0];
+	this->textTitle[1].setCharacterSize(static_cast<unsigned int>(96.f * scale));
 
 	// Set the names
 	this->textTitle[0].setString("HIGH SCHOOL");

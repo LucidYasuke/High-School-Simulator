@@ -160,4 +160,10 @@
     <None Include="Config\supportedKeys.ini" />
     <None Include="Config\window.ini" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="Assets\Fonts\BrassMonoComfortableRegular.otf" />
+    <Font Include="Assets\Fonts\BrassMonoComfortableRegular-XmYK.otf" />
+    <Font Include="Assets\Fonts\BrassMonoComfortableRegular-XmYK.ttf" />
+    <Font Include="Assets\Fonts\ConnectionIi-2wj8.otf" />
+  </ItemGroup>
 </Project>

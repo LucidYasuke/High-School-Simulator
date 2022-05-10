@@ -258,7 +258,7 @@ void GameState::render(sf::RenderTarget* target)
 		Player
 	*/
 
-	//this->window->setView(this->player->getView());
+	this->window->setView(this->player->getView());
 
 	target->draw(this->map);
 

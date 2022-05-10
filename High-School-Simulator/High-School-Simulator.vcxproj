@@ -206,6 +206,12 @@
     <None Include="sfml-window-2.dll" />
     <None Include="sfml-window-d-2.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="Assets\Fonts\BrassMonoComfortableRegular-XmYK.otf" />
+    <Font Include="Assets\Fonts\BrassMonoComfortableRegular-XmYK.ttf" />
+    <Font Include="Assets\Fonts\BrassMonoComfortableRegular.otf" />
+    <Font Include="Assets\Fonts\ConnectionIi-2wj8.otf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
