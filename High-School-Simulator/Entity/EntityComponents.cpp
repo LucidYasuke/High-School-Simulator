@@ -89,6 +89,8 @@ Psychology::Psychology()
 	this->joy = 80.0;
 	this->sadness = 15;
 	this->fatigue = 10;
+
+	this->isAsleep = false;
 }
 
 Psychology::Psychology(Demographic demographic)
@@ -110,6 +112,8 @@ Psychology::Psychology(Demographic demographic)
 	this->joy = roundTo<double>(45.0 / (this->intelligence / 100), 2); // Base joy is 45, the lower your intelligence the higher it will be
 	this->sadness = roundTo<double>(25.0 * (this->intelligence / 100), 2); // Base sadness is 25, the higher your intelligence the higher you sadness
 	this->fatigue = roundTo<double>(20.0 * (this->intelligence / 100) - (this->joy / 20.0), 2); // Base fatigue is 20, the higher your intelligence and lower your joy, the higehr your fatigue 
+
+	this->isAsleep = false;
 }
 
 Psychology::~Psychology()
@@ -118,6 +122,46 @@ Psychology::~Psychology()
 
 void Psychology::study()
 {
+	this->isStudying = true;
+}
+
+void Psychology::endStudy()
+{
+	this->isStudying = false;
+}
+
+void Psychology::sleep()
+{
+	this->isAsleep = true;
+}
+
+void Psychology::wake()
+{
+	this->isAsleep = false;
+}
+
+void Psychology::updateStudy(const float& dt, Toxicology& toxic)
+{
+	if (this->isStudying)
+	{
+		this->cdIntelligenceIncrementStudy += sf::seconds(dt);
+		this->cdFatigueDecrementStudy += sf::seconds(dt);
+
+		if (toxic.getSobriety<double>() >= -10) // Intoxication is neglected in studying if less than 10
+		{
+			double percent = (static_cast<double>(rand() % 4) + 1.0) / 100;
+			this->intelligence = percentRange(this->intelligence, percent);
+			this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+
+			// FATIGUE
+		}
+		else
+		{
+			double percent = (static_cast<double>(rand() % 4) + 1.0) / 1000;
+			this->intelligence = percentRange(this->intelligence, percent);
+			this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
 }
 
 void Psychology::updateLimits()
@@ -291,6 +335,11 @@ void Psychology::update(const float& dt, Toxicology& toxic)
 const std::vector<MindState>& Psychology::getMoods() const
 {
 	return this->moods;
+}
+
+const bool& Psychology::getIsAsleep() const
+{
+	return this->isAsleep;
 }
 
 //---PSYCHOLOGY---//

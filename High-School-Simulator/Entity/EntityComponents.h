@@ -44,6 +44,9 @@ private:
 	double sadness;
 	double fatigue;
 
+	bool isAsleep;
+	bool isStudying;
+
 	std::vector<MindState> moods;
 
 	sf::Time cdLastStudy;
@@ -52,22 +55,35 @@ private:
 	static const float cdStatChangeMax;
 
 	sf::Time cdIntelligenceDecrementStudy;
+	sf::Time cdIntelligenceIncrementStudy;
 	sf::Time cdIntelligenceDecrementSobriety;
 
 	sf::Time cdJoyIncrementSobriety;
 	sf::Time cdJoyDecrementSobriety;
 
 	sf::Time cdSadnessIncrementSobriety;
+
+	sf::Time cdFatigueIncrementSobriety;
+	sf::Time cdFatigueDecrementSobriety;	
+	sf::Time cdFatigueDecrementStudy;
 public:
 	Psychology();
 	Psychology(Demographic demographic);
 	virtual ~Psychology();
 
 	void study();
+	void endStudy();
+
+	void sleep();
+	void wake();
+
+	void updateStudy(const float& dt, Toxicology& toxic);
 	void updateLimits();
 	void update(const float& dt, Toxicology& toxic);
 
 	const std::vector<MindState>& getMoods() const;
+
+	const bool& getIsAsleep() const;
 
 	template <typename T>
 	T getIntelligence();	
