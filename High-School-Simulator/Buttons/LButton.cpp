@@ -69,3 +69,73 @@ sf::FloatRect LButton::getGlobalBounds()
 {
     return sf::FloatRect(this->getPosition().x, this->getPosition().y, this->vertices[2].position.x - this->vertices[0].position.x, this->vertices[2].position.y - this->vertices[0].position.y);
 }
+
+void LButton::onClick()
+{
+    *this->condition = this->boolean;
+}
+
+void LButton::setActive()
+{
+    //this->sprite.setScale(sf::Vector2f(this->scaleX + .05f * this->scaleX, this->scaleY + .05f * this->scaleY));
+   // this->sprite.setPosition(this->xPos - 7.5f * this->scaleX, this->yPos - 7.5f * this->scaleY);
+
+    //this->active = true;
+}
+
+void LButton::setUnactive()
+{
+    //this->sprite.setScale(sf::Vector2f(this->scaleX, this->scaleY));
+    //this->sprite.setPosition(this->xPos, this->yPos);
+
+   // this->active = false;
+}
+
+void LButton::reset()
+{
+    this->lastClicked = sf::seconds(0.f);
+}
+
+void LButton::updateTimers(const float& dt)
+{
+    this->lastClicked += sf::seconds(dt);
+
+    if (this->lastClicked >= (this->lastClickedMax * 3.f)) { this->lastClicked = this->lastClickedMax; } // Just so it doesn't hold up too much space
+}
+
+void LButton::update(const float& dt, const sf::Vector2f mosPos)
+{
+    this->updateTimers(dt);
+
+    if (this->getTransform().transformRect(this->getGlobalBounds()).contains(mosPos))
+    {
+        this->buttonState = buttonStates::BTNHOVER;
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            if (this->lastClicked >= this->lastClickedMax)
+            {
+                this->buttonState = buttonStates::BTNPRESSED;
+                this->lastClicked = sf::seconds(0.f);
+            }
+        }
+    }
+    else
+    {
+        this->buttonState = buttonStates::BTNIDLE;
+    }
+
+    switch (this->buttonState)
+    {
+    case buttonStates::BTNIDLE:
+        if (this->active) { this->setUnactive(); }
+        break;
+    case buttonStates::BTNHOVER:
+        if (!this->active) { this->setActive(); }
+        break;
+    case buttonStates::BTNPRESSED:
+        this->onClick();
+        if (this->active) { this->setUnactive(); }
+        this->buttonState = buttonStates::BTNIDLE;
+        break;
+    }
+}

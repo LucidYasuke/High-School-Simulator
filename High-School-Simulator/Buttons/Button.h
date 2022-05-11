@@ -7,8 +7,6 @@ enum class buttonStates { BTNIDLE = 0, BTNHOVER, BTNPRESSED };
 
 class Button
 {
-private:
-
 protected:
 	sf::Time lastClicked;
 	static const sf::Time lastClickedMax;

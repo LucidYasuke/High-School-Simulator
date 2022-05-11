@@ -1,11 +1,9 @@
 #ifndef LBUTTON_H
 #define LBUTTON_H
 
-#include "../Includes.h"
 #include "../Physics.h"
 
 enum class buttonStates { BTNIDLE = 0, BTNHOVER, BTNPRESSED };
-
 
 class LButton : public sf::Drawable, public sf::Transformable
 {
@@ -33,8 +31,14 @@ public:
 
     sf::FloatRect getGlobalBounds();
 
+    void onClick();
+    void setActive();
+    void setUnactive();
+    void reset();
+
     //===Update===//
-    virtual void update(const float& dt) = 0;
+    void updateTimers(const float& dt);
+    void update(const float& dt, const sf::Vector2f mosPos);
     //---Update---//
 };
 
