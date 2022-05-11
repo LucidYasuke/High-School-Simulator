@@ -96,13 +96,13 @@ Psychology::Psychology(Demographic demographic)
 	switch (demographic)
 	{
 	case Demographic::LOWER:
-		this->intelligence = rand() % 11 + 65; // Random from 65 to 75
+		this->intelligence = static_cast<double>(rand() % 11) + 65; // Random from 65 to 75
 		break;
 	case Demographic::MIDDLE:
-		this->intelligence = rand() % 21 + 55; // Random from 55 to 75
+		this->intelligence = static_cast<double>(rand() % 21) + 55; // Random from 55 to 75
 		break;
 	case Demographic::UPPER:
-		this->intelligence = rand() % 31 + 45; // Random from 45 to 75
+		this->intelligence = static_cast<double>(rand() % 31) + 45; // Random from 45 to 75
 		break;
 	default:
 		break;
@@ -114,6 +114,49 @@ Psychology::Psychology(Demographic demographic)
 
 Psychology::~Psychology()
 {
+}
+
+void Psychology::study()
+{
+}
+
+void Psychology::updateLimits()
+{
+	if (this->intelligence > 100.0)
+	{
+		this->intelligence = 100.0;
+	}
+	if (this->intelligence < 0.0)
+	{
+		this->intelligence = 0.0;
+	}
+
+	if (this->joy > 100.0)
+	{
+		this->joy = 100.0;
+	}
+	if (this->joy < 100.0)
+	{
+		this->joy = 0.0;
+	}
+
+	if (this->sadness > 100.0)
+	{
+		this->sadness = 100.0;
+	}
+	if (this->sadness < 100.0)
+	{
+		this->sadness = 0.0;
+	}
+
+	if (this->fatigue > 100.0)
+	{
+		this->fatigue = 100.0;
+	}
+	if (this->fatigue < 100.0)
+	{
+		this->fatigue = 0.0;
+	}
 }
 
 void Psychology::update(const float& dt, Toxicology& toxic)
@@ -181,9 +224,104 @@ void Psychology::update(const float& dt, Toxicology& toxic)
 		}
 	}
 	//---UPDATE SAD---//
+
+	this->updateLimits();
+
+	//===UPDATE MOOD===//
+	//HAPPY=0, SAD, TIRED, DELERIOUS, BORED, INTOXICATED
+
+	if (this->joy / this->sadness >= 1.75)
+	{
+		if (std::find(this->moods.begin(), this->moods.end(), MindState::HAPPY) != this->moods.end())
+		{
+			this->moods.push_back(MindState::HAPPY);
+		}
+		for (unsigned i = 0; i < moods.size(); i++)
+		{
+			if (this->moods[i] == MindState::SAD)
+			{
+				this->moods.erase(this->moods.begin() + i);
+			}
+		}
+	}	
+	
+	if (this->sadness / this->joy >= 1.75)
+	{
+		if (std::find(this->moods.begin(), this->moods.end(), MindState::SAD) != this->moods.end())
+		{
+			this->moods.push_back(MindState::SAD);
+		}
+		for (unsigned i = 0; i < moods.size(); i++)
+		{
+			if (this->moods[i] == MindState::HAPPY)
+			{
+				this->moods.erase(this->moods.begin() + i);
+			}
+		}
+	}
+
+	if (toxic.getSobriety<double>() < - 20.0)
+	{
+		if (std::find(this->moods.begin(), this->moods.end(), MindState::INTOXICATED) != this->moods.end())
+		{
+			this->moods.push_back(MindState::INTOXICATED);
+		}
+	}	
+
+	if (this->fatigue >= 55.0)
+	{
+		if (std::find(this->moods.begin(), this->moods.end(), MindState::TIRED) != this->moods.end())
+		{
+			this->moods.push_back(MindState::TIRED);
+		}
+	}	
+	else
+	{
+		for (unsigned i = 0; i < moods.size(); i++)
+		{
+			if (this->moods[i] == MindState::TIRED)
+			{
+				this->moods.erase(this->moods.begin() + i);
+			}
+		}
+	}
+	//---UPDATE MOOD---//
+}
+
+const std::vector<MindState>& Psychology::getMoods() const
+{
+	return this->moods;
 }
 
 //---PSYCHOLOGY---//
+
+//===WALLET===//
+Wallet::Wallet()
+{
+	this->amount = 80;
+}
+
+Wallet::Wallet(Demographic demographic)
+{
+	switch (demographic)
+	{
+	case Demographic::LOWER:
+		this->amount = static_cast<double>(rand() % 26) + 10; // Random from 10 to 35
+		break;
+	case Demographic::MIDDLE:
+		this->amount = static_cast<double>(rand() % 26) + 60; // Random from 60 to 110
+		break;
+	case Demographic::UPPER:
+		this->amount = static_cast<double>(rand() % 66) + 145; // Random from 145 to 210
+		break;
+	default:
+		break;
+	}
+}
+
+Wallet::~Wallet()
+{
+}
 
 void Wallet::addMoney(double amount)
 {
@@ -194,3 +332,4 @@ void Wallet::subMoney(double amount)
 {
 	this->amount -= amount;
 }
+//---WALLET---//

@@ -44,6 +44,8 @@ private:
 	double sadness;
 	double fatigue;
 
+	std::vector<MindState> moods;
+
 	sf::Time cdLastStudy;
 	static const float cdLastStudyMax;
 
@@ -62,7 +64,10 @@ public:
 	virtual ~Psychology();
 
 	void study();
+	void updateLimits();
 	void update(const float& dt, Toxicology& toxic);
+
+	const std::vector<MindState>& getMoods() const;
 
 	template <typename T>
 	T getIntelligence();	
@@ -88,8 +93,18 @@ class Wallet
 private:
 	double amount;
 public:
+	Wallet();
+	Wallet(Demographic demographic);
+	virtual ~Wallet();
+
 	void addMoney(double amount);
 	void subMoney(double amount);
+
+	template <typename T>
+	T getMoney();
+
+	template <typename T>
+	std::string getMoneyAsString();
 };
 
 #endif
@@ -152,4 +167,16 @@ template<typename T>
 inline std::string Psychology::getFatigueAsString()
 {
 	return std::string();
+}
+
+template<typename T>
+inline T Wallet::getMoney()
+{
+	return static_cast<T>(roundTo<double>(this->amount, 2));
+}
+
+template<typename T>
+inline std::string Wallet::getMoneyAsString()
+{
+	return std::to_string(this->getMoney<T>());
 }

@@ -9,6 +9,7 @@ class Player : public Entity
 private:
 	Toxicology toxic;
 	Psychology psych;
+	Wallet wallet;
 
 	sf::View fov;
 	std::map<std::string, int>* keyBinds;
