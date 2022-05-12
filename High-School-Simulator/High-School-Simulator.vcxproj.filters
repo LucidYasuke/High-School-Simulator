@@ -72,9 +72,6 @@
     <ClCompile Include="Buttons\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Buttons\LButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Entity\EntityComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,9 +132,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Buttons\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Buttons\LButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Entity\EntityComponents.h">

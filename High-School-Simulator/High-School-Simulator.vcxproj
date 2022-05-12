@@ -146,7 +146,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buttons\Button.cpp" />
-    <ClCompile Include="Buttons\LButton.cpp" />
     <ClCompile Include="Entity\EntityComponents.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\Player.cpp" />
@@ -169,7 +168,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buttons\Button.h" />
-    <ClInclude Include="Buttons\LButton.h" />
     <ClInclude Include="Entity\EntityComponents.h" />
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\Player.h" />

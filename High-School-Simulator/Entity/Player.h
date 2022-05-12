@@ -21,6 +21,11 @@ public:
 
 	const sf::View& getView() const;
 
+	Toxicology& getToxicology();
+	Psychology& getPsychology();
+	Wallet& getWallet();
+
+
 	//===Update===//
 	void updateMovement(const float& dt) override;
 	void updateCollision(const sf::FloatRect& bounds) override;

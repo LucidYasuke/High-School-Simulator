@@ -133,6 +133,7 @@ void Psychology::endStudy()
 void Psychology::sleep()
 {
 	this->isAsleep = true;
+	this->isStudying = false; // Just incase
 }
 
 void Psychology::wake()
@@ -340,6 +341,11 @@ const std::vector<MindState>& Psychology::getMoods() const
 const bool& Psychology::getIsAsleep() const
 {
 	return this->isAsleep;
+}
+
+const bool& Psychology::getIsStudying() const
+{
+	return this->isStudying;
 }
 
 //---PSYCHOLOGY---//

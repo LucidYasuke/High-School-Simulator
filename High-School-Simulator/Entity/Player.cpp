@@ -17,7 +17,7 @@ Player::Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
 	this->fov.setSize(sf::Vector2f(1280.f * scale.x, 720.f * scale.y));
 
 
-	//this->fov.setViewport(sf::FloatRect(0.f, 0.f, 0.5f, 0.5f));
+	this->fov.setViewport(sf::FloatRect(0.f, 0.f, 0.5f, 0.5f));
 
 }
 
@@ -28,6 +28,21 @@ Player::~Player()
 const sf::View& Player::getView() const
 {
 	return this->fov;
+}
+
+Toxicology& Player::getToxicology()
+{
+	return this->toxic;
+}
+
+Psychology& Player::getPsychology()
+{
+	return this->psych;
+}
+
+Wallet& Player::getWallet()
+{
+	return this->wallet;
 }
 
 void Player::updateMovement(const float& dt)

@@ -3,6 +3,9 @@
 
 Date::Date()
 {
+	this->day = Day::MONDAY;
+	this->hour = 6;
+	this->minute = sf::seconds(0.f);
 }
 
 Date::~Date()
@@ -18,9 +21,9 @@ void Date::update(const float& dt)
 	// If the minutes is divisible by 120, then an hour has passed 
 	if (static_cast<int>(minute.asSeconds()) >= 120)
 	{
-		this->hour += static_cast<int>(minute.asSeconds()) / 120;
 		while (static_cast<int>(minute.asSeconds()) >= 120)
 		{
+			this->hour++;
 			this->minute -= sf::seconds(120.f);
 		}
 	}
@@ -28,13 +31,14 @@ void Date::update(const float& dt)
 	if (this->hour >= 24)
 	{
 		this->hour -= 24;
-		if (this->day == Day::SATURDAY)
+		switch (this->day)
 		{
+		case Day::SATURDAY:
 			this->day = Day::SUNDAY;
-		}
-		else
-		{
+			break;
+		default:
 			this->day = static_cast<Day>(static_cast<int>(this->day) + 1);
+			break;
 		}
 	}
 }
@@ -49,9 +53,14 @@ const int& Date::getHour() const
 	return hour;
 }
 
-const sf::Time Date::getMinute() const
+const int Date::getMinute() const
 {
-	return minute;
+	return static_cast<int>(minute.asSeconds() / 2.f);
+}
+
+const float Date::getTrueMinute() const
+{
+	return minute.asSeconds();
 }
 
 const std::string Date::getDayAsString() const
@@ -84,7 +93,7 @@ const std::string Date::getHourAsString() const
 
 const std::string Date::getMinuteAsString() const
 {
-	return std::to_string(static_cast<int>(this->minute.asSeconds() / 2.f));
+	return std::to_string(this->getMinute());
 }
 
 void Date::setDay(Day& day)
@@ -97,7 +106,12 @@ void Date::setHour(int& hour)
 	this->hour = hour;
 }
 
-void Date::setMinute(float& minute)
+void Date::setMinute(int& minute)
+{
+	this->minute = sf::seconds(static_cast<float>(minute * 2));
+}
+
+void Date::setTrueMinute(float& minute)
 {
 	this->minute = sf::seconds(minute);
 }
@@ -217,6 +231,35 @@ void GameState::updateInput()
 	}
 }
 
+void GameState::updateDate(const float& dt)
+{
+	float timeBlend = 0;
+
+	if (this->player->getToxicology().getSobriety<double>() < -20.0)
+	{
+		timeBlend += 5 + std::abs(this->player->getToxicology().getSobriety<float>()) / 100;
+	}
+	if (this->player->getPsychology().getIsStudying())
+	{
+		timeBlend += 2;
+	}	
+	if (this->player->getPsychology().getIsAsleep())
+	{
+		timeBlend += 15;
+	}
+	
+	if (static_cast<int>(timeBlend) == 0)
+	{
+		this->date.update(dt);
+	}
+	else
+	{
+		this->date.update(dt * timeBlend);
+	}
+	
+	std::cout << "Day: " << this->date.getDayAsString() << " Hour: " << this->date.getHourAsString() << " Minute: " << this->date.getMinuteAsString() << std::endl;
+}
+
 void GameState::update(const float& dt)
 {
 	if ((this->pause && !this->gameOver) && (this->stateStack.empty())) // Checks if the player has initiated pause AND the stack is already empty
@@ -241,6 +284,8 @@ void GameState::update(const float& dt)
 	}
 
 	this->updateTimers(dt);
+
+	this->updateDate(dt);
 
 	this->updateInput();
 

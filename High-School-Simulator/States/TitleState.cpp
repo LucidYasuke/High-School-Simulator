@@ -45,13 +45,17 @@ void TitleState::initTitle()
 
 void TitleState::initButtons()
 {
+	sf::Vector2f scale;
+	scale.x = this->window->getDefaultView().getSize().x / 1280.f;
+	scale.y = this->window->getDefaultView().getSize().y / 720.f;
+
 	this->booleans.insert({ "QuitGame", &this->quit });
 
-	this->buttons.push_back(new Button(this->window, this->textureButton["Start"], this->booleans["CreateGameState"], true, -132.5f, 150.f));
-	this->buttons.push_back(new Button(this->window, this->textureButton["Blank"], new bool, true, 132.5f, 150.f));
-	this->buttons.push_back(new Button(this->window, this->textureButton["Blank"], new bool, true, -132.5f, 225.f));
-	this->buttons.push_back(new Button(this->window, this->textureButton["Settings"], new bool, true, 132.5f, 225.f));
-	this->buttons.push_back(new Button(this->window, this->textureButton["Quit"], this->booleans["QuitGame"], true, 0.f, 300.f));
+	this->buttons.push_back(new Button(this->textureButton["Start"], sf::Vector2f(-132.5f, 150.f), scale, this->booleans["CreateGameState"], true));
+	this->buttons.push_back(new Button(this->textureButton["Blank"], sf::Vector2f(132.5f, 150.f), scale, new bool, true));
+	this->buttons.push_back(new Button(this->textureButton["Blank"], sf::Vector2f(-132.5f, 225.f), scale, new bool, true));
+	this->buttons.push_back(new Button(this->textureButton["Settings"], sf::Vector2f(132.5f, 225.f), scale, new bool, true));
+	this->buttons.push_back(new Button(this->textureButton["Quit"], sf::Vector2f(0.f, 300.f), scale, this->booleans["QuitGame"], true));
 }
 //---INITIALIZE FUNCTIONS---//
 
@@ -111,7 +115,7 @@ void TitleState::render(sf::RenderTarget* target)
 {
 	for (int i = 0; i < this->buttons.size(); i++)
 	{
-		this->buttons[i]->render(target);
+		target->draw(*buttons[i]);
 	}
 
 	for (int i = 0; i < 2; i++)

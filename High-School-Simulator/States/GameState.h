@@ -21,7 +21,8 @@ public:
 	
 	const Day& getDay() const;
 	const int& getHour() const;
-	const sf::Time getMinute() const;
+	const int getMinute() const;
+	const float getTrueMinute() const;
 
 	const std::string getDayAsString() const;
 	const std::string getHourAsString() const;
@@ -29,7 +30,8 @@ public:
 
 	void setDay(Day& day);
 	void setHour(int& hour);
-	void setMinute(float& minute);
+	void setMinute(int& minute);
+	void setTrueMinute(float& minute);
 };
 
 class GameState : public State
@@ -50,6 +52,7 @@ private:
 	bool pause, gameOver;
 
 	std::map<std::string, bool*> booleansPause;
+	std::map<std::string, bool*> booleansPlayer;
 	//---Booleans---//
 
 	//===Entities===//

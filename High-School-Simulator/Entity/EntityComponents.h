@@ -84,6 +84,7 @@ public:
 	const std::vector<MindState>& getMoods() const;
 
 	const bool& getIsAsleep() const;
+	const bool& getIsStudying() const;
 
 	template <typename T>
 	T getIntelligence();	

@@ -1,37 +1,49 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef LBUTTON_H
+#define LBUTTON_H
 
-#include "../Includes.h"
+#include "../Physics.h"
 
 enum class buttonStates { BTNIDLE = 0, BTNHOVER, BTNPRESSED };
 
-class Button
+class Button : public sf::Drawable, public sf::Transformable
 {
 protected:
-	sf::Time lastClicked;
-	static const sf::Time lastClickedMax;
+    bool active;
 
-	float xPos, yPos, width, height, scaleX, scaleY, unfilteredXPos, unfilteredYPos;
+    bool boolean;    
+    bool* condition;	
 
-	buttonStates buttonState;
+    buttonStates buttonState;
 
-	bool boolean, active;
-	bool* condition;
+    sf::Vector2f originalScale;
+    
+    //===Time===//
+    sf::Time lastClicked;
+    static const sf::Time lastClickedMax;
+    //---Time---//
 
-	sf::RenderWindow* window;
-	sf::Sprite sprite;
+    //===Graphics===//
+    sf::Texture* texture;
+    sf::VertexArray vertices;
+    //---Graphics---//
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
-	Button(sf::RenderWindow* window, sf::Texture* texture, bool* condition, bool boolean, float xPos, float yPos);
-	virtual ~Button();
+    Button();
+    Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, bool* condition, bool boolean);
+    virtual ~Button();
 
-	void onClick();
-	void setActive();
-	void setUnactive();
-	void reset();
-	void updateTimers(const float& dt);
-	void update(const float& dt, const sf::Vector2f mosPos);
-	void render(sf::RenderTarget* target);
+    sf::FloatRect getGlobalBounds();
+
+    void onClick();
+    void setActive();
+    void setUnactive();
+    void reset();
+
+    //===Update===//
+    void updateTimers(const float& dt);
+    void update(const float& dt, const sf::Vector2f mosPos);
+    //---Update---//
 };
 
 #endif
-

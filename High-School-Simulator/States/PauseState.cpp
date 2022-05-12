@@ -4,7 +4,6 @@
 //===INITIALIZE FUNCTIONS===//
 void PauseState::initTextures()
 {
-	std::cout << this->window->getView().getSize().x;
 	//===Init Button Textures===//
 	this->textureButton.insert({ "Continue", new sf::Texture });
 	this->textureButton.insert({ "Settings", new sf::Texture });
@@ -36,11 +35,15 @@ void PauseState::initTitle()
 
 void PauseState::initButtons()
 {
+	sf::Vector2f scale;
+	scale.x = this->window->getDefaultView().getSize().x / 1280.f;
+	scale.y = this->window->getDefaultView().getSize().y / 720.f;
+
 	this->booleans.insert({ "ContinueGameState", &this->quit }); // ContinueGameState = QuitPauseState
 
-	this->buttons.push_back(new Button(this->window, this->textureButton["Continue"], this->booleans["ContinueGameState"], true, 0.f, 150.f));
-	this->buttons.push_back(new Button(this->window, this->textureButton["Settings"], new bool, true, 0.f, 225.f));
-	this->buttons.push_back(new Button(this->window, this->textureButton["Quit"], this->booleans["QuitGameState"], true, 0.f, 300.f));
+	this->buttons.push_back(new Button(this->textureButton["Continue"], sf::Vector2f(0.f, 150.f), scale, this->booleans["ContinueGameState"], true));
+	this->buttons.push_back(new Button(this->textureButton["Settings"], sf::Vector2f(0.f, 225.f), scale, new bool, true));
+	this->buttons.push_back(new Button(this->textureButton["Quit"], sf::Vector2f(0.f, 300.f), scale, this->booleans["QuitGameState"], true));
 }
 //---INITIALIZE FUNCTIONS---//
 PauseState::PauseState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::Vector2f* mosPosView, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed, std::map<std::string, bool*> booleans) : State(window, mosPosWindow, mosPosView, keyBinds, keyBindPressed, booleans)
@@ -112,7 +115,7 @@ void PauseState::render(sf::RenderTarget* target)
 
 	for (int i = 0; i < this->buttons.size(); i++)
 	{
-		this->buttons[i]->render(target);
+		target->draw(*buttons[i]);
 	}
 }
 
