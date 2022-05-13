@@ -151,16 +151,30 @@ void Psychology::updateStudy(const float& dt, Toxicology& toxic)
 		if (toxic.getSobriety<double>() >= -10) // Intoxication is neglected in studying if less than 10
 		{
 			double percent = (static_cast<double>(rand() % 4) + 1.0) / 100;
-			this->intelligence = percentRange(this->intelligence, percent);
-			this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
-
-			// FATIGUE
+			if (this->cdIntelligenceIncrementStudy.asSeconds() >= this->cdLastStudyMax)
+			{
+				this->intelligence = percentRange(this->intelligence, percent);
+				this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+			}
+			if (this->cdFatigueDecrementStudy.asSeconds() >= this->cdLastStudyMax)
+			{
+				this->fatigue = percentRange(this->fatigue, -percent / 5.0);
+				this->cdFatigueDecrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+			}
 		}
 		else
 		{
 			double percent = (static_cast<double>(rand() % 4) + 1.0) / 1000;
-			this->intelligence = percentRange(this->intelligence, percent);
-			this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+			if (this->cdIntelligenceIncrementStudy.asSeconds() >= this->cdLastStudyMax)
+			{
+				this->intelligence = percentRange(this->intelligence, percent);
+				this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+			}
+			if (this->cdFatigueDecrementStudy.asSeconds() >= this->cdLastStudyMax)
+			{
+				this->fatigue = percentRange(this->fatigue, -percent * 10.0);
+				this->cdFatigueDecrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+			}
 		}
 	}
 }
@@ -269,6 +283,8 @@ void Psychology::update(const float& dt, Toxicology& toxic)
 		}
 	}
 	//---UPDATE SAD---//
+
+	this->updateStudy(dt, toxic);
 
 	this->updateLimits();
 
