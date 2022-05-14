@@ -1,5 +1,6 @@
 #include "EntityComponents.h"
 
+
 //===TOXICOLOGY===//
 
 // 3 Game Hours = 6 Real Life Minutes
@@ -75,6 +76,7 @@ const float& Toxicology::getLastHighMax() const
 }
 //---TOXICOLOGY---//
 
+
 //===PSYCHOLOGY===//
 
 // 8 Game Hours = 16 Real Life Minutes
@@ -91,10 +93,13 @@ Psychology::Psychology()
 	this->fatigue = 10;
 
 	this->isAsleep = false;
+	this->isStudying = false;
 }
 
 Psychology::Psychology(Demographic demographic)
 {
+	this->intelligence = 0;
+
 	switch (demographic)
 	{
 	case Demographic::LOWER:
@@ -114,6 +119,7 @@ Psychology::Psychology(Demographic demographic)
 	this->fatigue = roundTo<double>(20.0 * (this->intelligence / 100) - (this->joy / 20.0), 2); // Base fatigue is 20, the higher your intelligence and lower your joy, the higehr your fatigue 
 
 	this->isAsleep = false;
+	this->isStudying = false;
 }
 
 Psychology::~Psychology()
@@ -126,11 +132,14 @@ void Psychology::study()
 	{
 	case true:
 		this->isStudying = false;
+		break;
 	case false:
 		this->isStudying = true;
+		break;
 	default:
 		break;
 	}
+	this->isAsleep = false; // Just Incase
 }
 
 void Psychology::sleep()
@@ -139,8 +148,10 @@ void Psychology::sleep()
 	{
 	case true:
 		this->isAsleep = false;
+		break;
 	case false:
 		this->isAsleep = true;
+		break;
 	default:
 		break;
 	}
@@ -372,6 +383,7 @@ const bool& Psychology::getIsStudying() const
 
 //---PSYCHOLOGY---//
 
+
 //===WALLET===//
 Wallet::Wallet()
 {
@@ -380,6 +392,8 @@ Wallet::Wallet()
 
 Wallet::Wallet(Demographic demographic)
 {
+	this->amount = 0;
+
 	switch (demographic)
 	{
 	case Demographic::LOWER:

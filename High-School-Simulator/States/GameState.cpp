@@ -116,6 +116,7 @@ void Date::setTrueMinute(float& minute)
 	this->minute = sf::seconds(minute);
 }
 
+
 //===INITIALIZE FUNCTIONS===//
 void GameState::initTextures()
 {
@@ -126,25 +127,9 @@ void GameState::initTextures()
 	this->textureBed->loadFromFile("Assets/Tiles/Sprite-0004.png");
 }
 
-void GameState::initBackground()
-{
-}
-
-void GameState::initBools()
-{
-	this->booleansPlayerFunctions.insert({"Sleep", new bool});
-	this->booleansPlayerFunctions.insert({"Wake", new bool});
-	this->booleansPlayerFunctions.insert({"High", new bool});
-	this->booleansPlayerFunctions.insert({"Study", new bool});
-}
-
-void GameState::initButtons()
-{
-	this->buttonsHidden.insert({"Sleep", new Button()});
-}
-
 void GameState::initViews()
 {
+	//===INIT WORLD VIEW===//
 	this->viewWorld = window->getDefaultView();
 
 	sf::Vector2f scale;
@@ -152,16 +137,42 @@ void GameState::initViews()
 	scale.y = window->getDefaultView().getSize().y / 720.f;
 
 	this->viewWorld.setViewport(sf::FloatRect(0, 0, .6f, 1.f));
+	//---INIT WORLD VIEW---//
+}
+
+void GameState::initBackground()
+{
+}
+
+void GameState::initBools()
+{
+	this->booleansPlayerFunctions.insert({"Sleep", new bool});
+	this->booleansPlayerFunctions.insert({"High", new bool});
+	this->booleansPlayerFunctions.insert({"Study", new bool});
+
+	for (auto iter = this->booleansPlayerFunctions.begin(); iter != this->booleansPlayerFunctions.end(); iter++)
+	{
+		*this->booleansPlayerFunctions[iter->first] = false;
+	}
+}
+
+void GameState::initButtons()
+{
+	sf::Vector2f viewWorldScale;
+	viewWorldScale.x = this->window->getDefaultView().getSize().x / 1280.f / this->viewWorld.getViewport().width;
+	viewWorldScale.y = this->window->getDefaultView().getSize().y / 720.f / this->viewWorld.getViewport().height;
+
+	this->buttonsHidden.insert({ "Sleep", new Button(sf::Vector2f(0.f,0.f), sf::Vector2f(viewWorldScale.x * .5f, viewWorldScale.y * .5f), this->booleansPlayerFunctions["Sleep"], true) });
 }
 
 //---INITIALIZE FUNCTIONS---//
 GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::Vector2f* mosPosView, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed, std::map<std::string, bool*> booleans) : State(window, mosPosWindow, mosPosView, keyBinds, keyBindPressed, booleans)
 {
 	this->initTextures();
+	this->initViews();
 	this->initBackground();
 	this->initBools();
 	this->initButtons();
-	this->initViews();
 
 	sf::Vector2f scale;
 	scale.x = this->window->getDefaultView().getSize().x / 1280.f;
@@ -209,9 +220,8 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 	this->bed = WorldItem(this->textureBed, sf::Vector2f(this->map.getGlobalBounds().left + 0.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height), viewWorldScale);
 	this->bed.setPosition(sf::Vector2f(this->bed.getGlobalBounds().left, this->bed.getGlobalBounds().top - this->bed.getGlobalBounds().height));
 	this->bed.getCollisionButton().button = this->buttonsHidden["Sleep"];
-	this->buttonsHidden["Sleep"]->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f + 32.f, this->bed.getGlobalBounds().top - 64.f));
-	this->buttonsHidden["Sleep"]->setBool(this->booleansPlayerFunctions["Sleep"], true);
 
+	this->buttonsHidden["Sleep"]->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f - this->buttonsHidden["Sleep"]->getGlobalBounds().width / 2.f, this->bed.getGlobalBounds().top - this->buttonsHidden["Sleep"]->getGlobalBounds().height));
 }
 
 GameState::~GameState()
@@ -236,32 +246,9 @@ void GameState::resetButton()
 {
 }
 
-void GameState::updateLevel()
-{
-}
-
 void GameState::updateTimers(const float& dt)
 {
 	this->cooldownPauseCreation += sf::seconds(dt);
-}
-
-void GameState::updateInput()
-{
-	if (this->keyBindPressed->at("PAUSE"))
-	{
-		if (this->cooldownPauseCreation >= this->cooldownPauseCreationMax)
-		{
-			switch (this->pause)
-			{
-			case false:
-				this->pause = true;
-				break;
-			default:
-				break;
-			}
-			this->cooldownPauseCreation = sf::seconds(0.f);
-		}
-	}
 }
 
 void GameState::updateDate(const float& dt)
@@ -289,17 +276,44 @@ void GameState::updateDate(const float& dt)
 	{
 		this->date.update(dt * timeBlend);
 	}
-	
-	//std::cout << "Day: " << this->date.getDayAsString() << " Hour: " << this->date.getHourAsString() << " Minute: " << this->date.getMinuteAsString() << std::endl;
+}
+
+void GameState::updateInput()
+{
+	if (this->keyBindPressed->at("PAUSE"))
+	{
+		if (this->cooldownPauseCreation >= this->cooldownPauseCreationMax)
+		{
+			switch (this->pause)
+			{
+			case false:
+				this->pause = true;
+				break;
+			default:
+				break;
+			}
+			this->cooldownPauseCreation = sf::seconds(0.f);
+		}
+	}
 }
 
 void GameState::updatePlayerFunctions()
 {
+	switch (*this->booleansPlayerFunctions["High"])
+	{
+	case true:
+		this->player->getToxicology().getHigh();
+		*this->booleansPlayerFunctions["High"] = false;
+		break;
+	default:
+		break;
+	}
+
 	switch (*this->booleansPlayerFunctions["Sleep"])
 	{
 	case true:
 		this->player->getPsychology().sleep();
-		std::cout << "Sleep On" << std::endl;
+		*this->booleansPlayerFunctions["Sleep"] = false;
 		break;
 	default:
 		break;
@@ -309,19 +323,46 @@ void GameState::updatePlayerFunctions()
 	{
 	case true:
 		this->player->getPsychology().study();
+		*this->booleansPlayerFunctions["Study"] = false;
 		break;
 	default:
 		break;
 	}	
+}
 
-	switch (*this->booleansPlayerFunctions["High"])
+void GameState::updateViewWorld(const float& dt)
+{
+	this->updateTimers(dt);
+
+	this->updateDate(dt);
+
+	this->updateInput();
+
+	this->updatePlayerFunctions();
+
+	this->player->update(dt);
+
+	//this->player->updateCollision(this->map.getGlobalBounds());
+
+	//===UPDATE PLAYER-WORLDITEM COLLISION===//
+	sf::Vector2f mtv;
+	satCollision(this->player->getGlobalBounds(), this->bed.getGlobalBounds(), &mtv);
+	this->player->move(mtv);
+	//---UPDATE PLAYER-WORLDITEM COLLISION---//
+
+	//===UPDATE POPUP BUTTONS===//
+	if (satCollision(this->player->getGlobalBounds(), this->bed.getCollisionButton().radius))
 	{
-	case true:
-		this->player->getToxicology().getHigh();
-		break;
-	default:
-		break;
-	}	
+		if (this->bed.getCollisionButton().button) // If it's not a nullptr
+		{
+			// Create Mouse Position relative to the current view, not default view
+			sf::Vector2f relativeMousePosView = this->window->mapPixelToCoords(*this->mosPosWindow, viewWorld);
+			this->bed.getCollisionButton().button->update(dt, relativeMousePosView);
+		}
+	}
+	//---UPDATE POPUP BUTTONS---//
+
+	this->viewWorld.setCenter(sf::Vector2f(this->player->getGlobalBounds().left + this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top + this->player->getGlobalBounds().height / 2.f));
 }
 
 void GameState::update(const float& dt)
@@ -347,30 +388,7 @@ void GameState::update(const float& dt)
 		return;
 	}
 
-	this->updateTimers(dt);
-
-	this->updateDate(dt);
-
-	this->updateInput();
-
-	this->player->update(dt);
-
-	this->player->updateCollision(this->map.getGlobalBounds());
-
-	sf::Vector2f mtv;
-	satCollision(this->player->getGlobalBounds(), this->bed.getGlobalBounds(), &mtv);
-	this->player->move(mtv);
-
-	if (satCollision(this->player->getGlobalBounds(), this->bed.getCollisionButton().radius))
-	{
-		if (this->bed.getCollisionButton().button)
-		{
-			this->bed.getCollisionButton().button->update(dt, *this->mosPosView);
-		}
-	}
-
-	this->viewWorld.setCenter(sf::Vector2f(this->player->getGlobalBounds().left + this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top + this->player->getGlobalBounds().height / 2.f));
-
+	this->updateViewWorld(dt);
 }
 
 void GameState::renderViewWorld(sf::RenderTarget* target)
@@ -379,12 +397,14 @@ void GameState::renderViewWorld(sf::RenderTarget* target)
 
 	target->draw(this->map);
 
+	target->draw(this->bed.getCollisionButton().vertices);
+
 	target->draw(this->bed);
 	target->draw(*this->player);
 
 	if (satCollision(this->player->getGlobalBounds(), this->bed.getCollisionButton().radius))
 	{
-		if (this->bed.getCollisionButton().button)
+		if (this->bed.getCollisionButton().button) // If it's not a nullptr
 		{
 			target->draw(*this->bed.getCollisionButton().button);
 		}

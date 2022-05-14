@@ -90,11 +90,12 @@ public:
 	void confirmQuit() override;
 	void resetButton() override;
 
-	void updateLevel();
 	void updateTimers(const float& dt);
-	void updateInput() override;
 	void updateDate(const float& dt);
+	void updateInput() override;
 	void updatePlayerFunctions();
+
+	void updateViewWorld(const float& dt);
 	void update(const float& dt) override;
 
 	void renderViewWorld(sf::RenderTarget* target);
