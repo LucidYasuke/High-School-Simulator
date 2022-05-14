@@ -10,7 +10,6 @@ struct CollisionButton
 {
 	Button* button;
 	sf::FloatRect radius;
-	sf::VertexArray vertices;
 };
 
 

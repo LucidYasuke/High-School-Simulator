@@ -19,6 +19,7 @@ protected:
 
     sf::Vector2f originalScale;
     sf::Vector2f modifiedScale;
+    sf::Vector2f viewScale;
 
     sf::Vector2f originalPosition;
     sf::Vector2f modifiedPosition;

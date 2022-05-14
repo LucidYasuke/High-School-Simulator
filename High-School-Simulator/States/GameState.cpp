@@ -124,7 +124,7 @@ void GameState::initTextures()
 	this->texturePlayer->loadFromFile("Assets/Tiles/Sprite-0003.png");
 
 	this->textureBed = new sf::Texture;
-	this->textureBed->loadFromFile("Assets/Tiles/Sprite-0004.png");
+	this->textureBed->loadFromFile("Assets/Tiles/Sprite-0004.png");	
 }
 
 void GameState::initViews()
@@ -314,6 +314,10 @@ void GameState::updatePlayerFunctions()
 	case true:
 		this->player->getPsychology().sleep();
 		*this->booleansPlayerFunctions["Sleep"] = false;
+		if (!this->player->getPsychology().getIsAsleep())
+		{
+			this->player->setPosition(sf::Vector2f(this->bed.getCollisionButton().radius.left + this->bed.getCollisionButton().radius.width, this->bed.getCollisionButton().radius.top));
+		}
 		break;
 	default:
 		break;
@@ -342,12 +346,19 @@ void GameState::updateViewWorld(const float& dt)
 
 	this->player->update(dt);
 
-	//this->player->updateCollision(this->map.getGlobalBounds());
+	this->player->updateCollision(this->map.getGlobalBounds());
 
 	//===UPDATE PLAYER-WORLDITEM COLLISION===//
 	sf::Vector2f mtv;
 	satCollision(this->player->getGlobalBounds(), this->bed.getGlobalBounds(), &mtv);
-	this->player->move(mtv);
+	if (!this->player->getPsychology().getIsAsleep())
+	{
+		this->player->move(mtv);
+	}
+	else
+	{
+		this->player->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f - this->player->getGlobalBounds().width / 2.f, this->bed.getGlobalBounds().top));
+	}
 	//---UPDATE PLAYER-WORLDITEM COLLISION---//
 
 	//===UPDATE POPUP BUTTONS===//
@@ -396,8 +407,6 @@ void GameState::renderViewWorld(sf::RenderTarget* target)
 	target->setView(this->viewWorld);
 
 	target->draw(this->map);
-
-	target->draw(this->bed.getCollisionButton().vertices);
 
 	target->draw(this->bed);
 	target->draw(*this->player);

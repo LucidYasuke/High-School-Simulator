@@ -63,13 +63,15 @@ Button::Button(sf::Vector2f position, sf::Vector2f scale, bool* condition, bool 
 
     this->sf::Transformable::setPosition(position);
 
-    this->originalScale = scale;
-    this->modifiedScale.x = scale.x + .05f * scale.x;
-    this->modifiedScale.y = scale.y + .05f * scale.y;
+    this->originalScale = this->getScale();
+    this->modifiedScale.x = percentRange(this->getScale().x, .05f);
+    this->modifiedScale.y = percentRange(this->getScale().y, .05f);
 
     this->originalPosition = position;
     this->modifiedPosition.x = position.x - 7.5f * scale.x;
     this->modifiedPosition.y = position.y - 7.5f * scale.y;
+
+    this->viewScale = scale;
 }
 
 Button::Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, bool* condition, bool boolean)
@@ -97,7 +99,7 @@ Button::Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
     modPos.x = 1280.f * scale.x / 2.f - textSizeX * scale.x / 2.f + position.x * scale.x;
     modPos.y = 720.f * scale.y / 2.f - textSizeY * scale.y / 2.f + position.y * scale.y;
 
-    this->setPosition(modPos);
+    this->sf::Transformable::setPosition(modPos);
 
     // define its texture area to be a (texture.size.x)x(texture.size.y) rectangle starting at (0, 0)
     this->vertices[0].texCoords = sf::Vector2f(0, 0);
@@ -105,13 +107,15 @@ Button::Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
     this->vertices[2].texCoords = sf::Vector2f(textSizeX, textSizeY);
     this->vertices[3].texCoords = sf::Vector2f(0, textSizeY);
 
-    this->originalScale = scale;
-    this->modifiedScale.x = scale.x + .05f * scale.x;
-    this->modifiedScale.y = scale.y + .05f * scale.y;
+    this->originalScale = this->getScale();
+    this->modifiedScale.x = percentRange(this->getScale().x, .05f);
+    this->modifiedScale.y = percentRange(this->getScale().y, .05f);
 
     this->originalPosition = modPos;
     this->modifiedPosition.x = modPos.x - 7.5f * scale.x;
     this->modifiedPosition.y = modPos.y - 7.5f * scale.y;
+
+    this->viewScale = scale;
 }
 
 Button::~Button()
@@ -128,8 +132,8 @@ void Button::setPosition(sf::Vector2f position)
     this->sf::Transformable::setPosition(position);
 
     this->originalPosition = position;
-    this->modifiedPosition.x = position.x - 7.5f * this->originalScale.x;
-    this->modifiedPosition.y = position.y - 7.5f * this->originalScale.y;
+    this->modifiedPosition.x = position.x - 7.5f * this->viewScale.x;
+    this->modifiedPosition.y = position.y - 7.5f * this->viewScale.y;
 }
 
 void Button::setBool(bool* condition, bool boolean)
