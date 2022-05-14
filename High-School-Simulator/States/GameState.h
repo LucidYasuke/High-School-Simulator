@@ -48,6 +48,10 @@ private:
 	//===GUI===//
 	//===GUI===//
 
+	//===Views===//
+	sf::View viewWorld;
+	//---Views---//
+
 	//===Booleans===//
 	bool pause, gameOver;
 
@@ -68,6 +72,7 @@ private:
 	void initTextures() override;
 	void initBackground();
 	void initButtons() override;
+	void initViews();
 public:
 	//===CONSTRUCTORS||DESTRUCTORS===//
 	GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::Vector2f* mosPosView, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed, std::map<std::string, bool*> booleans);
@@ -83,6 +88,7 @@ public:
 	void updateDate(const float& dt);
 	void update(const float& dt) override;
 
+	void renderViewWorld(sf::RenderTarget* target);
 	void render(sf::RenderTarget* target = NULL) override;
 };
 

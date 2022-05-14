@@ -4,30 +4,16 @@ Player::Player(std::map<std::string, int>* keyBinds, std::map<std::string, bool>
 {
 	this->keyBinds = keyBinds;
 	this->keyBindPressed = keyBindPressed;
-
-	this->fov = sf::View(sf::FloatRect(this->getGlobalBounds().left + this->getGlobalBounds().width / 2.f - 300.f, this->getGlobalBounds().top + this->getGlobalBounds().height / 2.f - 300.f, 600.f, 600.f));
 }
 
 Player::Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed) : Entity(texture, position, scale)
 {
 	this->keyBinds = keyBinds;
 	this->keyBindPressed = keyBindPressed;
-
-	this->fov.setCenter(sf::Vector2f(this->getGlobalBounds().left + this->getGlobalBounds().width / 2.f, this->getGlobalBounds().top + this->getGlobalBounds().height / 2.f));
-	this->fov.setSize(sf::Vector2f(1280.f * scale.x, 720.f * scale.y));
-
-
-	this->fov.setViewport(sf::FloatRect(0.f, 0.f, 0.5f, 0.5f));
-
 }
 
 Player::~Player()
 {
-}
-
-const sf::View& Player::getView() const
-{
-	return this->fov;
 }
 
 Toxicology& Player::getToxicology()
@@ -83,8 +69,6 @@ void Player::updateMovement(const float& dt)
 	{
 		this->move(normalize(this->direction) * 100.f * dt);
 	}
-
-	this->fov.setCenter(sf::Vector2f(this->getGlobalBounds().left + this->getGlobalBounds().width / 2.f, this->getGlobalBounds().top + this->getGlobalBounds().height / 2.f));
 }
 
 void Player::updateCollision(const sf::FloatRect& bounds)
@@ -111,8 +95,6 @@ void Player::updateCollision(const sf::FloatRect& bounds)
 	{
 		this->setPosition(this->getGlobalBounds().left, bounds.top + bounds.height - this->getGlobalBounds().height);
 	}
-
-	this->fov.setCenter(sf::Vector2f(this->getGlobalBounds().left + this->getGlobalBounds().width / 2.f, this->getGlobalBounds().top + this->getGlobalBounds().height / 2.f));
 }
 
 void Player::update(const float& dt)

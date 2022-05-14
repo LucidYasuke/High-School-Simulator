@@ -133,15 +133,32 @@ void GameState::initButtons()
 {
 }
 
+void GameState::initViews()
+{
+	this->viewWorld = window->getDefaultView();
+
+	sf::Vector2f scale;
+	scale.x = window->getDefaultView().getSize().x / 1280.f;
+	scale.y = window->getDefaultView().getSize().y / 720.f;
+
+	this->viewWorld.setViewport(sf::FloatRect(0, 0, .6f, 1.f));
+}
+
 //---INITIALIZE FUNCTIONS---//
 GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::Vector2f* mosPosView, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed, std::map<std::string, bool*> booleans) : State(window, mosPosWindow, mosPosView, keyBinds, keyBindPressed, booleans)
 {
 	this->initTextures();
 	this->initBackground();
 	this->initButtons();
+	this->initViews();
 
-	float scaleX = this->window->getView().getSize().x / 1280.f;
-	float scaleY = this->window->getView().getSize().y / 720.f;
+	sf::Vector2f scale;
+	scale.x = this->window->getDefaultView().getSize().x / 1280.f;
+	scale.y = this->window->getDefaultView().getSize().y / 720.f;
+
+	sf::Vector2f viewWorldScale;
+	viewWorldScale.x = scale.x / this->viewWorld.getViewport().width;
+	viewWorldScale.y = scale.y / this->viewWorld.getViewport().height;
 
 	//===Init Boolean (Maps)===//
 	this->pause = false;
@@ -150,8 +167,6 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 	this->booleansPause.insert({ "PauseGameState", &this->pause });
 	this->booleansPause.insert({ "QuitGameState", &this->quit });
 	//---Init Boolean (Maps)---//
-
-
 
 	//===Init Timers===//
 	this->cooldownPauseCreationMax = sf::seconds(0.5f);
@@ -172,13 +187,14 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 	};
 
 	// create the tilemap from the level definition
-	if (!this->map.load("Assets/Tiles/floorTileSheet.png", sf::Vector2u(64, 64), level, 16, 8))
+	if (!this->map.load("Assets/Tiles/floorTileSheet.png", sf::Vector2u(64, 64), level, 16, 8, viewWorldScale))
 		std::cout << "IT AINT LOAD" << std::endl;
 
 	this->map.setPosition(sf::Vector2f(this->window->getView().getSize().x / 2.f - this->map.getGlobalBounds().width / 2.f, this->window->getView().getSize().y / 2.f - this->map.getGlobalBounds().height / 2.f));
 
-	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), sf::Vector2f(scaleX, scaleY), this->keyBinds, this->keyBindPressed);
+	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), viewWorldScale, this->keyBinds, this->keyBindPressed);
 	this->player->setPosition(sf::Vector2f(this->player->getGlobalBounds().left - this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top - this->player->getGlobalBounds().height / 2.f));
+
 }
 
 GameState::~GameState()
@@ -293,6 +309,19 @@ void GameState::update(const float& dt)
 
 	this->player->updateCollision(this->map.getGlobalBounds());
 
+	this->viewWorld.setCenter(sf::Vector2f(this->player->getGlobalBounds().left + this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top + this->player->getGlobalBounds().height / 2.f));
+
+}
+
+void GameState::renderViewWorld(sf::RenderTarget* target)
+{
+	target->setView(this->viewWorld);
+
+	target->draw(this->map);
+
+	target->draw(*this->player);
+
+	target->setView(this->window->getDefaultView());
 }
 
 void GameState::render(sf::RenderTarget* target)
@@ -303,16 +332,10 @@ void GameState::render(sf::RenderTarget* target)
 		Player
 	*/
 
-	this->window->setView(this->player->getView());
-
-	target->draw(this->map);
-
-	target->draw(*this->player);
+	this->renderViewWorld(target);
 
 	if (!this->stateStack.empty()) // As long as the stack is not empty, it will render the top
 	{
-		this->window->setView(this->window->getDefaultView());
-
 		this->stateStack.top()->render(target);
 	}
 }

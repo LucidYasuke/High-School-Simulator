@@ -11,7 +11,6 @@ private:
 	Psychology psych;
 	Wallet wallet;
 
-	sf::View fov;
 	std::map<std::string, int>* keyBinds;
 	std::map<std::string, bool>* keyBindPressed;
 public:
@@ -19,12 +18,9 @@ public:
 	Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed);
 	virtual ~Player();
 
-	const sf::View& getView() const;
-
 	Toxicology& getToxicology();
 	Psychology& getPsychology();
 	Wallet& getWallet();
-
 
 	//===Update===//
 	void updateMovement(const float& dt) override;

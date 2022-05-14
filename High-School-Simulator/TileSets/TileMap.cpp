@@ -12,10 +12,10 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(m_vertices, states);
 }
 
-bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
+bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height, sf::Vector2f scale)
 {
-    this->width = width * tileSize.x;
-    this->height = height * tileSize.y;
+    this->width = width * tileSize.x * scale.x;
+    this->height = height * tileSize.y * scale.y;
 
     // load the tileset texture
     if (!m_tileset.loadFromFile(tileset))
@@ -40,10 +40,10 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, const int*
             sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
 
             // define its 4 corners
-            quad[0].position = sf::Vector2f(i * tileSize.x, j * tileSize.y);
-            quad[1].position = sf::Vector2f((i + 1) * tileSize.x, j * tileSize.y);
-            quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
-            quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
+            quad[0].position = sf::Vector2f(i * tileSize.x * scale.x, j * tileSize.y * scale.y);
+            quad[1].position = sf::Vector2f((i + 1) * tileSize.x * scale.x, j * tileSize.y * scale.y);
+            quad[2].position = sf::Vector2f((i + 1) * tileSize.x * scale.x, (j + 1) * tileSize.y * scale.y);
+            quad[3].position = sf::Vector2f(i * tileSize.x * scale.x, (j + 1) * tileSize.y * scale.y);
 
             // define its 4 texture coordinates
             quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);

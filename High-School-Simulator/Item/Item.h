@@ -2,30 +2,32 @@
 #define ITEM_H
 
 #include "../Includes.h"
+#include "../Physics.h"
 
-class Item
+class Item : public sf::Drawable, public sf::Transformable
 {
 protected:
-	float x, y, width, height, scaleX, scaleY;
-	bool deleted, unlocked;
+    bool deleted;
 
-	sf::RenderWindow* window;
-	sf::Texture* texture;
-	sf::Sprite sprite, hiddenSprite;
+    //===Graphics===//
+    sf::Texture* texture;
+    sf::VertexArray vertices;
+    //---Graphics---//
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
-	Item(sf::RenderWindow* window, sf::Texture* texture, float x, float y);
-	Item(sf::RenderWindow* window, sf::Texture* textures[], float x, float y);
-	virtual ~Item();
+    Item();
+    Item(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale);
+    virtual ~Item();
 
-	const bool& getDeleted() const;
-	const sf::Sprite& getSprite() const;
+    const bool& getDeleted() const;
+    sf::FloatRect getGlobalBounds();
 
-	void setDeleted();
-
-	virtual void update(const float& dt) = 0;
-
-	virtual void render(sf::RenderTarget* target) = 0;
+    //===Update===//
+    virtual void updateMovement(const float& dt) = 0;
+    virtual void updateCollision(const sf::FloatRect& bounds) = 0;
+    virtual void update(const float& dt) = 0;
+    //---Update---//
 };
 
 #endif
-

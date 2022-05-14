@@ -1,83 +1,71 @@
 #include "Item.h"
 
-Item::Item(sf::RenderWindow* window, sf::Texture* texture, float x, float y)
+void Item::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	//===PRIMARY===//
-	this->window = window;
-	this->texture = texture;
+    // apply the entity's transform -- combine it with the one that was passed by the caller
+    states.transform *= this->getTransform(); // getTransform() is defined by sf::Transformable
 
-	this->scaleX = 1.5f * (this->window->getSize().x / 1280.f);
-	this->scaleY = 1.5f * (this->window->getSize().y / 720.f);
-	//---PRIMARY---//
+    // apply the texture
+    states.texture = this->texture;
 
-	//===BASIC DATA===//
-	this->deleted = false;
-	this->unlocked = false;
+    // you may also override states.shader or states.blendMode if you want
 
-	this->x = x;
-	this->y = y;
-
-	this->width = this->texture->getSize().x * this->scaleX;
-	this->height = this->texture->getSize().y * this->scaleY;
-
-	if (this->x + this->width > this->window->getSize().x) { this->x = this->window->getSize().x - this->width; }
-	//---BASIC DATA===//
-
-	//===GRAPHICS===//
-	this->sprite = sf::Sprite(*this->texture);
-	this->sprite.setScale(sf::Vector2f(this->scaleX, this->scaleY));
-	this->sprite.setPosition(this->x, this->y);
-
-	this->hiddenSprite = this->sprite;
-	this->hiddenSprite.setColor(sf::Color::Black);
-	//---GRAPHICS---//
+    // draw the vertex array
+    target.draw(this->vertices, states);
 }
 
-Item::Item(sf::RenderWindow* window, sf::Texture* textures[], float x, float y)
+Item::Item()
 {
-	//===PRIMARY===//
-	this->window = window;
-	this->texture = textures[0];
+    this->vertices = sf::VertexArray(sf::Quads, 4);
 
-	this->scaleX = 1.f * (this->window->getSize().x / 1280.f);
-	this->scaleY = 1.f * (this->window->getSize().y / 720.f);
-	//---PRIMARY---//
+    // Defines it as a rectangle, located at (0, 0) and with size 4x4
+    this->vertices[0].position = sf::Vector2f(0, 0);
+    this->vertices[1].position = sf::Vector2f(4, 0);
+    this->vertices[2].position = sf::Vector2f(4, 4);
+    this->vertices[3].position = sf::Vector2f(0, 4);
 
-	//===BASIC DATA===//
-	this->deleted = false;
+    // Default color white
+    this->vertices[0].color = sf::Color::White;
+    this->vertices[1].color = sf::Color::White;
+    this->vertices[2].color = sf::Color::White;
+    this->vertices[3].color = sf::Color::White;
+}
 
-	this->x = x;
-	this->y = y;
+Item::Item(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale)
+{
+    this->texture = texture;
 
-	this->width = this->texture->getSize().x * this->scaleX;
-	this->height = this->texture->getSize().y * this->scaleY;
+    this->vertices = sf::VertexArray(sf::Quads, 4);
 
-	if (this->x + this->width > this->window->getSize().x) { this->x = this->window->getSize().x - this->width; }
-	//---BASIC DATA===//
+    float textSizeX = static_cast<float>(this->texture->getSize().x);
+    float textSizeY = static_cast<float>(this->texture->getSize().y);
 
-	//===GRAPHICS===//
-	this->sprite = sf::Sprite(*this->texture);
-	this->sprite.setScale(sf::Vector2f(this->scaleX, this->scaleY));
-	this->sprite.setPosition(this->x, this->y);
-	//---GRAPHICS---//
+    // Defines it as a rectangle, located at (0, 0) and with size (texture.size.x*scaleX)x(texture.size.y*scaleY)
+    this->vertices[0].position = sf::Vector2f(0, 0);
+    this->vertices[1].position = sf::Vector2f(textSizeX * scale.x, 0);
+    this->vertices[2].position = sf::Vector2f(textSizeX * scale.x, textSizeY * scale.y);
+    this->vertices[3].position = sf::Vector2f(0, textSizeY * scale.y);
+
+    this->setPosition(position);
+
+    // define its texture area to be a (texture.size.x)x(texture.size.y) rectangle starting at (0, 0)
+    this->vertices[0].texCoords = sf::Vector2f(0, 0);
+    this->vertices[1].texCoords = sf::Vector2f(textSizeX, 0);
+    this->vertices[2].texCoords = sf::Vector2f(textSizeX, textSizeY);
+    this->vertices[3].texCoords = sf::Vector2f(0, textSizeY);
 }
 
 Item::~Item()
 {
-
 }
 
 const bool& Item::getDeleted() const
 {
-	return this->deleted;
+    return deleted;
 }
 
-const sf::Sprite& Item::getSprite() const
+sf::FloatRect Item::getGlobalBounds()
 {
-	return this->sprite;
+    return sf::FloatRect(this->getPosition().x, this->getPosition().y, this->vertices[2].position.x - this->vertices[0].position.x, this->vertices[2].position.y - this->vertices[0].position.y);
 }
 
-void Item::setDeleted()
-{
-	this->deleted = true;
-}

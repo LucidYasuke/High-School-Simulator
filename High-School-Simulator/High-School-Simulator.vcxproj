@@ -154,7 +154,6 @@
     <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="GUI\ProgressBar.cpp" />
     <ClCompile Include="GUI\Stats.cpp" />
-    <ClCompile Include="Item\Artifact.cpp" />
     <ClCompile Include="Item\Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -177,7 +176,6 @@
     <ClInclude Include="GUI\ProgressBar.h" />
     <ClInclude Include="GUI\Stats.h" />
     <ClInclude Include="Includes.h" />
-    <ClInclude Include="Item\Artifact.h" />
     <ClInclude Include="Item\Item.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="States\GameState.h" />

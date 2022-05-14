@@ -7,7 +7,6 @@
 class Entity : public sf::Drawable, public sf::Transformable
 {
 protected:
-    int level;
     bool deleted;
 
     //===Movement===//
@@ -27,7 +26,6 @@ public:
     virtual ~Entity();
 
     const bool& getDeleted() const;
-    const int& getLevel() const;
     const sf::Vector2f& getVelocity() const;
     const sf::Vector2f& getDirection() const;
     sf::FloatRect getGlobalBounds();

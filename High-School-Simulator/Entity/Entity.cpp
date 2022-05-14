@@ -68,11 +68,6 @@ const bool& Entity::getDeleted() const
     return deleted;
 }
 
-const int& Entity::getLevel() const
-{
-    return this->level;
-}
-
 const sf::Vector2f& Entity::getVelocity() const
 {
     return this->velocity;
