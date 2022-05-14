@@ -72,10 +72,7 @@ public:
 	virtual ~Psychology();
 
 	void study();
-	void endStudy();
-
 	void sleep();
-	void wake();
 
 	void updateStudy(const float& dt, Toxicology& toxic);
 	void updateLimits();

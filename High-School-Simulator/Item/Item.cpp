@@ -69,3 +69,7 @@ sf::FloatRect Item::getGlobalBounds()
     return sf::FloatRect(this->getPosition().x, this->getPosition().y, this->vertices[2].position.x - this->vertices[0].position.x, this->vertices[2].position.y - this->vertices[0].position.y);
 }
 
+void Item::update(const float& dt)
+{
+}
+

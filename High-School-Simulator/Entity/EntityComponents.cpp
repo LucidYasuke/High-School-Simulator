@@ -122,23 +122,29 @@ Psychology::~Psychology()
 
 void Psychology::study()
 {
-	this->isStudying = true;
-}
-
-void Psychology::endStudy()
-{
-	this->isStudying = false;
+	switch (this->isStudying)
+	{
+	case true:
+		this->isStudying = false;
+	case false:
+		this->isStudying = true;
+	default:
+		break;
+	}
 }
 
 void Psychology::sleep()
 {
-	this->isAsleep = true;
+	switch (this->isAsleep)
+	{
+	case true:
+		this->isAsleep = false;
+	case false:
+		this->isAsleep = true;
+	default:
+		break;
+	}
 	this->isStudying = false; // Just incase
-}
-
-void Psychology::wake()
-{
-	this->isAsleep = false;
 }
 
 void Psychology::updateStudy(const float& dt, Toxicology& toxic)

@@ -3,6 +3,7 @@
 
 #include "PauseState.h"
 #include "../Entity/Player.h"
+#include "../Item/WorldItem.h"
 #include "../TileSets/TileMap.h"
 
 enum class Day {SUNDAY=0, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY};
@@ -43,6 +44,7 @@ private:
 
 	//===Textures===//
 	sf::Texture* texturePlayer;
+	sf::Texture* textureBed;
 	//---Textures---//
 
 	//===GUI===//
@@ -52,15 +54,20 @@ private:
 	sf::View viewWorld;
 	//---Views---//
 
+	//===BUTTONS===//
+	std::map<std::string, Button*> buttonsHidden;
+	//===BUTTONS===//
+
 	//===Booleans===//
 	bool pause, gameOver;
 
 	std::map<std::string, bool*> booleansPause;
-	std::map<std::string, bool*> booleansPlayer;
+	std::map<std::string, bool*> booleansPlayerFunctions;
 	//---Booleans---//
 
 	//===Entities===//
 	Player* player;
+	WorldItem bed;
 	//---Entities---//
 
 	//===Timers===//
@@ -71,6 +78,7 @@ private:
 
 	void initTextures() override;
 	void initBackground();
+	void initBools();
 	void initButtons() override;
 	void initViews();
 public:
@@ -86,6 +94,7 @@ public:
 	void updateTimers(const float& dt);
 	void updateInput() override;
 	void updateDate(const float& dt);
+	void updatePlayerFunctions();
 	void update(const float& dt) override;
 
 	void renderViewWorld(sf::RenderTarget* target);

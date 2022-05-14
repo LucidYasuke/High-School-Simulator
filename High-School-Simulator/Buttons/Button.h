@@ -38,6 +38,7 @@ public:
     void onClick();
     void setActive();
     void setUnactive();
+    void setBool(bool* condition, bool boolean);
     void reset();
 
     //===Update===//

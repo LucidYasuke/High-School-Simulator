@@ -24,9 +24,7 @@ public:
     sf::FloatRect getGlobalBounds();
 
     //===Update===//
-    virtual void updateMovement(const float& dt) = 0;
-    virtual void updateCollision(const sf::FloatRect& bounds) = 0;
-    virtual void update(const float& dt) = 0;
+    void update(const float& dt);
     //---Update---//
 };
 

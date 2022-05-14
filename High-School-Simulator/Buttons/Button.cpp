@@ -18,13 +18,15 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 Button::Button()
 {
+    this->buttonState = buttonStates::BTNIDLE;
+
     this->vertices = sf::VertexArray(sf::Quads, 4);
 
     // Defines it as a rectangle, located at (0, 0) and with size 4x4
     this->vertices[0].position = sf::Vector2f(0, 0);
-    this->vertices[1].position = sf::Vector2f(4, 0);
-    this->vertices[2].position = sf::Vector2f(4, 4);
-    this->vertices[3].position = sf::Vector2f(0, 4);
+    this->vertices[1].position = sf::Vector2f(64, 0);
+    this->vertices[2].position = sf::Vector2f(64, 64);
+    this->vertices[3].position = sf::Vector2f(0, 64);
 
     // Default color white
     this->vertices[0].color = sf::Color::White;
@@ -96,6 +98,12 @@ void Button::setUnactive()
     this->setPosition(sf::Vector2f(this->getPosition().x + 7.5f * this->originalScale.x, this->getPosition().y + 7.5f * this->originalScale.y));
 
     this->active = false;
+}
+
+void Button::setBool(bool* condition, bool boolean)
+{
+    this->condition = condition;
+    this->boolean = boolean;
 }
 
 void Button::reset()

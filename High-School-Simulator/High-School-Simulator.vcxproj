@@ -164,6 +164,7 @@
     <ClCompile Include="TileSets\Tile.cpp" />
     <ClCompile Include="TileSets\TileMap.cpp" />
     <ClCompile Include="TileSets\TileMoving.cpp" />
+    <ClCompile Include="Item\WorldItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buttons\Button.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="TileSets\Tile.h" />
     <ClInclude Include="TileSets\TileMap.h" />
     <ClInclude Include="TileSets\TileMoving.h" />
+    <ClInclude Include="Item\WorldItem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\keybinds.ini" />

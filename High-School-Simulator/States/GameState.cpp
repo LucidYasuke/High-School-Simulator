@@ -119,18 +119,28 @@ void Date::setTrueMinute(float& minute)
 //===INITIALIZE FUNCTIONS===//
 void GameState::initTextures()
 {
-	//===Init Background Texture===//
 	this->texturePlayer = new sf::Texture;
 	this->texturePlayer->loadFromFile("Assets/Tiles/Sprite-0003.png");
-	//---Init Background Texture---//
+
+	this->textureBed = new sf::Texture;
+	this->textureBed->loadFromFile("Assets/Tiles/Sprite-0004.png");
 }
 
 void GameState::initBackground()
 {
 }
 
+void GameState::initBools()
+{
+	this->booleansPlayerFunctions.insert({"Sleep", new bool});
+	this->booleansPlayerFunctions.insert({"Wake", new bool});
+	this->booleansPlayerFunctions.insert({"High", new bool});
+	this->booleansPlayerFunctions.insert({"Study", new bool});
+}
+
 void GameState::initButtons()
 {
+	this->buttonsHidden.insert({"Sleep", new Button()});
 }
 
 void GameState::initViews()
@@ -149,6 +159,7 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 {
 	this->initTextures();
 	this->initBackground();
+	this->initBools();
 	this->initButtons();
 	this->initViews();
 
@@ -194,6 +205,12 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 
 	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), viewWorldScale, this->keyBinds, this->keyBindPressed);
 	this->player->setPosition(sf::Vector2f(this->player->getGlobalBounds().left - this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top - this->player->getGlobalBounds().height / 2.f));
+
+	this->bed = WorldItem(this->textureBed, sf::Vector2f(this->map.getGlobalBounds().left + 0.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height), viewWorldScale);
+	this->bed.setPosition(sf::Vector2f(this->bed.getGlobalBounds().left, this->bed.getGlobalBounds().top - this->bed.getGlobalBounds().height));
+	this->bed.getCollisionButton().button = this->buttonsHidden["Sleep"];
+	this->buttonsHidden["Sleep"]->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f + 32.f, this->bed.getGlobalBounds().top - 64.f));
+	this->buttonsHidden["Sleep"]->setBool(this->booleansPlayerFunctions["Sleep"], true);
 
 }
 
@@ -273,7 +290,38 @@ void GameState::updateDate(const float& dt)
 		this->date.update(dt * timeBlend);
 	}
 	
-	std::cout << "Day: " << this->date.getDayAsString() << " Hour: " << this->date.getHourAsString() << " Minute: " << this->date.getMinuteAsString() << std::endl;
+	//std::cout << "Day: " << this->date.getDayAsString() << " Hour: " << this->date.getHourAsString() << " Minute: " << this->date.getMinuteAsString() << std::endl;
+}
+
+void GameState::updatePlayerFunctions()
+{
+	switch (*this->booleansPlayerFunctions["Sleep"])
+	{
+	case true:
+		this->player->getPsychology().sleep();
+		std::cout << "Sleep On" << std::endl;
+		break;
+	default:
+		break;
+	}	
+
+	switch (*this->booleansPlayerFunctions["Study"])
+	{
+	case true:
+		this->player->getPsychology().study();
+		break;
+	default:
+		break;
+	}	
+
+	switch (*this->booleansPlayerFunctions["High"])
+	{
+	case true:
+		this->player->getToxicology().getHigh();
+		break;
+	default:
+		break;
+	}	
 }
 
 void GameState::update(const float& dt)
@@ -309,6 +357,18 @@ void GameState::update(const float& dt)
 
 	this->player->updateCollision(this->map.getGlobalBounds());
 
+	sf::Vector2f mtv;
+	satCollision(this->player->getGlobalBounds(), this->bed.getGlobalBounds(), &mtv);
+	this->player->move(mtv);
+
+	if (satCollision(this->player->getGlobalBounds(), this->bed.getCollisionButton().radius))
+	{
+		if (this->bed.getCollisionButton().button)
+		{
+			this->bed.getCollisionButton().button->update(dt, *this->mosPosView);
+		}
+	}
+
 	this->viewWorld.setCenter(sf::Vector2f(this->player->getGlobalBounds().left + this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top + this->player->getGlobalBounds().height / 2.f));
 
 }
@@ -319,7 +379,16 @@ void GameState::renderViewWorld(sf::RenderTarget* target)
 
 	target->draw(this->map);
 
+	target->draw(this->bed);
 	target->draw(*this->player);
+
+	if (satCollision(this->player->getGlobalBounds(), this->bed.getCollisionButton().radius))
+	{
+		if (this->bed.getCollisionButton().button)
+		{
+			target->draw(*this->bed.getCollisionButton().button);
+		}
+	}
 
 	target->setView(this->window->getDefaultView());
 }
