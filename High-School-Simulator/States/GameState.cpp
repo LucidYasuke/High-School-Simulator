@@ -221,7 +221,7 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 	this->bed.setPosition(sf::Vector2f(this->bed.getGlobalBounds().left, this->bed.getGlobalBounds().top - this->bed.getGlobalBounds().height));
 	this->bed.getCollisionButton().button = this->buttonsHidden["Sleep"];
 
-	this->buttonsHidden["Sleep"]->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f - this->buttonsHidden["Sleep"]->getGlobalBounds().width / 2.f, this->bed.getGlobalBounds().top - this->buttonsHidden["Sleep"]->getGlobalBounds().height));
+	this->buttonsHidden["Sleep"]->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f - this->buttonsHidden["Sleep"]->getGlobalBounds().width / 2.f, this->bed.getGlobalBounds().top - this->buttonsHidden["Sleep"]->getGlobalBounds().height * 1.5f));
 }
 
 GameState::~GameState()
