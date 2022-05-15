@@ -162,6 +162,7 @@
     <ClCompile Include="States\PauseState.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="States\TitleState.cpp" />
+    <ClCompile Include="TileSets\HUD.cpp" />
     <ClCompile Include="TileSets\Tile.cpp" />
     <ClCompile Include="TileSets\TileMap.cpp" />
     <ClCompile Include="TileSets\TileMoving.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="States\PauseState.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="States\TitleState.h" />
+    <ClInclude Include="TileSets\HUD.h" />
     <ClInclude Include="TileSets\Tile.h" />
     <ClInclude Include="TileSets\TileMap.h" />
     <ClInclude Include="TileSets\TileMoving.h" />

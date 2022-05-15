@@ -179,6 +179,8 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 
 	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), sf::Vector2f(scaleX, scaleY), this->keyBinds, this->keyBindPressed);
 	this->player->setPosition(sf::Vector2f(this->player->getGlobalBounds().left - this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top - this->player->getGlobalBounds().height / 2.f));
+
+	this->miniview = HUD(this->window); // Definition
 }
 
 GameState::~GameState()
@@ -308,6 +310,8 @@ void GameState::render(sf::RenderTarget* target)
 	target->draw(this->map);
 
 	target->draw(*this->player);
+
+	this->miniview.render(target);
 
 	if (!this->stateStack.empty()) // As long as the stack is not empty, it will render the top
 	{
