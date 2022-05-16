@@ -180,7 +180,7 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), sf::Vector2f(scaleX, scaleY), this->keyBinds, this->keyBindPressed);
 	this->player->setPosition(sf::Vector2f(this->player->getGlobalBounds().left - this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top - this->player->getGlobalBounds().height / 2.f));
 
-	this->miniview = HUD(this->window); // Definition
+	this->miniview = HUD(this->window, this->fontConnectionII); // Definition
 }
 
 GameState::~GameState()
@@ -295,6 +295,19 @@ void GameState::update(const float& dt)
 
 	this->player->updateCollision(this->map.getGlobalBounds());
 
+	//this->player->getPsychology().getJoyAsString<double>();
+
+	// UPDATE HUD
+	std::string stats[5];
+	stats[0] = this->player->getPsychology().getFatigueAsString<int>();
+	stats[1] = this->player->getPsychology().getIntelligenceAsString<int>();
+	stats[2] = this->player->getPsychology().getJoyAsString<int>();
+	stats[3] = this->player->getPsychology().getSadnessAsString<int>();
+	stats[4] = this->player->getToxicology().getSobrietyAsString<int>();
+	/** 
+	this->hud.update(dt, variablename);
+	**/
+
 }
 
 void GameState::render(sf::RenderTarget* target)
@@ -312,9 +325,9 @@ void GameState::render(sf::RenderTarget* target)
 	target->draw(*this->player);
 
 	this->miniview.render(target);
-	this->player->getToxicology();
-	this->player->getWallet();
-	this->player->getPsychology();
+	//this->player->getToxicology().;
+	//this->player->getWallet();
+	//this->player->getPsychology();
 	if (!this->stateStack.empty()) // As long as the stack is not empty, it will render the top
 	{
 		this->window->setView(this->window->getDefaultView());

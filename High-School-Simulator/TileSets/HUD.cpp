@@ -6,12 +6,7 @@ HUD::HUD()
     // Use pointer
 }
 
-HUD::HUD(int Toxicology,int Psychology,int Wallet)
-{
-    Toxicology = int Toxicology;
-}
-
-HUD::HUD(sf::RenderWindow* window)
+HUD::HUD(sf::RenderWindow* window, sf::Font& fontConnectionII)
 {
     this->window = window;
 
@@ -27,28 +22,46 @@ HUD::HUD(sf::RenderWindow* window)
 
     this->vertices = sf::VertexArray(sf::Quads, 4);
     this->vertices[0].position = sf::Vector2f(0.f, 0.f);
-    this->vertices[1].position = sf::Vector2f(1280.f*scaleX, 0.f);
-    this->vertices[2].position = sf::Vector2f(1280.f*scaleX, 720.f*scaleY);
-    this->vertices[3].position = sf::Vector2f(0.f, 720.f*scaleY);
-    this->vertices[0].color = sf::Color::White;
-    this->vertices[1].color = sf::Color::White;
-    this->vertices[2].color = sf::Color::White;
-    this->vertices[3].color = sf::Color::White;
+    this->vertices[1].position = sf::Vector2f(1280.f * scaleX, 0.f);
+    this->vertices[2].position = sf::Vector2f(1280.f * scaleX, 720.f * scaleY);
+    this->vertices[3].position = sf::Vector2f(0.f, 720.f * scaleY);
 
-    float x = ((1280.f - (1280.f * .4f)) * scaleX) / (1280.f * scaleX);
-    float y = ((720.f - (720.f * .5f)) * scaleY) / (720.f * scaleY);
-    this->view.setViewport(sf::FloatRect(x, y, .4f, .5f));
+
+    this->vertices[0].color = sf::Color::Red;
+    this->vertices[1].color = sf::Color::Magenta;
+    this->vertices[2].color = sf::Color::Blue;
+    this->vertices[3].color = sf::Color::Yellow;
+
+    this->view.setViewport(sf::FloatRect(.6f, .5f, .4f, .5f));
+
+    // BRIAN:: SET THE POSITIONS OF THE NAMES FIRST, AND MAKE THE STATS RELATIVE OT THE NAME
+    // TEXT ME ON DISCORD FOR MORE
+
+    this->textStats[0].setFont(fontConnectionII);
+    this->textStats[0].setCharacterSize(100.f * scaleX);
+    this->textStats[0].setString("0");
+
+    this->textStats[1] = this->textStats[0];
+
+    //this->textStats[0].setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->textStats[0].getGlobalBounds().width / 2.f, this->window->getDefaultView().getSize().y / 2.f - this->textStats[0].getGlobalBounds().height / 2.f - 250.f * scaleY)));
+    /**
+    this->textStats[0].setseo();
+    this->textStats[0].set();
+    **/
 }
+
 
 HUD::~HUD()
 {
 }
 
-
-
-void HUD::update(const float& dt)
+void HUD::update(const float& dt, std::string stats[5])
 {
-    
+    // FOR LOOP THROUGH GIVEN LIST
+    /**
+    fOR I IN RANGE 5
+    THIS->TEXTsTATS[I].SETSTRING(STATS[I]);
+    **/
 
 }
 
@@ -56,7 +69,11 @@ void HUD::render(sf::RenderTarget* target)
 {
     target->setView(view);
     target->draw(this->vertices);
+
+    /**
+    FOR IN IN RANGE 5
+    TARGET->DRAW(THIS->TEXtStats[i])
+    **/
+
     target->setView(this->window->getDefaultView());
-
-
 }
