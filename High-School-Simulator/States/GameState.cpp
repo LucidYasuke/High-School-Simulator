@@ -312,7 +312,9 @@ void GameState::render(sf::RenderTarget* target)
 	target->draw(*this->player);
 
 	this->miniview.render(target);
-
+	this->player->getToxicology();
+	this->player->getWallet();
+	this->player->getPsychology();
 	if (!this->stateStack.empty()) // As long as the stack is not empty, it will render the top
 	{
 		this->window->setView(this->window->getDefaultView());

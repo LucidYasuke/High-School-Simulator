@@ -1,10 +1,14 @@
 #include "HUD.h"
 
-
-
 HUD::HUD()
 {
+    
     // Use pointer
+}
+
+HUD::HUD(int Toxicology,int Psychology,int Wallet)
+{
+    Toxicology = int Toxicology;
 }
 
 HUD::HUD(sf::RenderWindow* window)
@@ -26,10 +30,10 @@ HUD::HUD(sf::RenderWindow* window)
     this->vertices[1].position = sf::Vector2f(1280.f*scaleX, 0.f);
     this->vertices[2].position = sf::Vector2f(1280.f*scaleX, 720.f*scaleY);
     this->vertices[3].position = sf::Vector2f(0.f, 720.f*scaleY);
-    this->vertices[0].color = sf::Color::Red;
-    this->vertices[1].color = sf::Color::Blue;
-    this->vertices[2].color = sf::Color::Green;
-    this->vertices[3].color = sf::Color::Yellow;
+    this->vertices[0].color = sf::Color::White;
+    this->vertices[1].color = sf::Color::White;
+    this->vertices[2].color = sf::Color::White;
+    this->vertices[3].color = sf::Color::White;
 
     float x = ((1280.f - (1280.f * .4f)) * scaleX) / (1280.f * scaleX);
     float y = ((720.f - (720.f * .5f)) * scaleY) / (720.f * scaleY);
