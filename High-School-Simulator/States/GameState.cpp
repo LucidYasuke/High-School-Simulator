@@ -121,7 +121,7 @@ void Date::setTrueMinute(float& minute)
 void GameState::initTextures()
 {
 	this->texturePlayer = new sf::Texture;
-	this->texturePlayer->loadFromFile("Assets/Tiles/Sprite-0003.png");
+	this->texturePlayer->loadFromFile("Assets/Actor/Character/GrayNinja/SpriteSheet.png");
 
 	this->textureBed = new sf::Texture;
 	this->textureBed->loadFromFile("Assets/Tiles/Sprite-0004.png");	
@@ -214,7 +214,7 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 
 	this->map.setPosition(sf::Vector2f(this->window->getView().getSize().x / 2.f - this->map.getGlobalBounds().width / 2.f, this->window->getView().getSize().y / 2.f - this->map.getGlobalBounds().height / 2.f));
 
-	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), viewWorldScale, this->keyBinds, this->keyBindPressed);
+	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), sf::Vector2f(viewWorldScale.x * 4.f, viewWorldScale.y * 4.f), 4, 7, this->keyBinds, this->keyBindPressed);
 	this->player->setPosition(sf::Vector2f(this->player->getGlobalBounds().left - this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top - this->player->getGlobalBounds().height / 2.f));
 
 	this->bed = WorldItem(this->textureBed, sf::Vector2f(this->map.getGlobalBounds().left + 0.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height), viewWorldScale);

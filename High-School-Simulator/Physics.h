@@ -1,9 +1,13 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
+
 #include "Includes.h"
 #include <limits>
 #include <algorithm>
+
+
+enum class Direction{NORTH=0, SOUTH, WEST, EAST};
 
 
 template <typename T>

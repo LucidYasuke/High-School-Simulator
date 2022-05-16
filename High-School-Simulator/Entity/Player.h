@@ -16,6 +16,7 @@ private:
 public:
 	Player(std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed);
 	Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed);
+	Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, unsigned int width, unsigned int height, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed);
 	virtual ~Player();
 
 	Toxicology& getToxicology();
@@ -25,6 +26,7 @@ public:
 	//===Update===//
 	void updateMovement(const float& dt) override;
 	void updateCollision(const sf::FloatRect& bounds) override;
+	void updateTexture(const float& dt) override;
 	void update(const float& dt) override;
 	//---Update---//
 };

@@ -1,8 +1,10 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+
 #include "../Includes.h"
 #include "../Physics.h"
+
 
 class Entity : public sf::Drawable, public sf::Transformable
 {
@@ -12,9 +14,12 @@ protected:
     //===Movement===//
     sf::Vector2f velocity;
     sf::Vector2f direction;
+    Direction facing;
     //---Movement---//
 
     //===Graphics===//
+    sf::Time lastAnimationShift;
+    static const float lastAnimationShiftMax;
     sf::Texture* texture;
     sf::VertexArray vertices;
     //---Graphics---//
@@ -23,6 +28,7 @@ protected:
 public:
     Entity();
     Entity(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale);
+    Entity(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, unsigned int width, unsigned int height);
     virtual ~Entity();
 
     const bool& getDeleted() const;
@@ -33,6 +39,7 @@ public:
     //===Update===//
     virtual void updateMovement(const float& dt) = 0;
     virtual void updateCollision(const sf::FloatRect& bounds) = 0;
+    virtual void updateTexture(const float& dt) = 0;
     virtual void update(const float& dt) = 0;
     //---Update---//
 };
