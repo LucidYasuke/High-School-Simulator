@@ -27,10 +27,10 @@ HUD::HUD(sf::RenderWindow* window, sf::Font& fontConnectionII)
     this->vertices[3].position = sf::Vector2f(0.f, 720.f * scaleY);
 
 
-    this->vertices[0].color = sf::Color::Red;
-    this->vertices[1].color = sf::Color::Magenta;
-    this->vertices[2].color = sf::Color::Blue;
-    this->vertices[3].color = sf::Color::Yellow;
+    this->vertices[0].color = sf::Color::White;
+    this->vertices[1].color = sf::Color::White;
+    this->vertices[2].color = sf::Color::White;
+    this->vertices[3].color = sf::Color::White;
 
     this->view.setViewport(sf::FloatRect(.6f, .5f, .4f, .5f));
 
@@ -41,9 +41,10 @@ HUD::HUD(sf::RenderWindow* window, sf::Font& fontConnectionII)
     this->textStats[0].setCharacterSize(100.f * scaleX);
     this->textStats[0].setString("0");
 
+
     this->textStats[1] = this->textStats[0];
 
-    //this->textStats[0].setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->textStats[0].getGlobalBounds().width / 2.f, this->window->getDefaultView().getSize().y / 2.f - this->textStats[0].getGlobalBounds().height / 2.f - 250.f * scaleY)));
+    this->textStats[0].setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->textStats[0].getGlobalBounds().width / 2.f, this->window->getDefaultView().getSize().y / 2.f - this->textStats[0].getGlobalBounds().height / 2.f - 250.f * scaleY));
     /**
     this->textStats[0].setseo();
     this->textStats[0].set();

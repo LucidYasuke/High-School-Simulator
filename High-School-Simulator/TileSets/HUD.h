@@ -2,6 +2,7 @@
 #define HUD_H
 #include "../Entity/ENTITYCOMPONENTS.h"
 #include "../Physics.h"
+#include "../States/TitleState.h"
 
 class HUD
 {
