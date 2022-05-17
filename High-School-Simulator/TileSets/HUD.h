@@ -11,8 +11,8 @@ private:
     sf::View view;
     sf::RenderWindow* window;
     
-    sf::Text textNames[5];
-    sf::Text textStats[5];
+    sf::Text textNames[6];
+    sf::Text textStats[6];
 public: 
     HUD();
     HUD(sf::RenderWindow* window, sf::Font& fontConnectionII);

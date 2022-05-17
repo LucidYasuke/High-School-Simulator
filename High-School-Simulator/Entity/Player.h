@@ -11,6 +11,8 @@ private:
 	Psychology psych;
 	Wallet wallet;
 
+	Demographic demographic;
+
 	sf::View fov;
 	std::map<std::string, int>* keyBinds;
 	std::map<std::string, bool>* keyBindPressed;
@@ -20,10 +22,12 @@ public:
 	virtual ~Player();
 
 	const sf::View& getView() const;
+	void setDemographic(Demographic demographic);
 
 	Toxicology& getToxicology();
 	Psychology& getPsychology();
 	Wallet& getWallet();
+
 
 
 	//===Update===//

@@ -18,7 +18,6 @@ Player::Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
 
 
 	this->fov.setViewport(sf::FloatRect(0.f, 0.f, 0.5f, 0.5f));
-
 }
 
 Player::~Player()
@@ -28,6 +27,13 @@ Player::~Player()
 const sf::View& Player::getView() const
 {
 	return this->fov;
+}
+
+void Player::setDemographic(Demographic demographic)
+{
+	this->demographic = demographic;
+	this->psych = Psychology(demographic);
+	this->wallet = Wallet(demographic);
 }
 
 Toxicology& Player::getToxicology()

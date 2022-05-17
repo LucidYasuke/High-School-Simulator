@@ -182,7 +182,7 @@ inline std::string Psychology::getSadnessAsString()
 template<typename T>
 inline std::string Psychology::getFatigueAsString()
 {
-	return std::string();
+	return std::to_string(this->getFatigue<T>());
 }
 
 template<typename T>

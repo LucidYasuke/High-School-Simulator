@@ -179,6 +179,7 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 
 	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), sf::Vector2f(scaleX, scaleY), this->keyBinds, this->keyBindPressed);
 	this->player->setPosition(sf::Vector2f(this->player->getGlobalBounds().left - this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top - this->player->getGlobalBounds().height / 2.f));
+	this->player->setDemographic(Demographic::MIDDLE);
 
 	this->miniview = HUD(this->window, this->fontConnectionII); // Definition
 }
@@ -298,16 +299,17 @@ void GameState::update(const float& dt)
 	//this->player->getPsychology().getJoyAsString<double>();
 
 	// UPDATE HUD
-	std::string stats[5];
-	stats[0] = this->player->getPsychology().getFatigueAsString<int>();
-	stats[1] = this->player->getPsychology().getIntelligenceAsString<int>();
-	stats[2] = this->player->getPsychology().getJoyAsString<int>();
-	stats[3] = this->player->getPsychology().getSadnessAsString<int>();
-	stats[4] = this->player->getToxicology().getSobrietyAsString<int>();
-	/** 
-	this->hud.update(dt, variablename);
-	**/
+	std::string stats[6];
+	stats[0] = this->player->getPsychology().getIntelligenceAsString<int>();
+	stats[1] = this->player->getPsychology().getJoyAsString<int>();
+	stats[2] = this->player->getToxicology().getSobrietyAsString<int>();
+	stats[3] = "0GPA";
+	stats[4] = this->player->getPsychology().getSadnessAsString<int>();
+	stats[5] = this->player->getPsychology().getFatigueAsString<int>();	
 
+	std::cout << stats[1] << std::endl;
+
+	this->miniview.update(dt, stats);
 }
 
 void GameState::render(sf::RenderTarget* target)
