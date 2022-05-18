@@ -62,7 +62,6 @@ Entity::Entity(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale)
     this->vertices[3].texCoords = sf::Vector2f(0, textSizeY);
 
     this->velocity = sf::Vector2f(100.f, 100.f);
-
 }
 
 Entity::Entity(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, unsigned int width, unsigned int height)
@@ -114,4 +113,9 @@ const sf::Vector2f& Entity::getDirection() const
 sf::FloatRect Entity::getGlobalBounds()
 {
     return sf::FloatRect(this->getPosition().x, this->getPosition().y, this->vertices[2].position.x - this->vertices[0].position.x, this->vertices[2].position.y - this->vertices[0].position.y);
+}
+
+sf::IntRect Entity::getTextureRect()
+{
+    return sf::IntRect(this->getGlobalBounds());
 }
