@@ -94,28 +94,28 @@ void Player::updateTexture(const float& dt)
 		switch (this->facing)
 		{
 		case Direction::NORTH:
-			this->vertices[0].texCoords = sf::Vector2f(16, 16);
-			this->vertices[1].texCoords = sf::Vector2f(32, 16);
-			this->vertices[2].texCoords = sf::Vector2f(32, 32);
-			this->vertices[3].texCoords = sf::Vector2f(16, 32);
+			this->vertices[0].texCoords = sf::Vector2f(0, 0);
+			this->vertices[1].texCoords = sf::Vector2f(64, 0);
+			this->vertices[2].texCoords = sf::Vector2f(64, 64);
+			this->vertices[3].texCoords = sf::Vector2f(0, 64);
 			break;
 		case Direction::SOUTH:
-			this->vertices[0].texCoords = sf::Vector2f(0, 0);
-			this->vertices[1].texCoords = sf::Vector2f(16, 0);
-			this->vertices[2].texCoords = sf::Vector2f(16, 16);
-			this->vertices[3].texCoords = sf::Vector2f(0, 16);
+			this->vertices[0].texCoords = sf::Vector2f(64, 0);
+			this->vertices[1].texCoords = sf::Vector2f(128, 0);
+			this->vertices[2].texCoords = sf::Vector2f(128, 64);
+			this->vertices[3].texCoords = sf::Vector2f(64, 64);
 			break;
 		case Direction::WEST:
-			this->vertices[0].texCoords = sf::Vector2f(32, 32);
-			this->vertices[1].texCoords = sf::Vector2f(48, 32);
-			this->vertices[2].texCoords = sf::Vector2f(48, 48);
-			this->vertices[3].texCoords = sf::Vector2f(32, 48);
+			this->vertices[0].texCoords = sf::Vector2f(128, 0);
+			this->vertices[1].texCoords = sf::Vector2f(192, 0);
+			this->vertices[2].texCoords = sf::Vector2f(192, 64);
+			this->vertices[3].texCoords = sf::Vector2f(128, 64);
 			break;
 		case Direction::EAST:
-			this->vertices[0].texCoords = sf::Vector2f(48, 48);
-			this->vertices[1].texCoords = sf::Vector2f(64, 48);
-			this->vertices[2].texCoords = sf::Vector2f(64, 64);
-			this->vertices[3].texCoords = sf::Vector2f(48, 64);
+			this->vertices[0].texCoords = sf::Vector2f(192, 0);
+			this->vertices[1].texCoords = sf::Vector2f(256, 0);
+			this->vertices[2].texCoords = sf::Vector2f(256, 64);
+			this->vertices[3].texCoords = sf::Vector2f(192, 64);
 			break;
 		default:
 			break;
@@ -125,39 +125,39 @@ void Player::updateTexture(const float& dt)
 	switch (this->facing) // Fix Facing Direction
 	{
 	case Direction::NORTH:
-		if (this->vertices[0].texCoords.x != 16.f)
-		{
-			this->vertices[0].texCoords = sf::Vector2f(16, 16);
-			this->vertices[1].texCoords = sf::Vector2f(32, 16);
-			this->vertices[2].texCoords = sf::Vector2f(32, 32);
-			this->vertices[3].texCoords = sf::Vector2f(16, 32);
-		}
-		break;
-	case Direction::SOUTH:
 		if (this->vertices[0].texCoords.x != 0.f)
 		{
 			this->vertices[0].texCoords = sf::Vector2f(0, 0);
-			this->vertices[1].texCoords = sf::Vector2f(16, 0);
-			this->vertices[2].texCoords = sf::Vector2f(16, 16);
-			this->vertices[3].texCoords = sf::Vector2f(0, 16);
+			this->vertices[1].texCoords = sf::Vector2f(64, 0);
+			this->vertices[2].texCoords = sf::Vector2f(64, 64);
+			this->vertices[3].texCoords = sf::Vector2f(0, 64);
+		}
+		break;
+	case Direction::SOUTH:
+		if (this->vertices[0].texCoords.x != 64.f)
+		{
+			this->vertices[0].texCoords = sf::Vector2f(64, 0);
+			this->vertices[1].texCoords = sf::Vector2f(128, 0);
+			this->vertices[2].texCoords = sf::Vector2f(128, 64);
+			this->vertices[3].texCoords = sf::Vector2f(64, 64);
 		}
 		break;
 	case Direction::WEST:
-		if (this->vertices[0].texCoords.x != 32.f)
+		if (this->vertices[0].texCoords.x != 128.f)
 		{
-		this->vertices[0].texCoords = sf::Vector2f(32, 32);
-		this->vertices[1].texCoords = sf::Vector2f(48, 32);
-		this->vertices[2].texCoords = sf::Vector2f(48, 48);
-		this->vertices[3].texCoords = sf::Vector2f(32, 48);
+			this->vertices[0].texCoords = sf::Vector2f(128, 0);
+			this->vertices[1].texCoords = sf::Vector2f(192, 0);
+			this->vertices[2].texCoords = sf::Vector2f(192, 64);
+			this->vertices[3].texCoords = sf::Vector2f(128, 64);
 		}
 		break;
 	case Direction::EAST:
-		if (this->vertices[0].texCoords.x != 48.f)
+		if (this->vertices[0].texCoords.x != 192.f)
 		{
-		this->vertices[0].texCoords = sf::Vector2f(48, 48);
-		this->vertices[1].texCoords = sf::Vector2f(64, 48);
-		this->vertices[2].texCoords = sf::Vector2f(64, 64);
-		this->vertices[3].texCoords = sf::Vector2f(48, 64);
+			this->vertices[0].texCoords = sf::Vector2f(192, 0);
+			this->vertices[1].texCoords = sf::Vector2f(256, 0);
+			this->vertices[2].texCoords = sf::Vector2f(256, 64);
+			this->vertices[3].texCoords = sf::Vector2f(192, 64);
 		}
 		break;
 	default:
@@ -168,19 +168,19 @@ void Player::updateTexture(const float& dt)
 	{
 		if (this->lastAnimationShift.asSeconds() >= this->lastAnimationShiftMax)
 		{
-			if (this->vertices[2].texCoords.y == 64.f)
+			if (this->vertices[2].texCoords.y == 256.f)
 			{
 				this->vertices[0].texCoords = sf::Vector2f(this->vertices[0].texCoords.x, 0);
 				this->vertices[1].texCoords = sf::Vector2f(this->vertices[1].texCoords.x, 0);
-				this->vertices[2].texCoords = sf::Vector2f(this->vertices[2].texCoords.x, 16);
-				this->vertices[3].texCoords = sf::Vector2f(this->vertices[3].texCoords.x, 16);
+				this->vertices[2].texCoords = sf::Vector2f(this->vertices[2].texCoords.x, 64);
+				this->vertices[3].texCoords = sf::Vector2f(this->vertices[3].texCoords.x, 64);
 			}
 			else
 			{
-				this->vertices[0].texCoords.y += 16.f;
-				this->vertices[1].texCoords.y += 16.f;
-				this->vertices[2].texCoords.y += 16.f;
-				this->vertices[3].texCoords.y += 16.f;
+				this->vertices[0].texCoords.y += 64.f;
+				this->vertices[1].texCoords.y += 64.f;
+				this->vertices[2].texCoords.y += 64.f;
+				this->vertices[3].texCoords.y += 64.f;
 			}
 			this->lastAnimationShift = sf::seconds(0.f); // RESET
 		}

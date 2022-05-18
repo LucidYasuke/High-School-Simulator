@@ -210,6 +210,9 @@
     <Font Include="Assets\Fonts\BrassMonoComfortableRegular.otf" />
     <Font Include="Assets\Fonts\ConnectionIi-2wj8.otf" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Actor\Character\Player\SpriteSheet.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
