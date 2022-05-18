@@ -35,6 +35,7 @@ public:
     const sf::Vector2f& getVelocity() const;
     const sf::Vector2f& getDirection() const;
     sf::FloatRect getGlobalBounds();
+    sf::IntRect getTextureRect();
 
     //===Update===//
     virtual void updateMovement(const float& dt) = 0;
