@@ -153,7 +153,6 @@
     <ClCompile Include="GUI\Bar.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="GUI\ProgressBar.cpp" />
-    <ClCompile Include="GUI\Stats.cpp" />
     <ClCompile Include="Item\Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -161,7 +160,7 @@
     <ClCompile Include="States\PauseState.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="States\TitleState.cpp" />
-    <ClCompile Include="TileSets\HUD.cpp" />
+    <ClCompile Include="GUI\HUD.cpp" />
     <ClCompile Include="TileSets\Tile.cpp" />
     <ClCompile Include="TileSets\TileMap.cpp" />
     <ClCompile Include="TileSets\TileMoving.cpp" />
@@ -176,7 +175,6 @@
     <ClInclude Include="GUI\Bar.h" />
     <ClInclude Include="GUI\GUI.h" />
     <ClInclude Include="GUI\ProgressBar.h" />
-    <ClInclude Include="GUI\Stats.h" />
     <ClInclude Include="Includes.h" />
     <ClInclude Include="Item\Item.h" />
     <ClInclude Include="Physics.h" />
@@ -184,7 +182,7 @@
     <ClInclude Include="States\PauseState.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="States\TitleState.h" />
-    <ClInclude Include="TileSets\HUD.h" />
+    <ClInclude Include="GUI\HUD.h" />
     <ClInclude Include="TileSets\Tile.h" />
     <ClInclude Include="TileSets\TileMap.h" />
     <ClInclude Include="TileSets\TileMoving.h" />

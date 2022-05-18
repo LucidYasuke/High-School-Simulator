@@ -1,8 +1,9 @@
 #ifndef HUD_H
 #define HUD_H
-#include "../Entity/ENTITYCOMPONENTS.h"
+
+
 #include "../Physics.h"
-#include "../States/TitleState.h"
+
 
 class HUD
 {
@@ -22,5 +23,5 @@ public:
     void render(sf::RenderTarget* target);
 };
 
-#endif // !HUD_H
 
+#endif // !HUD_H

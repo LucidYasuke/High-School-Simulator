@@ -54,9 +54,6 @@
     <ClCompile Include="GUI\ProgressBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Stats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Entity\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,7 +66,7 @@
     <ClCompile Include="Entity\EntityComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TileSets\HUD.cpp">
+    <ClCompile Include="GUI\HUD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Item\Item.cpp">
@@ -119,9 +116,6 @@
     <ClInclude Include="GUI\ProgressBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\Stats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Entity\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -134,7 +128,7 @@
     <ClInclude Include="Entity\EntityComponents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TileSets\HUD.h">
+    <ClInclude Include="GUI\HUD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Item\Item.h">

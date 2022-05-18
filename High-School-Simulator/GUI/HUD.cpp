@@ -1,5 +1,6 @@
 #include "HUD.h"
 
+
 HUD::HUD()
 {
     
@@ -78,7 +79,6 @@ HUD::HUD(sf::RenderWindow* window, sf::Font& fontConnectionII)
     this->textStats[5].setString("0");
     this->textStats[5].setPosition(sf::Vector2f(defSize.x * 7.f / 8.f - this->textStats[5].getGlobalBounds().width / 2.f, defSize.y * 5.f / 6.f + this->textStats[5].getGlobalBounds().height));
 }
-
 
 HUD::~HUD()
 {

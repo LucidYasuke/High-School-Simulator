@@ -5,7 +5,7 @@
 #include "../Entity/Player.h"
 #include "../Item/WorldItem.h"
 #include "../TileSets/TileMap.h"
-#include "../TileSets/HUD.h"
+#include "../GUI/HUD.h"
 
 enum class Day {SUNDAY=0, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY};
 
