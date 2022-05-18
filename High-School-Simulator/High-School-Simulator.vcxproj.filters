@@ -160,4 +160,9 @@
     <Font Include="Assets\Fonts\BrassMonoComfortableRegular-XmYK.ttf" />
     <Font Include="Assets\Fonts\ConnectionIi-2wj8.otf" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\SPRITES\CHARACTER.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

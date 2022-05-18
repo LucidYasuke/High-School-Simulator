@@ -1,6 +1,50 @@
 #include "HUD.h"
 
 
+void PlayerFace::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    // apply the entity's transform -- combine it with the one that was passed by the caller
+    states.transform *= getTransform(); // getTransform() is defined by sf::Transformable
+
+    // apply the texture
+    states.texture = texture;
+
+    // you may also override states.shader or states.blendMode if you want
+
+    // draw the vertex array
+    target.draw(vertices, states);
+}
+
+PlayerFace::PlayerFace()
+{
+}
+
+PlayerFace::PlayerFace(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale)
+{
+    this->texture = texture;
+
+    this->vertices = sf::VertexArray(sf::Quads, 4);
+
+    float textSizeX = static_cast<float>(this->texture->getSize().x);
+    float textSizeY = static_cast<float>(this->texture->getSize().y);
+
+    // Defines it as a rectangle, located at (0, 0) and with size (texture.size.x*scaleX)x(texture.size.y*scaleY)
+    this->vertices[0].position = sf::Vector2f(0, 0);
+    this->vertices[1].position = sf::Vector2f(textSizeX * scale.x, 0);
+    this->vertices[2].position = sf::Vector2f(textSizeX * scale.x, textSizeY * scale.y);
+    this->vertices[3].position = sf::Vector2f(0, textSizeY * scale.y);
+
+    this->setPosition(position);
+
+    // define its texture area to be a (texture.size.x)x(texture.size.y) rectangle starting at (0, 0)
+    this->vertices[0].texCoords = sf::Vector2f(0, 0);
+    this->vertices[1].texCoords = sf::Vector2f(textSizeX, 0);
+    this->vertices[2].texCoords = sf::Vector2f(textSizeX, textSizeY);
+    this->vertices[3].texCoords = sf::Vector2f(0, textSizeY);
+}
+
+
+
 HUD::HUD()
 {
     
@@ -36,6 +80,14 @@ HUD::HUD(sf::RenderWindow* window, sf::Font& fontConnectionII)
     this->vertices[3].color = sf::Color::White;
 
     this->view.setViewport(sf::FloatRect(.6f, .5f, .4f, .5f));
+
+
+    this->texturePlayer = new sf::Texture;
+    this->texturePlayer->loadFromFile("Assets/SPRITES/CHARCTER.png");
+
+    sf::Vector2f position = sf::Vector2f(1280.f * scaleX / 2.f - this->texturePlayer->getSize().x * scaleX / 2.f, 720.f * scaleY / 2.f - this->texturePlayer->getSize().y * scaleY / 2.f);
+    
+    this->playerFace = PlayerFace(this->texturePlayer, position, sf::Vector2f(scaleX, scaleY));
 
     // BRIAN:: SET THE POSITIONS OF THE NAMES FIRST, AND MAKE THE STATS RELATIVE OT THE NAME
     // TEXT ME ON DISCORD FOR MORE
@@ -78,6 +130,7 @@ HUD::HUD(sf::RenderWindow* window, sf::Font& fontConnectionII)
     this->textStats[4].setPosition(sf::Vector2f(defSize.x * 7.f / 8.f - this->textStats[4].getGlobalBounds().width / 2.f, defSize.y * 3.f / 6.f + this->textStats[4].getGlobalBounds().height));
     this->textStats[5].setString("0");
     this->textStats[5].setPosition(sf::Vector2f(defSize.x * 7.f / 8.f - this->textStats[5].getGlobalBounds().width / 2.f, defSize.y * 5.f / 6.f + this->textStats[5].getGlobalBounds().height));
+
 }
 
 HUD::~HUD()
@@ -115,6 +168,8 @@ void HUD::render(sf::RenderTarget* target)
     {
         target->draw(this->textStats[i]);
     }
+
+    target->draw(this->playerFace);
 
     target->setView(this->window->getDefaultView());
 }

@@ -5,13 +5,29 @@
 #include "../Physics.h"
 
 
+class PlayerFace : public sf::Drawable, public sf::Transformable
+{
+private:
+    sf::VertexArray vertices;
+    sf::Texture* texture;
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+public:
+    PlayerFace();
+    PlayerFace(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale);
+};
+
+
 class HUD
 {
 private:
     sf::VertexArray vertices;
     sf::View view;
     sf::RenderWindow* window;
-    
+    sf::Texture* texturePlayer;
+
+    PlayerFace playerFace;
+
     sf::Text textNames[6];
     sf::Text textStats[6];
 public: 
