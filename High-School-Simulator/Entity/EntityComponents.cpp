@@ -117,7 +117,6 @@ Psychology::Psychology(Demographic demographic)
 	this->joy = roundTo<double>(45.0 / (this->intelligence / 100), 2); // Base joy is 45, the lower your intelligence the higher it will be
 	this->sadness = roundTo<double>(25.0 * (this->intelligence / 100), 2); // Base sadness is 25, the higher your intelligence the higher you sadness
 	this->fatigue = roundTo<double>(20.0 * (this->intelligence / 100) - (this->joy / 20.0), 2); // Base fatigue is 20, the higher your intelligence and lower your joy, the higehr your fatigue 
-
 	this->isAsleep = false;
 	this->isStudying = false;
 }
@@ -211,7 +210,7 @@ void Psychology::updateLimits()
 	{
 		this->joy = 100.0;
 	}
-	if (this->joy < 100.0)
+	if (this->joy < 0.0)
 	{
 		this->joy = 0.0;
 	}
@@ -220,7 +219,7 @@ void Psychology::updateLimits()
 	{
 		this->sadness = 100.0;
 	}
-	if (this->sadness < 100.0)
+	if (this->sadness < 0.0)
 	{
 		this->sadness = 0.0;
 	}
@@ -229,7 +228,7 @@ void Psychology::updateLimits()
 	{
 		this->fatigue = 100.0;
 	}
-	if (this->fatigue < 100.0)
+	if (this->fatigue < 0.0)
 	{
 		this->fatigue = 0.0;
 	}

@@ -11,12 +11,16 @@ private:
 	Psychology psych;
 	Wallet wallet;
 
+	Demographic demographic;
+
 	std::map<std::string, int>* keyBinds;
 	std::map<std::string, bool>* keyBindPressed;
 public:
 	Player(std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed);
 	Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed);
 	virtual ~Player();
+
+	void setDemographic(Demographic demographic);
 
 	Toxicology& getToxicology();
 	Psychology& getPsychology();

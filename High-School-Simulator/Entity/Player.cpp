@@ -4,17 +4,31 @@ Player::Player(std::map<std::string, int>* keyBinds, std::map<std::string, bool>
 {
 	this->keyBinds = keyBinds;
 	this->keyBindPressed = keyBindPressed;
+	this->demographic = Demographic::MIDDLE;
+	this->psych = Psychology(this->demographic);
+	this->wallet = Wallet(this->demographic);
 }
 
 Player::Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed) : Entity(texture, position, scale)
 {
 	this->keyBinds = keyBinds;
 	this->keyBindPressed = keyBindPressed;
+	this->demographic = Demographic::MIDDLE;
+	this->psych = Psychology(this->demographic);
+	this->wallet = Wallet(this->demographic);
 }
 
 Player::~Player()
 {
 }
+
+void Player::setDemographic(Demographic demographic)
+{
+	this->demographic = demographic;
+	this->psych = Psychology(demographic);
+	this->wallet = Wallet(demographic);
+}
+
 
 Toxicology& Player::getToxicology()
 {
