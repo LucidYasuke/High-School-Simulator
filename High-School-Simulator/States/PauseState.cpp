@@ -118,4 +118,3 @@ void PauseState::render(sf::RenderTarget* target)
 		target->draw(*buttons[i]);
 	}
 }
-

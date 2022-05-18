@@ -1,5 +1,6 @@
 #include "Physics.h"
 
+
 float pythag(const sf::Vector2f& vector)
 {
 	return std::sqrt((vector.x * vector.x) + (vector.y * vector.y));

@@ -1,11 +1,15 @@
 #ifndef ENTITYCOMPONENTS_H
 #define ENTITYCOMPONENTS_H
 
+
 #include "../Physics.h"
+
 
 enum class Demographic { LOWER = 0, MIDDLE, UPPER };
 
+
 enum class MindState {HAPPY=0, SAD, TIRED, DELERIOUS, BORED, INTOXICATED};
+
 
 // Drug Manipulation System
 class Toxicology 
@@ -35,6 +39,7 @@ public:
 	const float getLastHigh() const;
 	const float& getLastHighMax() const;
 };
+
 
 class Psychology
 {
@@ -101,6 +106,7 @@ public:
 	template <typename T>
 	std::string getFatigueAsString();
 };
+
 
 class Wallet
 {
@@ -193,5 +199,6 @@ inline std::string Wallet::getMoneyAsString()
 {
 	return std::to_string(this->getMoney<T>());
 }
+
 
 #endif

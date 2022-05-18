@@ -1,8 +1,10 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+
 #include "../Includes.h"
 #include "../Physics.h"
+
 
 class Item : public sf::Drawable, public sf::Transformable
 {
@@ -27,5 +29,6 @@ public:
     void update(const float& dt);
     //---Update---//
 };
+
 
 #endif

@@ -1,5 +1,6 @@
 #include "Item.h"
 
+
 void Item::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the entity's transform -- combine it with the one that was passed by the caller
@@ -72,4 +73,3 @@ sf::FloatRect Item::getGlobalBounds()
 void Item::update(const float& dt)
 {
 }
-

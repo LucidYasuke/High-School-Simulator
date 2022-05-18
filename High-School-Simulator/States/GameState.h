@@ -1,13 +1,16 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+
 #include "PauseState.h"
 #include "../Entity/Player.h"
 #include "../Item/WorldItem.h"
 #include "../TileSets/TileMap.h"
 #include "../GUI/HUD.h"
 
+
 enum class Day {SUNDAY=0, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY};
+
 
 class Date 
 {
@@ -104,5 +107,6 @@ public:
 	void renderViewHud(sf::RenderTarget* target);
 	void render(sf::RenderTarget* target = NULL) override;
 };
+
 
 #endif

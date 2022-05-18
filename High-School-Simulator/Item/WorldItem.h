@@ -26,4 +26,5 @@ public:
 	CollisionButton& getCollisionButton();
 };
 
+
 #endif // !WORLDITEM_H

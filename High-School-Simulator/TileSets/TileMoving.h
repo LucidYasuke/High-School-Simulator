@@ -1,8 +1,10 @@
 #ifndef TILEMOVING_H
 #define TILEMOVING_H
 
+
 #include "Tile.h"
 #include "../Physics.h"
+
 
 class TileMoving : public Tile
 {
@@ -20,5 +22,5 @@ public:
 	void update(const float& dt);
 };
 
-#endif
 
+#endif

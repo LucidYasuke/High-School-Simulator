@@ -1,8 +1,10 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+
 #include "Entity.h"
 #include "EntityComponents.h"
+
 
 class Player : public Entity
 {
@@ -33,5 +35,5 @@ public:
 	//---Update---//
 };
 
-#endif
 
+#endif

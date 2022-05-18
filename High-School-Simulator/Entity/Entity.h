@@ -1,8 +1,10 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+
 #include "../Includes.h"
 #include "../Physics.h"
+
 
 class Entity : public sf::Drawable, public sf::Transformable
 {
@@ -36,5 +38,6 @@ public:
     virtual void update(const float& dt) = 0;
     //---Update---//
 };
+
 
 #endif

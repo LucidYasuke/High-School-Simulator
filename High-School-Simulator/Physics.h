@@ -1,6 +1,7 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
+
 #include "Includes.h"
 #include <limits>
 #include <algorithm>
@@ -33,5 +34,6 @@ inline const T roundTo(T number, int place)
  * \return true if overlapping exist, false otherwise
  */
 bool satCollision(const sf::FloatRect& rectSp1, const sf::FloatRect& rectSp2, sf::Vector2f* out_mtv = nullptr);
+
 
 #endif

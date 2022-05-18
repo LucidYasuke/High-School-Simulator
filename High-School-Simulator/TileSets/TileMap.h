@@ -1,10 +1,11 @@
 #ifndef TILEMAP_H
 #define TILEMAP_H
 
+
 #include "../Includes.h"
 
-// Taken From sfml-dev.org/tutorials/2.4/graphics-vertex-array.php
 
+// Taken From sfml-dev.org/tutorials/2.4/graphics-vertex-array.php
 class TileMap : public sf::Drawable, public sf::Transformable
 {
 private:
@@ -20,5 +21,6 @@ public:
     
     sf::FloatRect getGlobalBounds();
 };
+
 
 #endif // !TILEMAP_H

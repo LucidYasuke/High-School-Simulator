@@ -1,7 +1,9 @@
 #ifndef PROGRESSBAR_H
 #define PROGRESSBAR_H
 
+
 #include "GUI.h"
+
 
 class ProgressBar : public GUI
 {
@@ -19,5 +21,5 @@ public:
 	void render(sf::RenderTarget* target) override;
 };
 
-#endif
 
+#endif

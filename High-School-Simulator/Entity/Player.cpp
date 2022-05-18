@@ -1,5 +1,6 @@
 #include "Player.h"
 
+
 Player::Player(std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed) : Entity()
 {
 	this->keyBinds = keyBinds;
@@ -117,4 +118,3 @@ void Player::update(const float& dt)
 	this->psych.update(dt, this->toxic);
 	this->updateMovement(dt);
 }
-

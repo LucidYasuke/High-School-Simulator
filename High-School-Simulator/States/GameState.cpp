@@ -459,5 +459,3 @@ void GameState::render(sf::RenderTarget* target)
 		this->stateStack.top()->render(target);
 	}
 }
-
-

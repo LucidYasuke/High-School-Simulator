@@ -1,5 +1,6 @@
 #include "Game.h"
 
+
 //===PRIVATE FUNCTIONS===//
 void Game::initWindow()
 {

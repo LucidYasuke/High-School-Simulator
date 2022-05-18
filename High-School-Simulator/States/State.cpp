@@ -2,8 +2,6 @@
 
 
 //===ABSTRACT STATE===//
-
-
 State::State(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::Vector2f* mosPosView, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed)
 {
 	this->window = window;
@@ -50,4 +48,3 @@ void State::checkForQuit()
 	}
 }
 */
-

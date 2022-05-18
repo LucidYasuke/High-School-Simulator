@@ -1,5 +1,6 @@
 #include "GUI.h"
 
+
 GUI::GUI(Align pos, float x, float y, float w, float l)
 {
 	this->w = w;
@@ -21,6 +22,7 @@ GUI::GUI(Align pos, float x, float y, float w, float l)
 		break;
 	}
 }
+
 
 GUI::~GUI()
 {

@@ -1,5 +1,6 @@
 #include "TileMoving.h"
 
+
 TileMoving::TileMoving(sf::RenderWindow* window, sf::Texture* texture, float x, float y, float velocity, sf::Vector2f direction) : Tile(window, texture, x, y)
 {
 	this->velocity = velocity;

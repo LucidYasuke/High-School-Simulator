@@ -1,5 +1,6 @@
 #include "Bar.h"
 
+
 Bar::Bar(Align pos, float x, float y, float w, float l, double* val, double* valMax, sf::Color color) : GUI(pos, x, y, w, l)
 {
 	this->val = val;

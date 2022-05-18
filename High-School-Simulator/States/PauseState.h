@@ -1,6 +1,7 @@
 #ifndef PAUSESTATE_H
 #define PAUSESTATE_H
 
+
 #include "State.h"
 
 
@@ -27,7 +28,5 @@ public:
 	void render(sf::RenderTarget* target = NULL) override;
 };
 
+
 #endif // !PAUSESTATE_H
-
-
-

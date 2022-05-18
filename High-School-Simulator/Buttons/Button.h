@@ -1,5 +1,5 @@
-#ifndef LBUTTON_H
-#define LBUTTON_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
 
 #include "../Physics.h"
@@ -52,5 +52,6 @@ public:
     void update(const float& dt, const sf::Vector2f mosPos);
     //---Update---//
 };
+
 
 #endif

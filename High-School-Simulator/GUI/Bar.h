@@ -1,7 +1,9 @@
 #ifndef BAR_H
 #define BAR_H
 
+
 #include "GUI.h"
+
 
 class Bar : public GUI
 {
@@ -19,5 +21,5 @@ public:
 	void render(sf::RenderTarget* target) override;
 };
 
-#endif
 
+#endif

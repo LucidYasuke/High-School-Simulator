@@ -1,5 +1,6 @@
 #include "ProgressBar.h"
 
+
 ProgressBar::ProgressBar(Align pos, float x, float y, float w, float l, sf::Time* currentTime, sf::Time* maxTime) : GUI(pos, x, y, w, l)
 {
 	this->currentTime = currentTime;
