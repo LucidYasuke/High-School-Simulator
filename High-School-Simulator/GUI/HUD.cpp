@@ -3,8 +3,6 @@
 
 HUD::HUD()
 {
-    
-    // Use pointer
 }
 
 HUD::HUD(sf::RenderWindow* window, sf::Font& fontConnectionII)

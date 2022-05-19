@@ -39,6 +39,16 @@ sf::Vector2f normalize(sf::Vector2f vector)
 	return vector / norm;
 }
 
+sf::Vector2f multiplyVector(const sf::Vector2f& vectorOne, const sf::Vector2f& vectorTwo)
+{
+	return sf::Vector2f(vectorOne.x * vectorTwo.x, vectorOne.y * vectorTwo.y);
+}
+
+sf::Vector2f divideVector(const sf::Vector2f& vectorOne, const sf::Vector2f& vectorTwo)
+{
+	return sf::Vector2f(vectorOne.x / vectorTwo.x, vectorOne.y / vectorTwo.y);
+}
+
 bool satCollision(const sf::FloatRect& rectSp1, const sf::FloatRect& rectSp2, sf::Vector2f* out_mtv)
 {
 	float proj_x, proj_y, overlap_x, overlap_y;

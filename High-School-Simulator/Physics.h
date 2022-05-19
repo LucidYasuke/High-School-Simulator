@@ -17,6 +17,9 @@ double percentRange(double number, double percent, unsigned loop = 1);
 
 sf::Vector2f normalize(sf::Vector2f vector);
 
+sf::Vector2f multiplyVector(const sf::Vector2f& vectorOne, const sf::Vector2f& vectorTwo);
+sf::Vector2f divideVector(const sf::Vector2f& vectorOne, const sf::Vector2f& vectorTwo);
+
 template<typename T>
 inline const T roundTo(T number, int place)
 {
