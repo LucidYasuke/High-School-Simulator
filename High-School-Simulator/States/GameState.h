@@ -7,6 +7,7 @@
 #include "../Item/WorldItem.h"
 #include "../TileSets/TileMap.h"
 #include "../GUI/HUD.h"
+#include "../GUI/Menu.h"
 
 
 enum class Day {SUNDAY=0, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY};
@@ -44,6 +45,7 @@ class GameState : public State
 private:
 	Date date;
 	HUD miniview;
+	Menu playerMenu;
 	TileMap map;
 
 	//===Textures===//
@@ -100,11 +102,11 @@ public:
 	void updatePlayerFunctions();
 
 	void updateViewWorld(const float& dt);
-	void updateViewHud(const float& dt);
+	void updateViews(const float& dt);
 	void update(const float& dt) override;
 
 	void renderViewWorld(sf::RenderTarget* target);
-	void renderViewHud(sf::RenderTarget* target);
+	void renderViews(sf::RenderTarget* target);
 	void render(sf::RenderTarget* target = NULL) override;
 };
 

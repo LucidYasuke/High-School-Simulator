@@ -13,6 +13,8 @@ class Menu
 private:
     MenuState state;
 
+    sf::FloatRect bounds;
+
     sf::VertexArray background;
     sf::VertexArray border;
 
@@ -23,7 +25,7 @@ public:
     Menu(sf::RenderWindow* window, sf::Font& fontConnectionII);
     virtual ~Menu();
 
-    void update(const float& dt, std::string stats[5]);
+    void update(const float& dt);
     void render(sf::RenderTarget* target);
 };
 

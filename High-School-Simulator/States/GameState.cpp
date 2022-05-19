@@ -138,6 +138,14 @@ void GameState::initViews()
 
 	this->viewWorld.setViewport(sf::FloatRect(0, 0, .6f, 1.f));
 	//---INIT WORLD VIEW---//
+
+	//===INIT PLAYER VIEW===//
+	this->miniview = HUD(this->window, this->fontConnectionII);
+	//===INIT PLAYER VIEW===//
+
+	//===INIT PLAYER MENU===//
+	this->playerMenu = Menu(this->window, this->fontConnectionII);
+	//---INIT PLAYER MENU---//
 }
 
 void GameState::initBackground()
@@ -222,8 +230,6 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 	this->bed.getCollisionButton().button = this->buttonsHidden["Sleep"];
 
 	this->buttonsHidden["Sleep"]->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f - this->buttonsHidden["Sleep"]->getGlobalBounds().width / 2.f, this->bed.getGlobalBounds().top - this->buttonsHidden["Sleep"]->getGlobalBounds().height * 1.5f));
-
-	this->miniview = HUD(this->window, this->fontConnectionII); // Definition
 }
 
 GameState::~GameState()
@@ -378,7 +384,7 @@ void GameState::updateViewWorld(const float& dt)
 	this->viewWorld.setCenter(sf::Vector2f(this->player->getGlobalBounds().left + this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top + this->player->getGlobalBounds().height / 2.f));
 }
 
-void GameState::updateViewHud(const float& dt)
+void GameState::updateViews(const float& dt)
 {
 	std::string stats[6];
 	stats[0] = this->player->getPsychology().getIntelligenceAsString<int>();
@@ -389,6 +395,8 @@ void GameState::updateViewHud(const float& dt)
 	stats[5] = this->player->getPsychology().getFatigueAsString<int>();
 
 	this->miniview.update(dt, stats);
+
+	this->playerMenu.update(dt);
 }
 
 void GameState::update(const float& dt)
@@ -415,7 +423,7 @@ void GameState::update(const float& dt)
 	}
 
 	this->updateViewWorld(dt);
-	this->updateViewHud(dt);
+	this->updateViews(dt);
 }
 
 void GameState::renderViewWorld(sf::RenderTarget* target)
@@ -438,9 +446,10 @@ void GameState::renderViewWorld(sf::RenderTarget* target)
 	target->setView(this->window->getDefaultView());
 }
 
-void GameState::renderViewHud(sf::RenderTarget* target)
+void GameState::renderViews(sf::RenderTarget* target)
 {
 	this->miniview.render(target);
+	this->playerMenu.render(target);
 }
 
 void GameState::render(sf::RenderTarget* target)
@@ -452,7 +461,7 @@ void GameState::render(sf::RenderTarget* target)
 	*/
 
 	this->renderViewWorld(target);
-	this->renderViewHud(target);
+	this->renderViews(target);
 
 	if (!this->stateStack.empty()) // As long as the stack is not empty, it will render the top
 	{

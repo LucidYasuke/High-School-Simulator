@@ -21,22 +21,55 @@ Menu::Menu(sf::RenderWindow* window, sf::Font& fontConnectionII)
     this->background[1].position = multiplyVector(sf::Vector2f(1280.f, 0.f), scale);
     this->background[2].position = multiplyVector(sf::Vector2f(1280.f, 720.f), scale);
     this->background[3].position = multiplyVector(sf::Vector2f(0.f, 720.f), scale);
+    for (int i  = 0; i < 4; i++)
+    {
+        this->background[i].color = sf::Color::White;
+    }
 
     this->border = sf::VertexArray(sf::Quads, 16);
-    this->border[0].position = sf::Vector2f(0.f, 0.f);
-    this->border[1].position = sf::Vector2f(1280.f * scaleX, 0.f);
-    this->border[2].position = sf::Vector2f(1280.f * scaleX, 720.f * scaleY);
-    this->border[3].position = sf::Vector2f(0.f, 720.f * scaleY);
+    // TOP
+    this->border[0].position = multiplyVector(sf::Vector2f(0.f, 0.f), scale);
+    this->border[1].position = multiplyVector(sf::Vector2f(1280.f, 0.f), scale);
+    this->border[2].position = multiplyVector(sf::Vector2f(1280.f, 45.f), scale);
+    this->border[3].position = multiplyVector(sf::Vector2f(0.f, 45.f), scale);
+    // RIGHT
+    this->border[4].position = multiplyVector(sf::Vector2f(1235.f, 0.f), scale);
+    this->border[5].position = multiplyVector(sf::Vector2f(1280.f, 0.f), scale);
+    this->border[6].position = multiplyVector(sf::Vector2f(1280.f, 720.f), scale);
+    this->border[7].position = multiplyVector(sf::Vector2f(1235.f, 720.f), scale);
+    // BOT
+    this->border[8].position = multiplyVector(sf::Vector2f(0.f, 675.f), scale);
+    this->border[9].position = multiplyVector(sf::Vector2f(1280.f, 675.f), scale);
+    this->border[10].position = multiplyVector(sf::Vector2f(1235.f, 720.f), scale);
+    this->border[11].position = multiplyVector(sf::Vector2f(0.f, 720.f), scale);
+    // LEFT
+    this->border[12].position = multiplyVector(sf::Vector2f(0.f, 0.f), scale);
+    this->border[13].position = multiplyVector(sf::Vector2f(45.f, 0.f), scale);
+    this->border[14].position = multiplyVector(sf::Vector2f(45.f, 720.f), scale);
+    this->border[15].position = multiplyVector(sf::Vector2f(0.f, 720.f), scale);
+    for (int i = 0; i < 16; i++)
+    {
+        this->border[i].color = sf::Color::Black;
+    }
 
-
-    this->border[0].color = sf::Color::White;
-    this->border[1].color = sf::Color::White;
-    this->border[2].color = sf::Color::White;
-    this->border[3].color = sf::Color::White;
-
+    this->bounds = sf::FloatRect(45.f * scale.x, 45.f * scale.y, 1190.f * scale.x, 630 * scale.y); // Non Border Area | Pre Scaled
+     
     this->view.setViewport(sf::FloatRect(.6f, 0, .4f, .5f));
 }
 
 Menu::~Menu()
 {
+}
+
+void Menu::update(const float& dt)
+{
+}
+
+void Menu::render(sf::RenderTarget* target)
+{
+    target->setView(this->view);
+    target->draw(this->background);
+    target->draw(this->border);
+
+    target->setView(this->window->getDefaultView());
 }
