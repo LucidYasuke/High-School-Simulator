@@ -144,7 +144,7 @@ void GameState::initViews()
 	//===INIT PLAYER VIEW===//
 
 	//===INIT PLAYER MENU===//
-	this->playerMenu = Menu(this->window, this->fontConnectionII);
+	this->playerMenu = Menu(this->window, &this->fontConnectionII);
 	//---INIT PLAYER MENU---//
 }
 
