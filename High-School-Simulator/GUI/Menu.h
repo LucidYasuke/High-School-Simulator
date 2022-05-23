@@ -19,9 +19,13 @@ private:
 
     sf::VertexArray background;
     sf::VertexArray border;
+    sf::VertexArray dividers;
 
     sf::View view;
     sf::RenderWindow* window;
+
+    void initGlobalVariable();
+    void initMainMenuVariables();
 public:
     Menu();
     Menu(sf::RenderWindow* window, sf::Font* fontConnectionII);

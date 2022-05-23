@@ -1,28 +1,19 @@
 #include "Menu.h"
 
-Menu::Menu()
+void Menu::initGlobalVariable()
 {
-}
-
-Menu::Menu(sf::RenderWindow* window, sf::Font* fontConnectionII)
-{
-    this->window = window;
-    this->font = fontConnectionII;
-
-    // 1280.f x 720.f
-    // As long as we're dealing with a window use getDefaultView
     float totalScale = (this->window->getDefaultView().getSize().x + this->window->getDefaultView().getSize().y) / 2000.f;
     sf::Vector2f defualtSize = this->window->getDefaultView().getSize();
     sf::Vector2f scale = divideVector(this->window->getDefaultView().getSize(), sf::Vector2f(1280.f, 720.f));
 
-    this->view = this->window->getDefaultView();
+    this->bounds = sf::FloatRect(45.f * scale.x, 45.f * scale.y, 1190.f * scale.x, 630 * scale.y); // Non Border Area | Pre Scaled
 
     this->background = sf::VertexArray(sf::Quads, 4);
     this->background[0].position = multiplyVector(sf::Vector2f(0.f, 0.f), scale);
     this->background[1].position = multiplyVector(sf::Vector2f(1280.f, 0.f), scale);
     this->background[2].position = multiplyVector(sf::Vector2f(1280.f, 720.f), scale);
     this->background[3].position = multiplyVector(sf::Vector2f(0.f, 720.f), scale);
-    for (int i  = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
     {
         this->background[i].color = sf::Color::White;
     }
@@ -52,9 +43,41 @@ Menu::Menu(sf::RenderWindow* window, sf::Font* fontConnectionII)
     {
         this->border[i].color = sf::Color::Black;
     }
+}
 
-    this->bounds = sf::FloatRect(45.f * scale.x, 45.f * scale.y, 1190.f * scale.x, 630 * scale.y); // Non Border Area | Pre Scaled
-     
+void Menu::initMainMenuVariables()
+{
+    this->dividers = sf::VertexArray(sf::Lines, 10);
+    this->dividers[0].position = sf::Vector2f(this->bounds.left, this->bounds.top + this->bounds.height * 1.f / 5.f);
+    this->dividers[1].position = sf::Vector2f(this->bounds.left + this->bounds.width, this->bounds.top + this->bounds.height * 1.f / 5.f);
+    this->dividers[2].position = sf::Vector2f(this->bounds.left, this->bounds.top + this->bounds.height * 2.f / 5.f);
+    this->dividers[3].position = sf::Vector2f(this->bounds.left + this->bounds.width, this->bounds.top + this->bounds.height * 2.f / 5.f);
+    this->dividers[4].position = sf::Vector2f(this->bounds.left, this->bounds.top + this->bounds.height * 3.f / 5.f);
+    this->dividers[5].position = sf::Vector2f(this->bounds.left + this->bounds.width, this->bounds.top + this->bounds.height * 3.f / 5.f);
+    this->dividers[6].position = sf::Vector2f(this->bounds.left, this->bounds.top + this->bounds.height * 4.f / 5.f);
+    this->dividers[7].position = sf::Vector2f(this->bounds.left + this->bounds.width, this->bounds.top + this->bounds.height * 4.f / 5.f);
+    this->dividers[8].position = sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f, this->bounds.top);
+    this->dividers[9].position = sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f, this->bounds.top + this->bounds.height);
+    for (int i = 0; i < 10; i++)
+    {
+        this->dividers[i].color = sf::Color::Black;
+    }
+}
+
+Menu::Menu()
+{
+}
+
+Menu::Menu(sf::RenderWindow* window, sf::Font* fontConnectionII)
+{
+    this->window = window;
+    this->font = fontConnectionII;
+    this->view = this->window->getDefaultView();
+    this->state = MenuState::MAIN;
+
+    this->initGlobalVariable();
+    this->initMainMenuVariables();
+
     this->view.setViewport(sf::FloatRect(.6f, 0, .4f, .5f));
 }
 
@@ -68,6 +91,14 @@ void Menu::updateMainMenu()
 
 void Menu::update(const float& dt)
 {
+    switch (this->state)
+    {
+    case MenuState::MAIN:
+        this->updateMainMenu();
+        break;
+    default:
+        break;
+    }
 }
 
 void Menu::renderMainMenu(sf::RenderTarget* target)
@@ -78,7 +109,7 @@ void Menu::renderMainMenu(sf::RenderTarget* target)
 
     sf::Text numbers[5];
     numbers[0].setFont(*this->font);
-    numbers[0].setCharacterSize(50.f * totalScale);
+    numbers[0].setCharacterSize(75.f * totalScale);
     numbers[0].setFillColor(sf::Color::Magenta);
     numbers[0].setString("1");
 
@@ -89,11 +120,16 @@ void Menu::renderMainMenu(sf::RenderTarget* target)
     }
 
     // Add bounds.left if not centered
-    numbers[0].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f - numbers[0].getGlobalBounds().width / 2.f, this->bounds.top + this->bounds.height * 1.f / 10.f - numbers[0].getGlobalBounds().height / 2.f));
-    numbers[1].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f - numbers[1].getGlobalBounds().width / 2.f, this->bounds.top + this->bounds.height * 3.f / 10.f - numbers[1].getGlobalBounds().height / 2.f));
-    numbers[2].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f - numbers[2].getGlobalBounds().width / 2.f, this->bounds.top + this->bounds.height * 5.f / 10.f - numbers[2].getGlobalBounds().height / 2.f));
-    numbers[3].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f - numbers[3].getGlobalBounds().width / 2.f, this->bounds.top + this->bounds.height * 7.f / 10.f - numbers[3].getGlobalBounds().height / 2.f));
-    numbers[4].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f - numbers[4].getGlobalBounds().width / 2.f, this->bounds.top + this->bounds.height * 9.f / 10.f - numbers[4].getGlobalBounds().height / 2.f));
+    numbers[0].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 16.f - numbers[0].getGlobalBounds().width / 2.f, this->bounds.top / 2.f + this->bounds.height * 1.f / 10.f - numbers[0].getGlobalBounds().height / 2.f));
+    numbers[1].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 16.f - numbers[1].getGlobalBounds().width / 2.f, this->bounds.top / 2.f + this->bounds.height * 3.f / 10.f - numbers[1].getGlobalBounds().height / 2.f));
+    numbers[2].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 16.f - numbers[2].getGlobalBounds().width / 2.f, this->bounds.top / 2.f + this->bounds.height * 5.f / 10.f - numbers[2].getGlobalBounds().height / 2.f));
+    numbers[3].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 16.f - numbers[3].getGlobalBounds().width / 2.f, this->bounds.top / 2.f + this->bounds.height * 7.f / 10.f - numbers[3].getGlobalBounds().height / 2.f));
+    numbers[4].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 16.f - numbers[4].getGlobalBounds().width / 2.f, this->bounds.top / 2.f + this->bounds.height * 9.f / 10.f - numbers[4].getGlobalBounds().height / 2.f));
+
+    for (int i = 0; i < 10; i++)
+    {
+        target->draw(this->dividers);
+    }
 
     for (int i = 0; i < 5; i++)
     {
@@ -106,7 +142,16 @@ void Menu::render(sf::RenderTarget* target)
     target->setView(this->view);
     target->draw(this->background);
     target->draw(this->border);
-    this->renderMainMenu(target);
+
+    switch (this->state)
+    {
+    case MenuState::MAIN:
+        this->renderMainMenu(target);
+        break;
+    default:
+        break;
+    }
+
 
     target->setView(this->window->getDefaultView());
 }
