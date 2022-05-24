@@ -55,6 +55,25 @@ Button::Button(sf::Vector2f position, sf::Vector2f scale, bool* condition, bool 
     this->viewScale = scale;
 }
 
+Button::Button(sf::Vector2f position, sf::Vector2f size, sf::Vector2f scale, bool* condition, bool boolean)
+{
+    this->condition = condition;
+    this->boolean = boolean;
+    this->buttonState = buttonStates::BTNIDLE;
+
+    this->vertices = sf::VertexArray(sf::Quads, 4);
+
+    // Defines it as a rectangle, located at (0, 0) and with size (texture.size.x*scaleX)x(texture.size.y*scaleY)
+    this->vertices[0].position = sf::Vector2f(0, 0);
+    this->vertices[1].position = sf::Vector2f(size.x * scale.x, 0);
+    this->vertices[2].position = sf::Vector2f(size.x * scale.x, size.y * scale.y);
+    this->vertices[3].position = sf::Vector2f(0, size.y * scale.y);
+
+    this->sf::Transformable::setPosition(position);
+
+    this->viewScale = scale;
+}
+
 Button::Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, bool* condition, bool boolean)
 {
     this->condition = condition;
@@ -88,6 +107,42 @@ Button::Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
 
     this->viewScale = scale;
 }
+
+Button::Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f size, sf::Vector2f scale, bool* condition, bool boolean)
+{
+    this->condition = condition;
+    this->boolean = boolean;
+    this->buttonState = buttonStates::BTNIDLE;
+
+    this->texture = texture;
+
+    this->vertices = sf::VertexArray(sf::Quads, 4);
+
+    float textSizeX = static_cast<float>(this->texture->getSize().x);
+    float textSizeY = static_cast<float>(this->texture->getSize().y);
+
+    // Defines it as a rectangle, located at (0, 0) and with size (texture.size.x*scaleX)x(texture.size.y*scaleY)
+    this->vertices[0].position = sf::Vector2f(0, 0);
+    this->vertices[1].position = sf::Vector2f(size.x * scale.x, 0);
+    this->vertices[2].position = sf::Vector2f(size.x * scale.x, size.y * scale.y);
+    this->vertices[3].position = sf::Vector2f(0, size.y * scale.y);
+
+    sf::Vector2f modPos;
+    modPos.x = 1280.f * scale.x / 2.f - size.x * scale.x / 2.f + position.x * scale.x;
+    modPos.y = 720.f * scale.y / 2.f - size.y * scale.y / 2.f + position.y * scale.y;
+
+    this->sf::Transformable::setPosition(modPos);
+
+    // define its texture area to be a (texture.size.x)x(texture.size.y) rectangle starting at (0, 0)
+    this->vertices[0].texCoords = sf::Vector2f(0, 0);
+    this->vertices[1].texCoords = sf::Vector2f(textSizeX, 0);
+    this->vertices[2].texCoords = sf::Vector2f(textSizeX, textSizeY);
+    this->vertices[3].texCoords = sf::Vector2f(0, textSizeY);
+
+    this->viewScale = scale;
+}
+
+// Texture Cord
 
 Button::~Button()
 {

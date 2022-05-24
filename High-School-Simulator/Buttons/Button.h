@@ -55,7 +55,9 @@ protected:
 public:
     Button();
     Button(sf::Vector2f position, sf::Vector2f scale, bool* condition, bool boolean);
+    Button(sf::Vector2f position, sf::Vector2f size, sf::Vector2f scale, bool* condition, bool boolean);
     Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, bool* condition, bool boolean);
+    Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f size, sf::Vector2f scale, bool* condition, bool boolean);
     virtual ~Button();
 
     sf::FloatRect getGlobalBounds();

@@ -44,6 +44,14 @@ void PauseState::initButtons()
 	this->buttons.push_back(new Button(this->textureButton["Continue"], sf::Vector2f(0.f, 150.f), scale, this->booleans["ContinueGameState"], true));
 	this->buttons.push_back(new Button(this->textureButton["Settings"], sf::Vector2f(0.f, 225.f), scale, new bool, true));
 	this->buttons.push_back(new Button(this->textureButton["Quit"], sf::Vector2f(0.f, 300.f), scale, this->booleans["QuitGameState"], true));
+
+	for (int i = 0; i < this->buttons.size(); i++)
+	{
+		this->buttons[i]->add(new ButtonMovementComponent);
+
+		this->buttons[i]->getMovementComponent()->change = sf::Vector2f(-7.5f, -7.5f);
+		this->buttons[i]->setPosition(this->buttons[i]->getPosition());
+	}
 }
 //---INITIALIZE FUNCTIONS---//
 PauseState::PauseState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::Vector2f* mosPosView, std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed, std::map<std::string, bool*> booleans) : State(window, mosPosWindow, mosPosView, keyBinds, keyBindPressed, booleans)

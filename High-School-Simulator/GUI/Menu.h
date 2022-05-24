@@ -3,6 +3,8 @@
 
 
 #include "../Physics.h"
+#include "../Buttons/Button.h"
+#include "../Buttons/LButton.h"
 
 
 enum class MenuState{MAIN=0};
@@ -19,8 +21,10 @@ private:
 
     sf::VertexArray background;
     sf::VertexArray border;
+
     sf::VertexArray mainDividers;
     sf::RectangleShape mainSelectors[5];
+    LButton mainButtons[5];
 
     sf::View view;
     sf::RenderWindow* window;
