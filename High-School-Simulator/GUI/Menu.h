@@ -36,6 +36,8 @@ public:
     Menu(sf::RenderWindow* window, sf::Font* fontConnectionII);
     virtual ~Menu();
 
+    LButton& getButtons(int index);
+
     void updateMainMenu(const float& dt, sf::Vector2f& mosPosView);
     void update(const float& dt, sf::Vector2i*& mosPosWindow);
 

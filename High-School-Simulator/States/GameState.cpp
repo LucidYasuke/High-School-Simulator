@@ -88,12 +88,25 @@ const std::string Date::getDayAsString() const
 
 const std::string Date::getHourAsString() const
 {
+	if (this->hour < 10)
+	{
+		return "0" + std::to_string(this->hour);
+	}
 	return std::to_string(this->hour);
 }
 
 const std::string Date::getMinuteAsString() const
 {
+	if (this->getMinute() < 10)
+	{
+		return "0" + std::to_string(this->getMinute());
+	}
 	return std::to_string(this->getMinute());
+}
+
+const std::string Date::getTimeAsString() const
+{
+	return this->getHourAsString() + ":" + this->getMinuteAsString();
 }
 
 void Date::setDay(Day& day)
@@ -155,7 +168,7 @@ void GameState::initBackground()
 void GameState::initBools()
 {
 	this->booleansPlayerFunctions.insert({"Sleep", new bool});
-	this->booleansPlayerFunctions.insert({"High", new bool});
+	this->booleansPlayerFunctions.insert({"GetHigh", new bool});
 	this->booleansPlayerFunctions.insert({"Study", new bool});
 
 	for (auto iter = this->booleansPlayerFunctions.begin(); iter != this->booleansPlayerFunctions.end(); iter++)
@@ -171,6 +184,10 @@ void GameState::initButtons()
 	viewWorldScale.y = this->window->getDefaultView().getSize().y / 720.f / this->viewWorld.getViewport().height;
 
 	this->buttonsHidden.insert({ "Sleep", new Button(sf::Vector2f(0.f,0.f), sf::Vector2f(viewWorldScale.x * .5f, viewWorldScale.y * .5f), this->booleansPlayerFunctions["Sleep"], true) });
+
+	//====MAIN VIEW===//
+	this->playerMenu.getButtons(0).setBoolean(this->booleansPlayerFunctions["GetHigh"], true);
+	//---MAIN VIEW---//
 }
 
 //---INITIALIZE FUNCTIONS---//
@@ -284,6 +301,7 @@ void GameState::updateDate(const float& dt)
 	{
 		this->date.update(dt * timeBlend);
 	}
+	std::cout << "Day: " << this->date.getDayAsString() << " Time: " << this->date.getTimeAsString() << std::endl;
 }
 
 void GameState::updateInput()
@@ -307,11 +325,11 @@ void GameState::updateInput()
 
 void GameState::updatePlayerFunctions()
 {
-	switch (*this->booleansPlayerFunctions["High"])
+	switch (*this->booleansPlayerFunctions["GetHigh"])
 	{
 	case true:
 		this->player->getToxicology().getHigh();
-		*this->booleansPlayerFunctions["High"] = false;
+		*this->booleansPlayerFunctions["GetHigh"] = false;
 		break;
 	default:
 		break;

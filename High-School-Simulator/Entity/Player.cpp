@@ -77,11 +77,12 @@ void Player::updateMovement(const float& dt)
 
 	if (this->keyBindPressed->at("SPRINT"))
 	{
-		// pythag(sf::Vector2f(percentRange(this->velocity.x, .5f, 1), percentRange(this->velocity.y, .5f, 1)))
+		this->getPsychology().setIsSprinting(true);
 		this->move(normalize(this->direction) * percentRange(100.f, .5f, 1) * dt);
 	}
 	else
 	{
+		this->getPsychology().setIsSprinting(false);
 		this->move(normalize(this->direction) * 100.f * dt);
 	}
 }

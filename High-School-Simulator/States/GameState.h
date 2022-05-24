@@ -33,6 +33,7 @@ public:
 	const std::string getDayAsString() const;
 	const std::string getHourAsString() const;
 	const std::string getMinuteAsString() const;
+	const std::string getTimeAsString() const;
 
 	void setDay(Day& day);
 	void setHour(int& hour);

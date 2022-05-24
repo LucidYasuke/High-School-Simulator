@@ -69,7 +69,6 @@ void Menu::initMainMenuVariables()
     {
         this->mainButtons[i] = LButton(sf::Vector2f(this->bounds.width * 7.f / 8.f, this->bounds.height * 1.f / 5.f));
         this->mainButtons[i].add(new ButtonComponent::Movement);
-        this->mainButtons[i].getMovementComponent()->change = sf::Vector2f(-7.5f, -7.5f);
         this->mainButtons[i].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f + 1.f, this->bounds.top + this->bounds.height * static_cast<float>(i) / 5.f));
         this->mainButtons[i].add(new ButtonComponent::Color);
         this->mainButtons[i].getColorComponent()->idleColor = sf::Color::White;
@@ -97,6 +96,15 @@ Menu::Menu(sf::RenderWindow* window, sf::Font* fontConnectionII)
 
 Menu::~Menu()
 {
+}
+
+LButton& Menu::getButtons(int index)
+{
+    if (index >= 5)
+    {
+        return this->mainButtons[-1];
+    }
+    return this->mainButtons[index];
 }
 
 void Menu::updateMainMenu(const float& dt, sf::Vector2f& mosPosView)

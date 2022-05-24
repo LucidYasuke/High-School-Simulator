@@ -380,6 +380,11 @@ const bool& Psychology::getIsStudying() const
 	return this->isStudying;
 }
 
+void Psychology::setIsSprinting(bool condition)
+{
+	this->isSprinting = true;
+}
+
 //---PSYCHOLOGY---//
 
 

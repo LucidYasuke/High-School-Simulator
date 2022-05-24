@@ -49,6 +49,7 @@ private:
 	double sadness;
 	double fatigue;
 
+	bool isSprinting;
 	bool isAsleep;
 	bool isStudying;
 
@@ -80,6 +81,12 @@ public:
 	void sleep();
 
 	void updateStudy(const float& dt, Toxicology& toxic);
+	void updateIntelligence(const float& dt, Toxicology& toxic);
+	void updateJoy(const float& dt, Toxicology& toxic);
+	void updateSadness(const float& dt, Toxicology& toxic);
+	void updateFatigue(const float& dt, Toxicology& toxic);
+
+
 	void updateLimits();
 	void update(const float& dt, Toxicology& toxic);
 
@@ -87,6 +94,8 @@ public:
 
 	const bool& getIsAsleep() const;
 	const bool& getIsStudying() const;
+
+	void setIsSprinting(bool condition);
 
 	template <typename T>
 	T getIntelligence();	
