@@ -5,6 +5,23 @@
 #include "../Physics.h"
 
 
+struct ButtonMovementComponent
+{
+    sf::Vector2f originalPosition;
+    sf::Vector2f change;
+    sf::Vector2f modifiedPosition;
+};
+
+struct ButtonAnimationComponent
+{
+    float cdAnimationIntervalMax;
+    sf::Time cdAnimationInterval;
+    std::vector<sf::Vector2f> idleTexturePositions;
+    std::vector<sf::Vector2f> hoverTexturePositions;
+    std::vector<sf::Vector2f> activeTexturePositions;
+};
+
+
 enum class buttonStates { BTNIDLE = 0, BTNHOVER, BTNPRESSED };
 
 class Button : public sf::Drawable, public sf::Transformable
@@ -17,12 +34,12 @@ protected:
 
     buttonStates buttonState;
 
-    sf::Vector2f originalScale;
-    sf::Vector2f modifiedScale;
-    sf::Vector2f viewScale;
+    //===COMPONENTS===//
+    ButtonMovementComponent* movementComponent;
+    ButtonAnimationComponent* animationComponent;
+    //---COMPONENTS---//
 
-    sf::Vector2f originalPosition;
-    sf::Vector2f modifiedPosition;
+    sf::Vector2f viewScale;
     
     //===Time===//
     sf::Time lastClicked;
@@ -42,6 +59,12 @@ public:
     virtual ~Button();
 
     sf::FloatRect getGlobalBounds();
+
+    void add(ButtonMovementComponent* movementComponent);
+    void add(ButtonAnimationComponent* animationComponent);
+
+    ButtonMovementComponent*& getMovementComponent();
+    ButtonAnimationComponent*& getAnimationComponent();
 
     void setPosition(sf::Vector2f position);
     void setBool(bool* condition, bool boolean);

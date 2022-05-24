@@ -19,7 +19,8 @@ private:
 
     sf::VertexArray background;
     sf::VertexArray border;
-    sf::VertexArray dividers;
+    sf::VertexArray mainDividers;
+    sf::RectangleShape mainSelectors[5];
 
     sf::View view;
     sf::RenderWindow* window;
@@ -31,8 +32,8 @@ public:
     Menu(sf::RenderWindow* window, sf::Font* fontConnectionII);
     virtual ~Menu();
 
-    void updateMainMenu();
-    void update(const float& dt);
+    void updateMainMenu(const float& dt, sf::Vector2f& mosPosView);
+    void update(const float& dt, sf::Vector2i*& mosPosWindow);
 
     void renderMainMenu(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);

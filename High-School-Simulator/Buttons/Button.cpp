@@ -34,17 +34,6 @@ Button::Button()
     this->vertices[1].color = sf::Color::White;
     this->vertices[2].color = sf::Color::White;
     this->vertices[3].color = sf::Color::White;
-
-    sf::Vector2f scale(1.f, 1.f);
-    sf::Vector2f position(0.f, 0.f);
-
-    this->originalScale = scale;
-    this->modifiedScale.x = scale.x + .05f * scale.x;
-    this->modifiedScale.y = scale.y + .05f * scale.y;
-
-    this->originalPosition = position;
-    this->modifiedPosition.x = position.x - 7.5f * scale.x;
-    this->modifiedPosition.y = position.y - 7.5f * scale.y;
 }
 
 Button::Button(sf::Vector2f position, sf::Vector2f scale, bool* condition, bool boolean)
@@ -63,14 +52,6 @@ Button::Button(sf::Vector2f position, sf::Vector2f scale, bool* condition, bool 
 
     this->sf::Transformable::setPosition(position);
 
-    this->originalScale = this->getScale();
-    this->modifiedScale.x = percentRange(this->getScale().x, .05f);
-    this->modifiedScale.y = percentRange(this->getScale().y, .05f);
-
-    this->originalPosition = position;
-    this->modifiedPosition.x = position.x - 7.5f * scale.x;
-    this->modifiedPosition.y = position.y - 7.5f * scale.y;
-
     this->viewScale = scale;
 }
 
@@ -83,8 +64,6 @@ Button::Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
     this->texture = texture;
 
     this->vertices = sf::VertexArray(sf::Quads, 4);
-
-    this->originalScale = scale;
 
     float textSizeX = static_cast<float>(this->texture->getSize().x);
     float textSizeY = static_cast<float>(this->texture->getSize().y);
@@ -107,14 +86,6 @@ Button::Button(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
     this->vertices[2].texCoords = sf::Vector2f(textSizeX, textSizeY);
     this->vertices[3].texCoords = sf::Vector2f(0, textSizeY);
 
-    this->originalScale = this->getScale();
-    this->modifiedScale.x = percentRange(this->getScale().x, .05f);
-    this->modifiedScale.y = percentRange(this->getScale().y, .05f);
-
-    this->originalPosition = modPos;
-    this->modifiedPosition.x = modPos.x - 7.5f * scale.x;
-    this->modifiedPosition.y = modPos.y - 7.5f * scale.y;
-
     this->viewScale = scale;
 }
 
@@ -127,13 +98,36 @@ sf::FloatRect Button::getGlobalBounds()
     return sf::FloatRect(this->getPosition().x, this->getPosition().y, this->vertices[2].position.x - this->vertices[0].position.x, this->vertices[2].position.y - this->vertices[0].position.y);
 }
 
+void Button::add(ButtonMovementComponent* movementComponent)
+{
+    this->movementComponent = movementComponent;
+}
+
+void Button::add(ButtonAnimationComponent* animationComponent)
+{
+    this->animationComponent = animationComponent;
+}
+
+ButtonMovementComponent*& Button::getMovementComponent()
+{
+    return this->movementComponent;
+}
+
+ButtonAnimationComponent*& Button::getAnimationComponent()
+{
+    return this->animationComponent;
+}
+
 void Button::setPosition(sf::Vector2f position)
 {
     this->sf::Transformable::setPosition(position);
 
-    this->originalPosition = position;
-    this->modifiedPosition.x = position.x - 7.5f * this->viewScale.x;
-    this->modifiedPosition.y = position.y - 7.5f * this->viewScale.y;
+    if (this->movementComponent)
+    {
+        this->movementComponent->originalPosition = position;
+        this->movementComponent->modifiedPosition.x = position.x + this->movementComponent->change.x;
+        this->movementComponent->modifiedPosition.y = position.y + this->movementComponent->change.y;
+    }
 }
 
 void Button::setBool(bool* condition, bool boolean)
@@ -150,8 +144,6 @@ void Button::reset()
 void Button::updateTimers(const float& dt)
 {
     this->lastClicked += sf::seconds(dt);
-
-    if (this->lastClicked >= this->lastClickedMax * 3.f) { this->lastClicked = this->lastClickedMax; } // Just so it doesn't hold up too much space
 }
 
 void Button::update(const float& dt, const sf::Vector2f mosPos)
@@ -180,25 +172,35 @@ void Button::update(const float& dt, const sf::Vector2f mosPos)
     case buttonStates::BTNIDLE:
         if (this->active)
         {
-            this->setScale(this->originalScale);
-            this->sf::Transformable::setPosition(this->originalPosition);
+            if (this->movementComponent)
+            {
+                this->setScale(sf::Vector2f(1.f, 1.f));
+                this->sf::Transformable::setPosition(this->movementComponent->originalPosition);
+            }
             this->active = false;
         }
         break;
     case buttonStates::BTNHOVER:
         if (!this->active) 
         { 
-            this->setScale(this->modifiedScale);
-            this->sf::Transformable::setPosition(this->modifiedPosition);
+            if (this->movementComponent)
+            {
+                this->setScale(sf::Vector2f(1.05f, 1.05f));
+                this->sf::Transformable::setPosition(sf::Vector2f(this->movementComponent->modifiedPosition.x * this->viewScale.x, this->movementComponent->modifiedPosition.y * this->viewScale.y));
+            }
             this->active = true;
         }
         break;
     case buttonStates::BTNPRESSED:
         *this->condition = this->boolean;
+
         if (this->active)
-        {
-            this->setScale(this->originalScale);
-            this->sf::Transformable::setPosition(this->originalPosition);
+        {        
+            if (this->movementComponent)
+            {
+                this->setScale(sf::Vector2f(1.f, 1.f));
+                this->sf::Transformable::setPosition(this->movementComponent->originalPosition);
+            }
             this->active = false;
         }
         this->buttonState = buttonStates::BTNIDLE;

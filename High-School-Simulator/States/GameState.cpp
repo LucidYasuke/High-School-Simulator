@@ -396,7 +396,7 @@ void GameState::updateViews(const float& dt)
 
 	this->miniview.update(dt, stats);
 
-	this->playerMenu.update(dt);
+	this->playerMenu.update(dt, this->mosPosWindow);
 }
 
 void GameState::update(const float& dt)
