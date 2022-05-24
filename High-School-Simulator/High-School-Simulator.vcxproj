@@ -153,6 +153,7 @@
     <ClCompile Include="GUI\Bar.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="GUI\ProgressBar.cpp" />
+    <ClCompile Include="Item\Inventory.cpp" />
     <ClCompile Include="Item\Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -176,7 +177,9 @@
     <ClInclude Include="GUI\GUI.h" />
     <ClInclude Include="GUI\ProgressBar.h" />
     <ClInclude Include="Includes.h" />
+    <ClInclude Include="Item\Inventory.h" />
     <ClInclude Include="Item\Item.h" />
+    <ClInclude Include="Item\Items.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="States\GameState.h" />
     <ClInclude Include="States\PauseState.h" />

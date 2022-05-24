@@ -1,6 +1,15 @@
 #include "Player.h"
 
 
+void Player::initVariables()
+{
+	this->inventory = new Inventory(100);
+	std::cout << "Inv before" << this->inventory->maxSize() << " " << this->inventory->size() << "\n";
+
+	this->inventory->
+	std::cout << "Inv after" << this->inventory->maxSize() << " " << this->inventory->size() << "\n";
+}
+
 Player::Player(std::map<std::string, int>* keyBinds, std::map<std::string, bool>* keyBindPressed) : Entity()
 {
 	this->keyBinds = keyBinds;
@@ -21,6 +30,7 @@ Player::Player(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale, 
 
 Player::~Player()
 {
+	delete this->inventory;
 }
 
 void Player::setDemographic(Demographic demographic)

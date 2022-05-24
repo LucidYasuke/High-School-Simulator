@@ -1,6 +1,12 @@
 #include "Item.h"
 
 
+void Item::initVariables()
+{
+    this->value = 0;
+    this->type = ItemTypes::IT_DEFAULT;
+}
+
 void Item::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the entity's transform -- combine it with the one that was passed by the caller
@@ -30,6 +36,13 @@ Item::Item()
     this->vertices[1].color = sf::Color::White;
     this->vertices[2].color = sf::Color::White;
     this->vertices[3].color = sf::Color::White;
+}
+
+Item::Item(unsigned value)
+{
+    this->initVariables();
+    this->value = value;
+    this->type = ItemTypes::IT_DEFAULT;
 }
 
 Item::Item(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale)

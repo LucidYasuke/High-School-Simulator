@@ -4,7 +4,8 @@
 
 #include "Entity.h"
 #include "EntityComponents.h"
-
+#include "../Item/Items.h"
+#include "../Item/Inventory.h"
 
 class Player : public Entity
 {
@@ -14,6 +15,9 @@ private:
 	Wallet wallet;
 
 	Demographic demographic;
+
+	Inventory* inventory;
+	void initVariables();
 
 	std::map<std::string, int>* keyBinds;
 	std::map<std::string, bool>* keyBindPressed;
