@@ -20,19 +20,20 @@ void TitleState::initTextures()
 void TitleState::initTitle()
 {
 	// Create scales based off window default view size
-	float scale = (this->window->getDefaultView().getSize().x + this->window->getDefaultView().getSize().y) / 2000.f;
+	float totalScale = (this->window->getDefaultView().getSize().x + this->window->getDefaultView().getSize().y) / 2000.f;
+
 	float scaleX = this->window->getDefaultView().getSize().x / 1280.f;
 	float scaleY = this->window->getDefaultView().getSize().y / 720.f;
 
 	// Create text config
 	this->textTitle[0].setFont(this->fontConnectionII);
-	this->textTitle[0].setCharacterSize(static_cast<unsigned int>(128.f * scale));
+	this->textTitle[0].setCharacterSize(static_cast<unsigned int>(128.f * totalScale));
 	this->textTitle[0].setStyle(sf::Text::Bold);
-	this->textTitle[0].setLetterSpacing(1.1f * scale);
+	this->textTitle[0].setLetterSpacing(1.1f * totalScale);
 
 	// Copying Objects with same configs
 	this->textTitle[1] = this->textTitle[0];
-	this->textTitle[1].setCharacterSize(static_cast<unsigned int>(96.f * scale));
+	this->textTitle[1].setCharacterSize(static_cast<unsigned int>(96.f * totalScale));
 
 	// Set the names
 	this->textTitle[0].setString("HIGH SCHOOL");
@@ -45,34 +46,58 @@ void TitleState::initTitle()
 
 void TitleState::initButtons()
 {
-	sf::Vector2f scale;
-	scale.x = this->window->getDefaultView().getSize().x / 1280.f;
-	scale.y = this->window->getDefaultView().getSize().y / 720.f;
+	sf::Vector2f scale = divideVector(this->window->getDefaultView().getSize(), sf::Vector2f(1280.f, 720.f));
 
 	this->booleans.insert({ "QuitGame", &this->quit });
 
-	this->buttons.push_back(new Button(this->textureButton["Start"], sf::Vector2f(-132.5f, 150.f), scale, this->booleans["CreateGameState"], true));
-	this->buttons.push_back(new Button(this->textureButton["Blank"], sf::Vector2f(132.5f, 150.f), scale, new bool, true));
-	this->buttons.push_back(new Button(this->textureButton["Blank"], sf::Vector2f(-132.5f, 225.f), scale, new bool, true));
-	this->buttons.push_back(new Button(this->textureButton["Settings"], sf::Vector2f(132.5f, 225.f), scale, new bool, true));
-	this->buttons.push_back(new Button(this->textureButton["Quit"], sf::Vector2f(0.f, 300.f), scale, this->booleans["QuitGame"], true));
+	for (int i = 0; i < 5; i++)
+	{
+		this->buttons.push_back(new Button(sf::Vector2f(256.f, 64.f)));
+		this->buttons[i]->setTexture(this->textureButton["Blank"]);
 
+		this->buttons[i]->add(new ButtonComponent::Movement);
+		this->buttons[i]->setScale(scale);
+		this->buttons[i]->setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->buttons[i]->getGlobalBounds().width / 2.f, this->window->getDefaultView().getSize().y / 2.f - this->buttons[i]->getGlobalBounds().height / 2.f));
+		
+		switch (i)
+		{
+		case 0:
+			this->buttons[i]->setBoolean(this->booleans["CreateGameState"], true);
+			this->buttons[i]->setTexture(this->textureButton["Start"]);
+			this->buttons[i]->getMovementComponent()->change = multiplyVector(sf::Vector2f(-7.5f, -7.5f), scale);
+			this->buttons[i]->setPosition(this->buttons[i]->getPosition() + multiplyVector(sf::Vector2f(-132.5f, 150.f), scale));
+			break;
+		case 1:
+			this->buttons[i]->setBoolean(new bool, true);
+			this->buttons[i]->setTexture(this->textureButton["Blank"]);
+			this->buttons[i]->getMovementComponent()->change = multiplyVector(sf::Vector2f(7.5, -7.5f), scale);
+			this->buttons[i]->setPosition(this->buttons[i]->getPosition() + multiplyVector(sf::Vector2f(132.5f, 150.f), scale));
+			break;
+		case 2:
+			this->buttons[i]->setBoolean(new bool, true);
+			this->buttons[i]->setTexture(this->textureButton["Blank"]);
+			this->buttons[i]->getMovementComponent()->change = multiplyVector(sf::Vector2f(-7.5, -7.5f), scale);
+			this->buttons[i]->setPosition(this->buttons[i]->getPosition() + multiplyVector(sf::Vector2f(-132.5f, 225.f), scale));
+			break;		
+		case 3:
+			this->buttons[i]->setBoolean(new bool, true);
+			this->buttons[i]->setTexture(this->textureButton["Settings"]);
+			this->buttons[i]->getMovementComponent()->change = multiplyVector(sf::Vector2f(7.5, -7.5f), scale);
+			this->buttons[i]->setPosition(this->buttons[i]->getPosition() + multiplyVector(sf::Vector2f(132.5f, 225.f), scale));
+			break;		
+		case 4:
+			this->buttons[i]->setBoolean(this->booleans["QuitGame"], true);
+			this->buttons[i]->setTexture(this->textureButton["Quit"]);
+			this->buttons[i]->getMovementComponent()->change = multiplyVector(sf::Vector2f(-7.5, 7.5f), scale);
+			this->buttons[i]->setPosition(this->buttons[i]->getPosition() + multiplyVector(sf::Vector2f(0.f, 300.f), scale));
+			break;
+		default:
+			break;
+		}
+	}
 	for (int i = 0; i < this->buttons.size(); i++)
 	{
-		this->buttons[i]->add(new ButtonMovementComponent);
-		if (i % 2 == 0 && i == 4)
-		{
-			this->buttons[i]->getMovementComponent()->change = sf::Vector2f(-7.5f, 7.5f);
-		}
-		else if (i % 2 == 0)
-		{
-			this->buttons[i]->getMovementComponent()->change = sf::Vector2f(-7.5f, -7.5f);
-		}
-		else
-		{
-			this->buttons[i]->getMovementComponent()->change = sf::Vector2f(7.5f, -7.5f);
-		}
-		this->buttons[i]->setPosition(this->buttons[i]->getPosition());
+		//std::cout << i << " [" << this->buttons[i]->getPosition().x << "," << this->buttons[i]->getPosition().y << "]" << std::endl;
 	}
 }
 //---INITIALIZE FUNCTIONS---//

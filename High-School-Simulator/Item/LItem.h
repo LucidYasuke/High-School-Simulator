@@ -2,7 +2,7 @@
 #define LTIME_H
 
 
-#include "../Buttons/LButton.h"
+#include "../Buttons/Button.h"
 
 
 namespace ItemComponent

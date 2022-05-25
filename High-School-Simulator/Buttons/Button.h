@@ -78,9 +78,11 @@ public:
     void add(ButtonComponent::Animation* animationComponent);
     void add(ButtonComponent::Color* colorComponent);
 
+
     ButtonComponent::Movement*& getMovementComponent();
     ButtonComponent::Animation*& getAnimationComponent();
     ButtonComponent::Color*& getColorComponent();
+
 
     void reset();
 
