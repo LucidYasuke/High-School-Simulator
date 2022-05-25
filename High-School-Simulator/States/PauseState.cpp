@@ -5,10 +5,12 @@
 void PauseState::initTextures()
 {
 	//===Init Button Textures===//
+	this->textureButton.insert({ "Blank", new sf::Texture });
 	this->textureButton.insert({ "Continue", new sf::Texture });
 	this->textureButton.insert({ "Settings", new sf::Texture });
 	this->textureButton.insert({ "Quit", new sf::Texture });
 
+	this->textureButton["Blank"]->loadFromFile("Assets/Buttons/ButtonBlank.png");
 	this->textureButton["Continue"]->loadFromFile("Assets/Buttons/ButtonContinue.png");
 	this->textureButton["Settings"]->loadFromFile("Assets/Buttons/ButtonSettings.png");
 	this->textureButton["Quit"]->loadFromFile("Assets/Buttons/ButtonQuit.png");
@@ -35,40 +37,40 @@ void PauseState::initTitle()
 
 void PauseState::initButtons()
 {
-	sf::Vector2f scale;
-	scale.x = this->window->getDefaultView().getSize().x / 1280.f;
-	scale.y = this->window->getDefaultView().getSize().y / 720.f;
+	sf::Vector2f scale = divideVector(this->window->getDefaultView().getSize(), sf::Vector2f(1280.f, 720.f));
 
 	this->booleans.insert({ "ContinueGameState", &this->quit }); // ContinueGameState = QuitPauseState
 
 	for (int i = 0; i < 3; i++)
 	{
-		this->buttons.push_back(new Button());
-		this->buttons[i]->add(new ButtonComponent::Movement);
+		this->buttons.push_back(new Button(sf::Vector2f(256.f, 64.f)));
+		this->buttons[i]->setTexture(this->textureButton["Blank"]);
+
+		this->buttons[i]->add(new ButtonComponent::Movement);		
+		this->buttons[i]->setScale(scale);
 		this->buttons[i]->getMovementComponent()->change = multiplyVector(sf::Vector2f(-7.5, -7.5f), scale);
+		this->buttons[i]->setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->buttons[i]->getGlobalBounds().width / 2.f, this->window->getDefaultView().getSize().y / 2.f - this->buttons[i]->getGlobalBounds().height / 2.f));
 
 		switch (i)
 		{
 		case 0:
 			this->buttons[0]->setBoolean(this->booleans["ContinueGameState"], true);
 			this->buttons[0]->setTexture(this->textureButton["Continue"]);
-			this->buttons[0]->setPosition()
-			this->buttons[0]->setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->buttons[0]->getGlobalBounds().width / 2.f + 0.f, this->window->getDefaultView().getSize().y / 2.f - this->buttons[0]->getGlobalBounds().height / 2.f + 150.f));
+			this->buttons[0]->setPosition(this->buttons[0]->getPosition() + multiplyVector(sf::Vector2f(0.f, 150.f), scale));
 			break;
 		case 1:
 			this->buttons[1]->setBoolean(new bool, true);
 			this->buttons[1]->setTexture(this->textureButton["Settings"]);
-			this->buttons[1]->setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->buttons[1]->getGlobalBounds().width / 2.f + 0.f, this->window->getDefaultView().getSize().y / 2.f - this->buttons[1]->getGlobalBounds().height / 2.f + 225.f));
+			this->buttons[1]->setPosition(this->buttons[1]->getPosition() + multiplyVector(sf::Vector2f(0.f, 225.f), scale));
 			break;
 		case 2:
 			this->buttons[2]->setBoolean(this->booleans["QuitGameState"], true);
 			this->buttons[2]->setTexture(this->textureButton["Quit"]);
-			this->buttons[2]->setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->buttons[2]->getGlobalBounds().width / 2.f + 0.f, this->window->getDefaultView().getSize().y / 2.f - this->buttons[2]->getGlobalBounds().height / 2.f + 300.f));
+			this->buttons[2]->setPosition(this->buttons[2]->getPosition() + multiplyVector(sf::Vector2f(0.f, 300.f), scale));
 			break;
 		default:
 			break;
 		}
-		this->buttons[i]->setScale(scale);
 	}
 }
 //---INITIALIZE FUNCTIONS---//
