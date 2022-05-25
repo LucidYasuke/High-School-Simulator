@@ -183,7 +183,11 @@ void GameState::initButtons()
 	viewWorldScale.x = this->window->getDefaultView().getSize().x / 1280.f / this->viewWorld.getViewport().width;
 	viewWorldScale.y = this->window->getDefaultView().getSize().y / 720.f / this->viewWorld.getViewport().height;
 
-	this->buttonsHidden.insert({ "Sleep", new Button(sf::Vector2f(0.f,0.f), sf::Vector2f(viewWorldScale.x * .5f, viewWorldScale.y * .5f), this->booleansPlayerFunctions["Sleep"], true) });
+	this->buttonsHidden.insert({ "Sleep", new Button(sf::Vector2f(256.f, 64.f)) });
+	this->buttonsHidden["Sleep"]->setBoolean(this->booleansPlayerFunctions["Sleep"], true);
+	this->buttonsHidden["Sleep"]->add(new ButtonComponent::Movement);
+	this->buttonsHidden["Sleep"]->setScale(sf::Vector2f(viewWorldScale.x * .5f, viewWorldScale.y * .5f));
+	this->buttonsHidden["Sleep"]->getMovementComponent()->change = sf::Vector2f(-7.5f * viewWorldScale.x, -7.5f * viewWorldScale.y);
 
 	//====MAIN VIEW===//
 	this->playerMenu.getButtons(0).setBoolean(this->booleansPlayerFunctions["GetHigh"], true);

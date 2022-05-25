@@ -67,7 +67,7 @@ void Menu::initMainMenuVariables()
 
     for (int i = 0; i < 5; i++)
     {
-        this->mainButtons[i] = LButton(sf::Vector2f(this->bounds.width * 7.f / 8.f, this->bounds.height * 1.f / 5.f));
+        this->mainButtons[i] = Button(sf::Vector2f(this->bounds.width * 7.f / 8.f, this->bounds.height * 1.f / 5.f));
         this->mainButtons[i].add(new ButtonComponent::Movement);
         this->mainButtons[i].setPosition(sf::Vector2f(this->bounds.left + this->bounds.width * 1.f / 8.f + 1.f, this->bounds.top + this->bounds.height * static_cast<float>(i) / 5.f));
         this->mainButtons[i].add(new ButtonComponent::Color);
@@ -98,7 +98,7 @@ Menu::~Menu()
 {
 }
 
-LButton& Menu::getButtons(int index)
+Button& Menu::getButtons(int index)
 {
     if (index >= 5)
     {

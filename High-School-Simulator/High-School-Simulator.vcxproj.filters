@@ -57,9 +57,6 @@
     <ClCompile Include="Entity\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Buttons\Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Entity\EntityComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,7 +72,10 @@
     <ClCompile Include="GUI\Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Buttons\LButton.cpp">
+    <ClCompile Include="Buttons\Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Item\LItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,9 +122,6 @@
     <ClInclude Include="Entity\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Buttons\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Entity\EntityComponents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -140,7 +137,10 @@
     <ClInclude Include="GUI\Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Buttons\LButton.h">
+    <ClInclude Include="Buttons\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Item\LItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

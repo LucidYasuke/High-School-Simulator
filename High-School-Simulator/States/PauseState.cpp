@@ -41,16 +41,34 @@ void PauseState::initButtons()
 
 	this->booleans.insert({ "ContinueGameState", &this->quit }); // ContinueGameState = QuitPauseState
 
-	this->buttons.push_back(new Button(this->textureButton["Continue"], sf::Vector2f(0.f, 150.f), scale, this->booleans["ContinueGameState"], true));
-	this->buttons.push_back(new Button(this->textureButton["Settings"], sf::Vector2f(0.f, 225.f), scale, new bool, true));
-	this->buttons.push_back(new Button(this->textureButton["Quit"], sf::Vector2f(0.f, 300.f), scale, this->booleans["QuitGameState"], true));
-
-	for (int i = 0; i < this->buttons.size(); i++)
+	for (int i = 0; i < 3; i++)
 	{
-		this->buttons[i]->add(new ButtonMovementComponent);
+		this->buttons.push_back(new Button());
+		this->buttons[i]->add(new ButtonComponent::Movement);
+		this->buttons[i]->getMovementComponent()->change = multiplyVector(sf::Vector2f(-7.5, -7.5f), scale);
 
-		this->buttons[i]->getMovementComponent()->change = sf::Vector2f(-7.5f, -7.5f);
-		this->buttons[i]->setPosition(this->buttons[i]->getPosition());
+		switch (i)
+		{
+		case 0:
+			this->buttons[0]->setBoolean(this->booleans["ContinueGameState"], true);
+			this->buttons[0]->setTexture(this->textureButton["Continue"]);
+			this->buttons[0]->setPosition()
+			this->buttons[0]->setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->buttons[0]->getGlobalBounds().width / 2.f + 0.f, this->window->getDefaultView().getSize().y / 2.f - this->buttons[0]->getGlobalBounds().height / 2.f + 150.f));
+			break;
+		case 1:
+			this->buttons[1]->setBoolean(new bool, true);
+			this->buttons[1]->setTexture(this->textureButton["Settings"]);
+			this->buttons[1]->setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->buttons[1]->getGlobalBounds().width / 2.f + 0.f, this->window->getDefaultView().getSize().y / 2.f - this->buttons[1]->getGlobalBounds().height / 2.f + 225.f));
+			break;
+		case 2:
+			this->buttons[2]->setBoolean(this->booleans["QuitGameState"], true);
+			this->buttons[2]->setTexture(this->textureButton["Quit"]);
+			this->buttons[2]->setPosition(sf::Vector2f(this->window->getDefaultView().getSize().x / 2.f - this->buttons[2]->getGlobalBounds().width / 2.f + 0.f, this->window->getDefaultView().getSize().y / 2.f - this->buttons[2]->getGlobalBounds().height / 2.f + 300.f));
+			break;
+		default:
+			break;
+		}
+		this->buttons[i]->setScale(scale);
 	}
 }
 //---INITIALIZE FUNCTIONS---//
