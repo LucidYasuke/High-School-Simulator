@@ -5,7 +5,7 @@
 #include "../Includes.h"
 #include "../Physics.h"
 
-enum ItemTypes{IT_DEFAULT = 0,};
+enum ItemTypes{IT_DEFAULT = 0,MOVABLE};
 
 class Item : public sf::Drawable, public sf::Transformable
 {
@@ -32,6 +32,7 @@ public:
     Item(unsigned value);
     Item(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale);
     virtual ~Item();
+
     virtual Item* clone() = 0;
     const bool& getDeleted() const;
     sf::FloatRect getGlobalBounds();

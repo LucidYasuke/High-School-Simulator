@@ -17,7 +17,7 @@ private:
 	Demographic demographic;
 
 	Inventory* inventory;
-	void initVariables();
+	void initInventory();
 
 	std::map<std::string, int>* keyBinds;
 	std::map<std::string, bool>* keyBindPressed;

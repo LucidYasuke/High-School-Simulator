@@ -31,7 +31,7 @@ void Inventory::freeMemory()
 }
 
 //Constructors & Destructors
-Inventory::Inventory()
+Inventory::Inventory(unsigned capacity)
 {
 	this->capacity = capacity;
 	
@@ -88,6 +88,8 @@ const bool Inventory::remove(const unsigned index)
 
 		delete this->itemArray[index];
 		this->itemArray[index] = nullptr;
+		--this->nrOfItems;
+
 		return true;
 	}
 	return false;

@@ -78,6 +78,12 @@
     <ClCompile Include="Item\Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Item\Phone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Item\MOVABLE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -143,7 +149,10 @@
     <ClInclude Include="Item\Inventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item\Items.h">
+    <ClInclude Include="Item\Phone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Item\MOVABLE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

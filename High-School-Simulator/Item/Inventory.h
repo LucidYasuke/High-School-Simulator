@@ -16,7 +16,7 @@ private:
 	void freeMemory();
 
 public:
-	Inventory();
+	Inventory(unsigned capacity);
 	virtual ~Inventory();
 
 	const unsigned& size() const;
