@@ -262,10 +262,10 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 
 
 	this->worldItems.push_back(new Item(*this->textureBed)); // DESK
-	this->worldItems[1]->setColor(sf::Color(83, 49, 24));
+	this->worldItems[1]->setColor(sf::Color(192, 64, 0));
 	this->worldItems[1]->setScale(viewWorldScale);
 	this->worldItems[1]->add(new ItemComponent::WorldCollision);
-	this->worldItems[1]->setPosition(sf::Vector2f(this->map.getGlobalBounds().left, this->map.getGlobalBounds().top));
+	this->worldItems[1]->setPosition(sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f - this->worldItems[1]->getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top));
 	this->worldItems[1]->getCollisionComponent()->button = this->buttonsHidden["Study"];
 	this->buttonsHidden["Study"]->setPosition(sf::Vector2f(this->worldItems[1]->getGlobalBounds().left + this->worldItems[1]->getGlobalBounds().width / 2.f - this->buttonsHidden["Study"]->getGlobalBounds().width / 2.f, this->worldItems[1]->getGlobalBounds().top - this->buttonsHidden["Study"]->getGlobalBounds().height * 1.5f));
 

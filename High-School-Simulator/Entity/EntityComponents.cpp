@@ -3,8 +3,8 @@
 
 //===TOXICOLOGY===//
 
-// 3 Game Hours = 6 Real Life Minutes
-const float Toxicology::lastHighMax = 360.f;
+// .5 Game Hours = 1 Real Life Minutes
+const float Toxicology::lastHighMax = 30.f;
 
 // 3 Game Minutes = 6 Real Life Seconds
 const float Toxicology::cdHighMax = 6.f;
@@ -235,14 +235,14 @@ void Psychology::updateJoy(const float& dt, Toxicology& toxic)
 		}
 	}
 
-	// While it's been more than 3 Game Hours since last intoxicated
-	if (toxic.getLastHighMax() - toxic.getLastHigh() > 0 && toxic.getSobriety<double>() >= -20.0)
+	// While it's been less than 3 Game Hours since last intoxicated
+	if (toxic.getLastHighMax() - toxic.getLastHigh() > static_cast<float>(0) && toxic.getSobriety<double>() >= -20.0)
 	{
 		this->cdJoyDecrementSobriety += sf::seconds(dt);
 
 		if (this->cdJoyDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
 		{
-			this->joy = percentRange(this->joy, -0.010);
+			this->joy = percentRange(this->joy, -0.004);
 			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
 		}
 	}
