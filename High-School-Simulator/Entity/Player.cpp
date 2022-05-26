@@ -123,7 +123,7 @@ void Player::update(const float& dt)
 	}
 	if (this->psych.getIsStudying())
 	{
-		timeBlend += 2;
+		timeBlend += 7;
 	}
 	if (this->psych.getIsAsleep())
 	{
