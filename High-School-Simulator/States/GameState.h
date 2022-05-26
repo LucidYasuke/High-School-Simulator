@@ -3,9 +3,13 @@
 
 
 #include "PauseState.h"
+
 #include "../Entity/Player.h"
-#include "../Item/WorldItem.h"
+
+#include "../Item/Item.h"
+
 #include "../TileSets/TileMap.h"
+
 #include "../GUI/HUD.h"
 #include "../GUI/Menu.h"
 
@@ -72,9 +76,9 @@ private:
 	std::map<std::string, bool*> booleansPlayerFunctions;
 	//---Booleans---//
 
-	//===Entities===//
+	//===Entities/Items===//
 	Player* player;
-	WorldItem bed;
+	std::vector<Item*> worldItems;
 	//---Entities---//
 
 	//===Timers===//

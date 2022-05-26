@@ -151,9 +151,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GUI\Bar.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
-    <ClCompile Include="Item\Item.cpp" />
     <ClCompile Include="Buttons\Button.cpp" />
-    <ClCompile Include="Item\LItem.cpp" />
+    <ClCompile Include="Item\Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GUI\Menu.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -165,7 +164,6 @@
     <ClCompile Include="TileSets\Tile.cpp" />
     <ClCompile Include="TileSets\TileMap.cpp" />
     <ClCompile Include="TileSets\TileMoving.cpp" />
-    <ClCompile Include="Item\WorldItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity\EntityComponents.h" />
@@ -175,10 +173,9 @@
     <ClInclude Include="GUI\Bar.h" />
     <ClInclude Include="GUI\GUI.h" />
     <ClInclude Include="Includes.h" />
-    <ClInclude Include="Item\Item.h" />
     <ClInclude Include="GUI\Menu.h" />
     <ClInclude Include="Buttons\Button.h" />
-    <ClInclude Include="Item\LItem.h" />
+    <ClInclude Include="Item\Item.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="States\GameState.h" />
     <ClInclude Include="States\PauseState.h" />
@@ -188,7 +185,6 @@
     <ClInclude Include="TileSets\Tile.h" />
     <ClInclude Include="TileSets\TileMap.h" />
     <ClInclude Include="TileSets\TileMoving.h" />
-    <ClInclude Include="Item\WorldItem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\keybinds.ini" />

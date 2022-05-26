@@ -2,33 +2,60 @@
 #define ITEM_H
 
 
-#include "../Includes.h"
-#include "../Physics.h"
+#include "../Buttons/Button.h"
 
 
-class Item : public sf::Drawable, public sf::Transformable
+namespace ItemComponent
 {
-protected:
-    bool deleted;
+	struct WorldCollision
+	{
+		Button* button;
+		sf::FloatRect radius;
+	};
 
-    //===Graphics===//
-    sf::Texture* texture;
-    sf::VertexArray vertices;
-    //---Graphics---//
+	struct Inventory
+	{
+		// sprite.setScale(16 / this->sprite.get size x, 16/ this->sprite.get size y)
+		sf::Sprite inventorySprite;
+	};
+}
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+class Item : public sf::Sprite
+{
+private:
+	bool deleted;
+
+	//===COMPONENTS===//
+	ItemComponent::WorldCollision* collisionComponent;
+	ItemComponent::Inventory* inventoryComponent;
+	//---COMPONENTS---//
 public:
-    Item();
-    Item(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale);
-    virtual ~Item();
+	Item();
+	Item(const sf::Texture& texture);
+	Item(const sf::Texture& texture, const sf::IntRect& rectangle);
+	virtual ~Item();
 
-    const bool& getDeleted() const;
-    sf::FloatRect getGlobalBounds();
 
-    //===Update===//
-    void update(const float& dt);
-    //---Update---//
+	void add(ItemComponent::WorldCollision* collisionComponent);
+	void add(ItemComponent::Inventory* inventoryComponent);
+
+
+	ItemComponent::WorldCollision*& getCollisionComponent();
+	ItemComponent::Inventory*& getInventoryComponent();
+
+	void setPosition(sf::Vector2f position);
+
+	const bool& getDeleted() const;
+
+
+	//===Update===//
+	void update(const float& dt);
+	//---Update---//
 };
 
 
-#endif
+#endif // !LITEM_H
+
+
+

@@ -1,73 +1,82 @@
 #include "Item.h"
 
 
-void Item::draw(sf::RenderTarget& target, sf::RenderStates states) const
+Item::Item() : Sprite()
 {
-    // apply the entity's transform -- combine it with the one that was passed by the caller
-    states.transform *= this->getTransform(); // getTransform() is defined by sf::Transformable
-
-    // apply the texture
-    states.texture = this->texture;
-
-    // you may also override states.shader or states.blendMode if you want
-
-    // draw the vertex array
-    target.draw(this->vertices, states);
+	this->collisionComponent = 0;
+	this->inventoryComponent = 0;
 }
 
-Item::Item()
+Item::Item(const sf::Texture& texture) : Sprite(texture)
 {
-    this->vertices = sf::VertexArray(sf::Quads, 4);
-
-    // Defines it as a rectangle, located at (0, 0) and with size 4x4
-    this->vertices[0].position = sf::Vector2f(0, 0);
-    this->vertices[1].position = sf::Vector2f(4, 0);
-    this->vertices[2].position = sf::Vector2f(4, 4);
-    this->vertices[3].position = sf::Vector2f(0, 4);
-
-    // Default color white
-    this->vertices[0].color = sf::Color::White;
-    this->vertices[1].color = sf::Color::White;
-    this->vertices[2].color = sf::Color::White;
-    this->vertices[3].color = sf::Color::White;
+	this->collisionComponent = 0;
+	this->inventoryComponent = 0;
 }
 
-Item::Item(sf::Texture* texture, sf::Vector2f position, sf::Vector2f scale)
+Item::Item(const sf::Texture& texture, const sf::IntRect& rectangle) : Sprite(texture, rectangle)
 {
-    this->texture = texture;
-
-    this->vertices = sf::VertexArray(sf::Quads, 4);
-
-    float textSizeX = static_cast<float>(this->texture->getSize().x);
-    float textSizeY = static_cast<float>(this->texture->getSize().y);
-
-    // Defines it as a rectangle, located at (0, 0) and with size (texture.size.x*scaleX)x(texture.size.y*scaleY)
-    this->vertices[0].position = sf::Vector2f(0, 0);
-    this->vertices[1].position = sf::Vector2f(textSizeX * scale.x, 0);
-    this->vertices[2].position = sf::Vector2f(textSizeX * scale.x, textSizeY * scale.y);
-    this->vertices[3].position = sf::Vector2f(0, textSizeY * scale.y);
-
-    this->setPosition(position);
-
-    // define its texture area to be a (texture.size.x)x(texture.size.y) rectangle starting at (0, 0)
-    this->vertices[0].texCoords = sf::Vector2f(0, 0);
-    this->vertices[1].texCoords = sf::Vector2f(textSizeX, 0);
-    this->vertices[2].texCoords = sf::Vector2f(textSizeX, textSizeY);
-    this->vertices[3].texCoords = sf::Vector2f(0, textSizeY);
+	this->collisionComponent = 0;
+	this->inventoryComponent = 0;
 }
 
 Item::~Item()
 {
+	if (this->collisionComponent)
+	{
+		delete this->collisionComponent;
+	}
+	if (this->inventoryComponent)
+	{
+		delete this->inventoryComponent;
+	}
+}
+
+void Item::add(ItemComponent::WorldCollision* collisionComponent)
+{
+	this->collisionComponent = collisionComponent;
+
+	this->collisionComponent->button = nullptr;
+	this->collisionComponent->radius = this->getGlobalBounds();
+
+	this->collisionComponent->radius.left -= this->getGlobalBounds().width / 10.f;
+	this->collisionComponent->radius.top -= this->getGlobalBounds().height / 10.f;
+	this->collisionComponent->radius.width += this->getGlobalBounds().width / 5.f;
+	this->collisionComponent->radius.height += this->getGlobalBounds().height / 5.f;
+}
+
+void Item::add(ItemComponent::Inventory* inventoryComponent)
+{
+	this->inventoryComponent = inventoryComponent;
+}
+
+ItemComponent::WorldCollision*& Item::getCollisionComponent()
+{
+	return this->collisionComponent;
+}
+
+ItemComponent::Inventory*& Item::getInventoryComponent()
+{
+	return this->inventoryComponent;
+}
+
+void Item::setPosition(sf::Vector2f position)
+{
+	this->sf::Transformable::setPosition(position);
+
+	if (this->collisionComponent)
+	{
+		this->collisionComponent->radius = this->getGlobalBounds();
+
+		this->collisionComponent->radius.left -= this->getGlobalBounds().width / 10.f;
+		this->collisionComponent->radius.top -= this->getGlobalBounds().height / 10.f;
+		this->collisionComponent->radius.width += this->getGlobalBounds().width / 5.f;
+		this->collisionComponent->radius.height += this->getGlobalBounds().height / 5.f;
+	}
 }
 
 const bool& Item::getDeleted() const
 {
-    return deleted;
-}
-
-sf::FloatRect Item::getGlobalBounds()
-{
-    return sf::FloatRect(this->getPosition().x, this->getPosition().y, this->vertices[2].position.x - this->vertices[0].position.x, this->vertices[2].position.y - this->vertices[0].position.y);
+	return this->deleted;
 }
 
 void Item::update(const float& dt)

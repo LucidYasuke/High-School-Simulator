@@ -246,11 +246,14 @@ GameState::GameState(sf::RenderWindow* window, sf::Vector2i* mosPosWindow, sf::V
 	this->player = new Player(this->texturePlayer, sf::Vector2f(this->map.getGlobalBounds().left + this->map.getGlobalBounds().width / 2.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height / 2.f), viewWorldScale, this->keyBinds, this->keyBindPressed);
 	this->player->setPosition(sf::Vector2f(this->player->getGlobalBounds().left - this->player->getGlobalBounds().width / 2.f, this->player->getGlobalBounds().top - this->player->getGlobalBounds().height / 2.f));
 
-	this->bed = WorldItem(this->textureBed, sf::Vector2f(this->map.getGlobalBounds().left + 0.f, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height), viewWorldScale);
-	this->bed.setPosition(sf::Vector2f(this->bed.getGlobalBounds().left, this->bed.getGlobalBounds().top - this->bed.getGlobalBounds().height));
-	this->bed.getCollisionButton().button = this->buttonsHidden["Sleep"];
+	this->worldItems.push_back(new Item(*this->textureBed));
+	this->worldItems[0]->setScale(viewWorldScale);
+	this->worldItems[0]->add(new ItemComponent::WorldCollision);
+	this->worldItems[0]->setPosition(sf::Vector2f(this->map.getGlobalBounds().left, this->map.getGlobalBounds().top + this->map.getGlobalBounds().height - this->worldItems[0]->getGlobalBounds().height));
+	this->worldItems[0]->getCollisionComponent()->button = this->buttonsHidden["Sleep"];
 
-	this->buttonsHidden["Sleep"]->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f - this->buttonsHidden["Sleep"]->getGlobalBounds().width / 2.f, this->bed.getGlobalBounds().top - this->buttonsHidden["Sleep"]->getGlobalBounds().height * 1.5f));
+	this->buttonsHidden["Sleep"]->setPosition(sf::Vector2f(this->worldItems[0]->getGlobalBounds().left + this->worldItems[0]->getGlobalBounds().width / 2.f - this->buttonsHidden["Sleep"]->getGlobalBounds().width / 2.f, this->worldItems[0]->getGlobalBounds().top - this->buttonsHidden["Sleep"]->getGlobalBounds().height * 1.5f));
+
 }
 
 GameState::~GameState()
@@ -332,7 +335,10 @@ void GameState::updatePlayerFunctions()
 	switch (*this->booleansPlayerFunctions["GetHigh"])
 	{
 	case true:
-		this->player->getToxicology().getHigh();
+		if (!this->player->getPsychology().getIsAsleep())
+		{
+			this->player->getToxicology().getHigh();
+		}
 		*this->booleansPlayerFunctions["GetHigh"] = false;
 		break;
 	default:
@@ -346,7 +352,7 @@ void GameState::updatePlayerFunctions()
 		*this->booleansPlayerFunctions["Sleep"] = false;
 		if (!this->player->getPsychology().getIsAsleep())
 		{
-			this->player->setPosition(sf::Vector2f(this->bed.getCollisionButton().radius.left + this->bed.getCollisionButton().radius.width, this->bed.getCollisionButton().radius.top));
+			this->player->setPosition(sf::Vector2f(this->worldItems[0]->getCollisionComponent()->radius.left + this->worldItems[0]->getCollisionComponent()->radius.width, this->worldItems[0]->getCollisionComponent()->radius.top));
 		}
 		break;
 	default:
@@ -379,26 +385,27 @@ void GameState::updateViewWorld(const float& dt)
 	this->player->updateCollision(this->map.getGlobalBounds());
 
 	//===UPDATE PLAYER-WORLDITEM COLLISION===//
+	sf::Vector2f relativeMousePosView = this->window->mapPixelToCoords(*this->mosPosWindow, viewWorld);
+
 	sf::Vector2f mtv;
-	satCollision(this->player->getGlobalBounds(), this->bed.getGlobalBounds(), &mtv);
+	satCollision(this->player->getGlobalBounds(), this->worldItems[0]->getGlobalBounds(), &mtv);
 	if (!this->player->getPsychology().getIsAsleep())
 	{
 		this->player->move(mtv);
 	}
 	else
 	{
-		this->player->setPosition(sf::Vector2f(this->bed.getGlobalBounds().left + this->bed.getGlobalBounds().width / 2.f - this->player->getGlobalBounds().width / 2.f, this->bed.getGlobalBounds().top));
+		this->player->setPosition(sf::Vector2f(this->worldItems[0]->getGlobalBounds().left + this->worldItems[0]->getGlobalBounds().width / 2.f - this->player->getGlobalBounds().width / 2.f, this->worldItems[0]->getGlobalBounds().top));
 	}
 	//---UPDATE PLAYER-WORLDITEM COLLISION---//
 
 	//===UPDATE POPUP BUTTONS===//
-	if (satCollision(this->player->getGlobalBounds(), this->bed.getCollisionButton().radius))
+	if (satCollision(this->player->getGlobalBounds(), this->worldItems[0]->getCollisionComponent()->radius))
 	{
-		if (this->bed.getCollisionButton().button) // If it's not a nullptr
+		if (this->worldItems[0]->getCollisionComponent()->button) // If it's not a nullptr
 		{
 			// Create Mouse Position relative to the current view, not default view
-			sf::Vector2f relativeMousePosView = this->window->mapPixelToCoords(*this->mosPosWindow, viewWorld);
-			this->bed.getCollisionButton().button->update(dt, relativeMousePosView);
+			this->worldItems[0]->getCollisionComponent()->button->update(dt, relativeMousePosView);
 		}
 	}
 	//---UPDATE POPUP BUTTONS---//
@@ -454,14 +461,15 @@ void GameState::renderViewWorld(sf::RenderTarget* target)
 
 	target->draw(this->map);
 
-	target->draw(this->bed);
+	//target->draw(this->bed);
+	target->draw(*this->worldItems[0]);
 	target->draw(*this->player);
 
-	if (satCollision(this->player->getGlobalBounds(), this->bed.getCollisionButton().radius))
+	if (satCollision(this->player->getGlobalBounds(), this->worldItems[0]->getCollisionComponent()->radius))
 	{
-		if (this->bed.getCollisionButton().button) // If it's not a nullptr
+		if (this->worldItems[0]->getCollisionComponent()->button) // If it's not a nullptr
 		{
-			target->draw(*this->bed.getCollisionButton().button);
+			target->draw(*this->worldItems[0]->getCollisionComponent()->button);
 		}
 	}
 

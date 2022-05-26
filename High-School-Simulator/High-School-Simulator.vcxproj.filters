@@ -63,19 +63,13 @@
     <ClCompile Include="GUI\HUD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Item\Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Item\WorldItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GUI\Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Buttons\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Item\LItem.cpp">
+    <ClCompile Include="Item\Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,19 +122,13 @@
     <ClInclude Include="GUI\HUD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item\Item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Item\WorldItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GUI\Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Buttons\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item\LItem.h">
+    <ClInclude Include="Item\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
