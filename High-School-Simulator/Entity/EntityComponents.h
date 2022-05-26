@@ -72,6 +72,7 @@ private:
 	sf::Time cdFatigueDecrementSleep;
 	sf::Time cdFatigueIncrementSobriety;
 	sf::Time cdFatigueIncrementStudy;
+	sf::Time cdFatigueIncrementSprinting;
 public:
 	Psychology();
 	Psychology(Demographic demographic);

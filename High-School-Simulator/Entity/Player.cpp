@@ -115,7 +115,31 @@ void Player::updateCollision(const sf::FloatRect& bounds)
 
 void Player::update(const float& dt)
 {
-	this->toxic.update(dt);
-	this->psych.update(dt, this->toxic);
+	float timeBlend = 0;
+
+	if (this->toxic.getSobriety<double>() < -20.0)
+	{
+		timeBlend += 5 + std::abs(this->toxic.getSobriety<float>()) / 100;
+	}
+	if (this->psych.getIsStudying())
+	{
+		timeBlend += 2;
+	}
+	if (this->psych.getIsAsleep())
+	{
+		timeBlend += 15;
+	}
+
+	if (static_cast<int>(timeBlend) == 0)
+	{
+		this->toxic.update(dt);
+		this->psych.update(dt, this->toxic);
+	}
+	else
+	{
+		this->toxic.update(dt * timeBlend);
+		this->psych.update(dt * timeBlend, this->toxic);
+	}
+
 	this->updateMovement(dt);
 }

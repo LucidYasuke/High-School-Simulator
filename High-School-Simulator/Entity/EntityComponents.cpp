@@ -82,7 +82,8 @@ const float& Toxicology::getLastHighMax() const
 // 8 Game Hours = 16 Real Life Minutes
 const float Psychology::cdLastStudyMax = 960.f;
 
-const float Psychology::cdStatChangeMax = 1.f;
+// 4 Game Minutes = 8 Real Life Seconds
+const float Psychology::cdStatChangeMax = 8.f;
 
 Psychology::Psychology()
 {
@@ -215,7 +216,7 @@ void Psychology::updateIntelligence(const float& dt, Toxicology& toxic)
 
 		if (this->cdIntelligenceDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
 		{
-			this->intelligence = percentRange(this->intelligence, -0.03);
+			this->intelligence = percentRange(this->intelligence, -0.01);
 			this->cdIntelligenceDecrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
 		}
 	}
@@ -282,6 +283,16 @@ void Psychology::updateFatigue(const float& dt, Toxicology& toxic)
 		{
 			this->fatigue = percentRange(this->fatigue, 0.013);
 			this->cdFatigueIncrementSobriety = sf::seconds(0.f); // RESET
+		}
+	}
+
+	if (this->isSprinting)
+	{
+		this->cdFatigueIncrementSprinting += sf::seconds(dt);
+		if (this->cdFatigueIncrementSprinting.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->fatigue = percentRange(this->fatigue, 0.013);
+			this->cdFatigueIncrementSprinting = sf::seconds(0.f); // RESET
 		}
 	}
 }
