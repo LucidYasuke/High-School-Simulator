@@ -82,8 +82,7 @@ const float& Toxicology::getLastHighMax() const
 // 8 Game Hours = 16 Real Life Minutes
 const float Psychology::cdLastStudyMax = 960.f;
 
-// 2.5 Game Hours = 5 Real Life Minutes
-const float Psychology::cdStatChangeMax = 300.f;
+const float Psychology::cdStatChangeMax = 1.f;
 
 Psychology::Psychology()
 {
@@ -162,7 +161,7 @@ void Psychology::updateStudy(const float& dt, Toxicology& toxic)
 	if (this->isStudying)
 	{
 		this->cdIntelligenceIncrementStudy += sf::seconds(dt);
-		this->cdFatigueDecrementStudy += sf::seconds(dt);
+		this->cdFatigueIncrementStudy += sf::seconds(dt);
 
 		if (toxic.getSobriety<double>() >= -10) // Intoxication is neglected in studying if less than 10
 		{
@@ -172,10 +171,10 @@ void Psychology::updateStudy(const float& dt, Toxicology& toxic)
 				this->intelligence = percentRange(this->intelligence, percent);
 				this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
 			}
-			if (this->cdFatigueDecrementStudy.asSeconds() >= this->cdLastStudyMax)
+			if (this->cdFatigueIncrementStudy.asSeconds() >= this->cdLastStudyMax)
 			{
-				this->fatigue = percentRange(this->fatigue, -percent / 5.0);
-				this->cdFatigueDecrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+				this->fatigue = percentRange(this->fatigue, percent / 5.0);
+				this->cdFatigueIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
 			}
 		}
 		else
@@ -186,11 +185,103 @@ void Psychology::updateStudy(const float& dt, Toxicology& toxic)
 				this->intelligence = percentRange(this->intelligence, percent);
 				this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
 			}
-			if (this->cdFatigueDecrementStudy.asSeconds() >= this->cdLastStudyMax)
+			if (this->cdFatigueIncrementStudy.asSeconds() >= this->cdLastStudyMax)
 			{
-				this->fatigue = percentRange(this->fatigue, -percent * 10.0);
-				this->cdFatigueDecrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+				this->fatigue = percentRange(this->fatigue, percent * 10.0);
+				this->cdFatigueIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
 			}
+		}
+	}
+}
+
+void Psychology::updateIntelligence(const float& dt, Toxicology& toxic)
+{
+	this->cdLastStudy += sf::seconds(dt);
+
+	if (this->cdLastStudy.asSeconds() >= this->cdLastStudyMax)
+	{
+		this->cdIntelligenceDecrementStudy += sf::seconds(dt);
+
+		if (this->cdIntelligenceDecrementStudy.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->intelligence = percentRange(this->intelligence, -0.025);
+			this->cdIntelligenceDecrementStudy = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+
+	if (toxic.getSobriety<double>() < -20.0)
+	{
+		this->cdIntelligenceDecrementSobriety += sf::seconds(dt);
+
+		if (this->cdIntelligenceDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->intelligence = percentRange(this->intelligence, -0.03);
+			this->cdIntelligenceDecrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+}
+
+void Psychology::updateJoy(const float& dt, Toxicology& toxic)
+{
+	if (toxic.getSobriety<double>() < -30.0)
+	{
+		this->cdJoyIncrementSobriety += sf::seconds(dt);
+
+		if (this->cdJoyIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->joy = percentRange(this->joy, 0.03);
+			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+
+	// While it's been more than 3 Game Hours since last intoxicated
+	if (toxic.getLastHighMax() - toxic.getLastHigh() > 0 && toxic.getSobriety<double>() >= -20.0)
+	{
+		this->cdJoyDecrementSobriety += sf::seconds(dt);
+
+		if (this->cdJoyDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->joy = percentRange(this->joy, -0.010);
+			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+}
+
+void Psychology::updateSadness(const float& dt, Toxicology& toxic)
+{
+	if (toxic.getLastHighMax() - toxic.getLastHigh() > 0 && toxic.getSobriety<double>() >= -20.0)
+	{
+		this->cdSadnessIncrementSobriety += sf::seconds(dt);
+
+		if (this->cdSadnessIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->sadness = percentRange(this->sadness, 0.015);
+			this->cdSadnessIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
+		}
+	}
+}
+
+void Psychology::updateFatigue(const float& dt, Toxicology& toxic)
+{
+	if (this->isAsleep)
+	{
+		this->cdFatigueDecrementSleep += sf::seconds(dt);
+
+		if (this->cdFatigueDecrementSleep.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->fatigue = percentRange(this->fatigue, -0.016);
+			this->cdFatigueDecrementSleep = sf::seconds(0.f); // RESET
+		}
+	}
+
+	if (toxic.getSobriety<double>() < -20)
+	{
+		this->cdFatigueIncrementSobriety += sf::seconds(dt);
+
+		if (this->cdFatigueIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
+		{
+			this->fatigue = percentRange(this->fatigue, 0.013);
+			this->cdFatigueIncrementSobriety = sf::seconds(0.f); // RESET
 		}
 	}
 }
@@ -236,69 +327,11 @@ void Psychology::updateLimits()
 
 void Psychology::update(const float& dt, Toxicology& toxic)
 {
-	//===UPDATE INTELLIGENCE===//
-	this->cdLastStudy += sf::seconds(dt);
 
-	if (this->cdLastStudy.asSeconds() >= this->cdLastStudyMax)
-	{
-		this->cdIntelligenceDecrementStudy += sf::seconds(dt);
-
-		if (this->cdIntelligenceDecrementStudy.asSeconds() >= this->cdStatChangeMax)
-		{
-			this->intelligence = percentRange(this->intelligence, -0.025);
-			this->cdIntelligenceDecrementStudy = sf::seconds(0.f); // RESET COOLDOWN
-		}
-	}
-
-	if (toxic.getSobriety<double>() < -20.0)
-	{
-		this->cdIntelligenceDecrementSobriety += sf::seconds(dt);
-
-		if (this->cdIntelligenceDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
-		{
-			this->intelligence = percentRange(this->intelligence, -0.03);
-			this->cdIntelligenceDecrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
-		}
-	}
-	//---UPDATE INTELLIGENCE---//
-
-	//===UPDATE JOY===//
-	if (toxic.getSobriety<double>() < -30.0)
-	{
-		this->cdJoyIncrementSobriety += sf::seconds(dt);
-
-		if (this->cdJoyIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
-		{
-			this->joy = percentRange(this->joy, 0.03);
-			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
-		}
-	}
-
-	// While it's been more than 3 Game Hours since last intoxicated
-	if(toxic.getLastHighMax() - toxic.getLastHigh() > 0 && toxic.getSobriety<double>() >= -20.0)
-	{
-		this->cdJoyDecrementSobriety += sf::seconds(dt);
-
-		if (this->cdJoyDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
-		{
-			this->joy = percentRange(this->joy, -0.010);
-			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
-		}
-	}
-	//---UPDATE JOY---//
-
-	//===UPDATE SADNESS===//
-	if (toxic.getLastHighMax() - toxic.getLastHigh() > 0 && toxic.getSobriety<double>() >= -20.0)
-	{
-		this->cdSadnessIncrementSobriety += sf::seconds(dt);
-
-		if (this->cdSadnessIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
-		{
-			this->sadness = percentRange(this->sadness, 0.015);
-			this->cdSadnessIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
-		}
-	}
-	//---UPDATE SAD---//
+	this->updateIntelligence(dt, toxic);
+	this->updateJoy(dt, toxic);
+	this->updateSadness(dt, toxic);
+	this->updateFatigue(dt, toxic);
 
 	this->updateStudy(dt, toxic);
 
