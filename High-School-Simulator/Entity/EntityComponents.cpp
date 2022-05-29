@@ -18,7 +18,7 @@ Toxicology::Toxicology()
 	this->tolerance = 1.0;
 
 	// Sobriety default
-	this->sobriety = 0;
+	this->sobriety = 100;
 }
 
 Toxicology::~Toxicology()
@@ -33,21 +33,20 @@ void Toxicology::getHigh()
 	this->lastHigh = sf::seconds(0.f); // RESET
 
 
-	// Sobriety can't be less than -100
-	if (this->sobriety < -100.0)
+	// Sobriety can't be less than 0
+	if (this->sobriety < 0.0)
 	{
-		this->sobriety = -100.0;
+		this->sobriety = 0.0;
 	}
 }
 
 void Toxicology::update(const float& dt)
 {
-	if (this->sobriety < 0)
+	if (this->sobriety < 100.0)
 	{
 		this->cdHigh += sf::seconds(dt);
 		
-		// If greater than 10 game minutes = 10 real life seconds
-		// Every 10 game minutes, your high will be decreased
+		// Every 5 game minutes, your sobriety will increae
 		if (this->cdHigh.asSeconds() >= this->cdHighMax)
 		{
 			this->sobriety += 1 * this->tolerance;
@@ -56,14 +55,14 @@ void Toxicology::update(const float& dt)
 	}
 	
 	// Sobriety can't be greater than zero
-	if (this->sobriety > 0)
+	if (this->sobriety > 100)
 	{
-		this->sobriety = 0;
+		this->sobriety = 100;
 	}
 
 	// When the player comes down from their high, the last high meter time increases
-	if (this->sobriety >= -20)
-	{
+	if (80 <= this->sobriety && this->lastHighMax - this->lastHigh.asSeconds() > 0)
+	{  
 		this->lastHigh += sf::seconds(dt);
 	}
 }
@@ -97,6 +96,7 @@ Psychology::Psychology()
 
 	this->isAsleep = false;
 	this->isStudying = false;
+	this->isSprinting = false;
 }
 
 Psychology::Psychology(Demographic demographic)
@@ -120,8 +120,10 @@ Psychology::Psychology(Demographic demographic)
 	this->joy = roundTo<double>(45.0 / (this->intelligence / 100), 2); // Base joy is 45, the lower your intelligence the higher it will be
 	this->sadness = roundTo<double>(25.0 * (this->intelligence / 100), 2); // Base sadness is 25, the higher your intelligence the higher you sadness
 	this->fatigue = roundTo<double>(20.0 * (this->intelligence / 100) - (this->joy / 20.0), 2); // Base fatigue is 20, the higher your intelligence and lower your joy, the higehr your fatigue 
+	
 	this->isAsleep = false;
 	this->isStudying = false;
+	this->isSprinting = false;
 }
 
 Psychology::~Psychology()
@@ -137,6 +139,7 @@ void Psychology::study()
 		break;
 	case false:
 		this->isStudying = true;
+		this->cdLastStudy = sf::seconds(0.f);
 		break;
 	default:
 		break;
@@ -164,44 +167,35 @@ void Psychology::updateStudy(const float& dt, Toxicology& toxic)
 {
 	if (this->isStudying)
 	{
-		this->cdIntelligenceIncrementStudy += sf::seconds(dt);
-		this->cdFatigueIncrementStudy += sf::seconds(dt);
+		this->cdIntelligenceIncrementStudy += sf::seconds(dt);		
 
-		if (toxic.getSobriety<double>() >= -10) // Intoxication is neglected in studying if less than 10
+		if (this->cdIntelligenceIncrementStudy.asSeconds() >= this->cdLastStudyMax)
 		{
 			double percent = (static_cast<double>(rand() % 4) + 1.0) / 100;
-			if (this->cdIntelligenceIncrementStudy.asSeconds() >= this->cdLastStudyMax)
+			
+			if (toxic.getSobriety<double>() >= 85) // Sobriety must be greater than 85 to study normally
 			{
 				this->intelligence = percentRange(this->intelligence, percent);
-				this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
-			}
-			if (this->cdFatigueIncrementStudy.asSeconds() >= this->cdLastStudyMax)
-			{
 				this->fatigue = percentRange(this->fatigue, percent / 5.0);
-				this->cdFatigueIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
 			}
-		}
-		else
-		{
-			double percent = (static_cast<double>(rand() % 4) + 1.0) / 1000;
-			if (this->cdIntelligenceIncrementStudy.asSeconds() >= this->cdLastStudyMax)
+			else
 			{
+				percent /= 10;
 				this->intelligence = percentRange(this->intelligence, percent);
-				this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
-			}
-			if (this->cdFatigueIncrementStudy.asSeconds() >= this->cdLastStudyMax)
-			{
 				this->fatigue = percentRange(this->fatigue, percent * 10.0);
-				this->cdFatigueIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
 			}
+
+			this->cdIntelligenceIncrementStudy = sf::seconds(0.f); // RESET COOLDOWN
 		}
+	}
+	else
+	{
+		this->cdLastStudy += sf::seconds(dt);
 	}
 }
 
 void Psychology::updateIntelligence(const float& dt, Toxicology& toxic)
 {
-	this->cdLastStudy += sf::seconds(dt);
-
 	if (this->cdLastStudy.asSeconds() >= this->cdLastStudyMax)
 	{
 		this->cdIntelligenceDecrementStudy += sf::seconds(dt);
@@ -213,7 +207,7 @@ void Psychology::updateIntelligence(const float& dt, Toxicology& toxic)
 		}
 	}
 
-	if (toxic.getSobriety<double>() < -20.0)
+	if (toxic.getSobriety<double>() < 80.0)
 	{
 		this->cdIntelligenceDecrementSobriety += sf::seconds(dt);
 
@@ -227,7 +221,7 @@ void Psychology::updateIntelligence(const float& dt, Toxicology& toxic)
 
 void Psychology::updateJoy(const float& dt, Toxicology& toxic)
 {
-	if (toxic.getSobriety<double>() < -30.0)
+	if (toxic.getSobriety<double>() < 70.0)
 	{
 		this->cdJoyIncrementSobriety += sf::seconds(dt);
 
@@ -239,27 +233,28 @@ void Psychology::updateJoy(const float& dt, Toxicology& toxic)
 	}
 
 	// While it's been less than 3 Game Hours since last intoxicated
-	if (toxic.getLastHighMax() - toxic.getLastHigh() > static_cast<float>(0) && toxic.getSobriety<double>() >= -20.0)
+	if (toxic.getLastHighMax() - toxic.getLastHigh() > 0 && 65.0 <= toxic.getSobriety<double>() && toxic.getSobriety<double>() < 90.0)
 	{
+		std::cout << toxic.getLastHighMax() << " " << toxic.getLastHigh() << " " << toxic.getLastHighMax() - toxic.getLastHigh() << std::endl;
 		this->cdJoyDecrementSobriety += sf::seconds(dt);
 
 		if (this->cdJoyDecrementSobriety.asSeconds() >= this->cdStatChangeMax)
 		{
-			this->joy = percentRange(this->joy, -0.004);
-			this->cdJoyIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
+			this->joy = percentRange(this->joy, -0.01);
+			this->cdJoyDecrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
 		}
 	}
 }
 
 void Psychology::updateSadness(const float& dt, Toxicology& toxic)
 {
-	if (toxic.getLastHighMax() - toxic.getLastHigh() > 0 && toxic.getSobriety<double>() >= -20.0)
+	if (toxic.getLastHighMax() - toxic.getLastHigh() > 0 && 65.0 <= toxic.getSobriety<double>() && toxic.getSobriety<double>() < 90.0)
 	{
 		this->cdSadnessIncrementSobriety += sf::seconds(dt);
 
 		if (this->cdSadnessIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
 		{
-			this->sadness = percentRange(this->sadness, 0.015);
+			this->sadness = percentRange(this->sadness, 0.01);
 			this->cdSadnessIncrementSobriety = sf::seconds(0.f); // RESET COOLDOWN
 		}
 	}
@@ -273,18 +268,18 @@ void Psychology::updateFatigue(const float& dt, Toxicology& toxic)
 
 		if (this->cdFatigueDecrementSleep.asSeconds() >= this->cdStatChangeMax)
 		{
-			this->fatigue = percentRange(this->fatigue, -0.016);
+			this->fatigue = percentRange(this->fatigue, -0.024);
 			this->cdFatigueDecrementSleep = sf::seconds(0.f); // RESET
 		}
 	}
 
-	if (toxic.getSobriety<double>() < -20)
+	if (toxic.getSobriety<double>() < 80)
 	{
 		this->cdFatigueIncrementSobriety += sf::seconds(dt);
 
 		if (this->cdFatigueIncrementSobriety.asSeconds() >= this->cdStatChangeMax)
 		{
-			this->fatigue = percentRange(this->fatigue, 0.013);
+			this->fatigue = percentRange(this->fatigue, 0.014);
 			this->cdFatigueIncrementSobriety = sf::seconds(0.f); // RESET
 		}
 	}
@@ -292,9 +287,10 @@ void Psychology::updateFatigue(const float& dt, Toxicology& toxic)
 	if (this->isSprinting)
 	{
 		this->cdFatigueIncrementSprinting += sf::seconds(dt);
+
 		if (this->cdFatigueIncrementSprinting.asSeconds() >= this->cdStatChangeMax)
 		{
-			this->fatigue = percentRange(this->fatigue, 0.013);
+			this->fatigue = percentRange(this->fatigue, 0.014);
 			this->cdFatigueIncrementSprinting = sf::seconds(0.f); // RESET
 		}
 	}
@@ -384,7 +380,7 @@ void Psychology::update(const float& dt, Toxicology& toxic)
 		}
 	}
 
-	if (toxic.getSobriety<double>() < - 20.0)
+	if (toxic.getSobriety<double>() < 80.0)
 	{
 		if (std::find(this->moods.begin(), this->moods.end(), MindState::INTOXICATED) != this->moods.end())
 		{
@@ -429,7 +425,7 @@ const bool& Psychology::getIsStudying() const
 
 void Psychology::setIsSprinting(bool condition)
 {
-	this->isSprinting = true;
+	this->isSprinting = condition;
 }
 
 //---PSYCHOLOGY---//

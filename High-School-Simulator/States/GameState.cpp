@@ -299,9 +299,13 @@ void GameState::updateDate(const float& dt)
 {
 	float timeBlend = 0;
 
-	if (this->player->getToxicology().getSobriety<double>() < -20.0)
+	if (this->player->getToxicology().getSobriety<double>() < 80.0)
 	{
-		timeBlend += 5 + std::abs(this->player->getToxicology().getSobriety<float>()) / 100;
+		timeBlend += 5;
+	}
+	if (80.0 <= this->player->getToxicology().getSobriety<double>() && this->player->getToxicology().getSobriety<double>() < 95)
+	{
+		timeBlend += 1.5 + std::pow(2.5, 100.0 / this->player->getToxicology().getSobriety<double>());
 	}
 	if (this->player->getPsychology().getIsStudying())
 	{
