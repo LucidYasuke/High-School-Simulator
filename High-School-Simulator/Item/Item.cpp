@@ -79,6 +79,11 @@ const bool& Item::getDeleted() const
 	return this->deleted;
 }
 
+void Item::setDeleted(bool condition)
+{
+	this->deleted = condition;
+}
+
 void Item::update(const float& dt)
 {
 }

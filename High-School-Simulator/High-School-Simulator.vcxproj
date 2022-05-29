@@ -153,6 +153,7 @@
     <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="Buttons\Button.cpp" />
     <ClCompile Include="Item\Item.cpp" />
+    <ClCompile Include="Entity\LEntity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GUI\Menu.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="GUI\Menu.h" />
     <ClInclude Include="Buttons\Button.h" />
     <ClInclude Include="Item\Item.h" />
+    <ClInclude Include="Entity\LEntity.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="States\GameState.h" />
     <ClInclude Include="States\PauseState.h" />

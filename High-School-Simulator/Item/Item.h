@@ -47,7 +47,7 @@ public:
 	void setPosition(sf::Vector2f position);
 
 	const bool& getDeleted() const;
-
+	void setDeleted(bool condition);
 
 	//===Update===//
 	void update(const float& dt);
