@@ -61,8 +61,3 @@ const double& EntityComponent::Intoxication::getTolerance() const
 {
 	return this->tolerance;
 }
-
-std::string EntityComponent::Intoxication::getSobrietyAsString()
-{
-	return std::string();
-}

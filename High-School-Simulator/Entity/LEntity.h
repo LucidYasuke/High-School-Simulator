@@ -86,15 +86,15 @@ namespace EntityComponent
 		void study();
 		void sleep();
 
-		void updateStudy(const float& dt, Toxicology& toxic);
-		void updateIntelligence(const float& dt, Toxicology& toxic);
-		void updateJoy(const float& dt, Toxicology& toxic);
-		void updateSadness(const float& dt, Toxicology& toxic);
-		void updateFatigue(const float& dt, Toxicology& toxic);
+		void updateStudy(const float& dt, Intoxication& toxic);
+		void updateIntelligence(const float& dt, Intoxication& toxic);
+		void updateJoy(const float& dt, Intoxication& toxic);
+		void updateSadness(const float& dt, Intoxication& toxic);
+		void updateFatigue(const float& dt, Intoxication& toxic);
 
 
 		void updateLimits();
-		void update(const float& dt, Toxicology& toxic);
+		void update(const float& dt, Intoxication& toxic);
 
 		const std::vector<MindState>& getMoods() const;
 
