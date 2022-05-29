@@ -3,11 +3,11 @@
 
 //===TOXICOLOGY===//
 
-// .5 Game Hours = 1 Real Life Minutes
-const float Toxicology::lastHighMax = 30.f;
+// 3 Game Hours = 3 Real Life Minutes = 180 Real Life Seconds
+const float Toxicology::lastHighMax = 180.f;
 
-// 3 Game Minutes = 6 Real Life Seconds
-const float Toxicology::cdHighMax = 6.f;
+// 5 Game Minutes = 5 Real Life Seconds
+const float Toxicology::cdHighMax = 5.f;
 
 Toxicology::Toxicology()
 {
@@ -42,14 +42,17 @@ void Toxicology::getHigh()
 
 void Toxicology::update(const float& dt)
 {
-	this->cdHigh += sf::seconds(dt);
-
-	// If greater than 3 game minute = 6 real life seconds
-	// Every 3 game minutes, your high will be decreased
-	if (this->cdHigh.asSeconds() >= this->cdHighMax && this->sobriety < 0)
+	if (this->sobriety < 0)
 	{
-		this->sobriety += 1 * this->tolerance;
-		this->cdHigh -= sf::seconds(this->cdHighMax);
+		this->cdHigh += sf::seconds(dt);
+		
+		// If greater than 10 game minutes = 10 real life seconds
+		// Every 10 game minutes, your high will be decreased
+		if (this->cdHigh.asSeconds() >= this->cdHighMax)
+		{
+			this->sobriety += 1 * this->tolerance;
+			this->cdHigh -= sf::seconds(this->cdHighMax);
+		}
 	}
 	
 	// Sobriety can't be greater than zero
@@ -79,11 +82,11 @@ const float& Toxicology::getLastHighMax() const
 
 //===PSYCHOLOGY===//
 
-// 8 Game Hours = 16 Real Life Minutes
-const float Psychology::cdLastStudyMax = 960.f;
+// 8 Game Hours = 8 Real Life Minutes = 480 Real Life Seconds
+const float Psychology::cdLastStudyMax = 480.f;
 
-// 4 Game Minutes = 8 Real Life Seconds
-const float Psychology::cdStatChangeMax = 8.f;
+// 5 Game Minutes = 5 Real Life Seconds
+const float Psychology::cdStatChangeMax = 5.f;
 
 Psychology::Psychology()
 {

@@ -16,15 +16,15 @@ void Date::update(const float& dt)
 {
 	minute += sf::seconds(dt);
 
-	// 1 Game Hour ≈ 2 Real Minutes
-	// 1 Day ≈ 48 Real Minutes
-	// If the minutes is divisible by 120, then an hour has passed 
-	if (static_cast<int>(minute.asSeconds()) >= 120)
+	// 1 Game Hour ≈ 1 Real Minutes
+	// 1 Day ≈ 24 Real Minutes
+	// If the minutes is divisible by 60, then an hour has passed 
+	if (static_cast<int>(minute.asSeconds()) >= 60)
 	{
-		while (static_cast<int>(minute.asSeconds()) >= 120)
+		while (static_cast<int>(minute.asSeconds()) >= 60)
 		{
 			this->hour++;
-			this->minute -= sf::seconds(120.f);
+			this->minute -= sf::seconds(60.f);
 		}
 	}
 
@@ -45,22 +45,22 @@ void Date::update(const float& dt)
 
 const Day& Date::getDay() const
 {
-	return day;
+	return this->day;
 }
 
 const int& Date::getHour() const
 {
-	return hour;
+	return this->hour;
 }
 
 const int Date::getMinute() const
 {
-	return static_cast<int>(minute.asSeconds() / 2.f);
+	return static_cast<int>(this->minute.asSeconds());
 }
 
 const float Date::getTrueMinute() const
 {
-	return minute.asSeconds();
+	return this->minute.asSeconds();
 }
 
 const std::string Date::getDayAsString() const
@@ -121,12 +121,7 @@ void Date::setHour(int& hour)
 
 void Date::setMinute(int& minute)
 {
-	this->minute = sf::seconds(static_cast<float>(minute * 2));
-}
-
-void Date::setTrueMinute(float& minute)
-{
-	this->minute = sf::seconds(minute);
+	this->minute = sf::seconds(static_cast<float>(minute));
 }
 
 

@@ -42,7 +42,6 @@ public:
 	void setDay(Day& day);
 	void setHour(int& hour);
 	void setMinute(int& minute);
-	void setTrueMinute(float& minute);
 };
 
 class GameState : public State
