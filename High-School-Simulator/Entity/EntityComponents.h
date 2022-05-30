@@ -3,6 +3,7 @@
 
 
 #include "../Physics.h"
+#include "ActorComponents.h"
 
 
 enum class Demographic { LOWER = 0, MIDDLE, UPPER };
