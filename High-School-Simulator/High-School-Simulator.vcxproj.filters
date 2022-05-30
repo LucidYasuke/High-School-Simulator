@@ -45,9 +45,6 @@
     <ClCompile Include="States\TitleState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Bar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GUI\GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,7 +78,7 @@
     <ClCompile Include="GUI\BarComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\LBar.cpp">
+    <ClCompile Include="GUI\Bar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GUI\Shapes.cpp">
@@ -119,9 +116,6 @@
     <ClInclude Include="States\TitleState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\Bar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GUI\GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -155,7 +149,7 @@
     <ClInclude Include="GUI\BarComponents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\LBar.h">
+    <ClInclude Include="GUI\Bar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GUI\Shapes.h">

@@ -2,23 +2,26 @@
 #define BAR_H
 
 
-#include "GUI.h"
+#include "BarComponents.h"
 
 
-class Bar : public GUI
+class Bar : sf::Sprite
 {
 private:
-	double* val;
-	double* valMax;
-	double ratio;
-
-	sf::RectangleShape back, front;
+	//===COMPONENTS===//
+	Component::Bar::Progress* progressComponent;
+	//---COMPONENTS---//
 public:
-	Bar(Align pos, float x, float y, float w, float l, double* val, double* valMax, sf::Color color = sf::Color::Red);
+	Bar();
+	Bar(const sf::Texture& texture);
+	Bar(const sf::Texture& texture, const sf::IntRect& rectangle);
 	virtual ~Bar();
 
-	void update() override;
-	void render(sf::RenderTarget* target) override;
+
+	void add(Component::Bar::Progress* progressComponent);
+
+
+	Component::Bar::Progress*& getProgressComponent();
 };
 
 

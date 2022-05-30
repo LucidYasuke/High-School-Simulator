@@ -5,7 +5,7 @@
 #include "../Physics.h"
 
 
-namespace Components { namespace Bar {
+namespace Component { namespace Bar {
 
 	struct Progress
 	{

@@ -5,7 +5,7 @@
 #include "../Physics.h"
 
 
-namespace Components{ namespace GUI {
+namespace Component{ namespace GUI {
 
 
 

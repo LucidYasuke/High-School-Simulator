@@ -1,33 +1,30 @@
 #include "Bar.h"
 
-
-Bar::Bar(Align pos, float x, float y, float w, float l, double* val, double* valMax, sf::Color color) : GUI(pos, x, y, w, l)
+Bar::Bar()
 {
-	this->val = val;
-	this->valMax = valMax;
-	this->ratio = *this->val / *this->valMax;
+	this->progressComponent = 0;
+}
 
-	this->back.setSize(sf::Vector2f(w, l));
-	this->back.setPosition(sf::Vector2f(x, y));
-	this->back.setFillColor(sf::Color(25, 25, 25, 200));
+Bar::Bar(const sf::Texture& texture)
+{
+	this->progressComponent = 0;
+}
 
-	this->front.setSize(sf::Vector2f(w * static_cast<float>(this->ratio), l));
-	this->front.setPosition(sf::Vector2f(x, y));
-	this->front.setFillColor(color);
+Bar::Bar(const sf::Texture& texture, const sf::IntRect& rectangle)
+{
+	this->progressComponent = 0;
 }
 
 Bar::~Bar()
 {
 }
 
-void Bar::update()
+void Bar::add(Component::Bar::Progress* progressComponent)
 {
-	this->ratio = *this->val / *this->valMax;
-	this->front.setSize(sf::Vector2f(this->w * static_cast<float>(this->ratio), this->front.getSize().y));
+	this->progressComponent = progressComponent;
 }
 
-void Bar::render(sf::RenderTarget* target)
+Component::Bar::Progress*& Bar::getProgressComponent()
 {
-	target->draw(this->back);
-	target->draw(this->front);
+	return this->progressComponent;
 }
