@@ -3,14 +3,17 @@
 
 
 #include "../Physics.h"
+#include "Shapes.h"
 
 
 namespace Component { namespace Bar {
 
 	struct Progress
 	{
-		sf::RectangleShape base;
-		sf::RectangleShape layer;
+		CapsuleShape base;
+		CapsuleShape layer;
+		CapsuleShape border;
+		
 
 		void update(double ratio);
 		void render(sf::RenderTarget* target);

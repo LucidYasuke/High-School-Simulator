@@ -1,74 +1,46 @@
 #include "Shapes.h"
 
 
-PillShape::PillShape(sf::Vector2f size)
+const float CapsuleShape::pi = 3.141592654f;
+
+CapsuleShape::CapsuleShape(const sf::Vector2f& size) : ConvexShape(38)
 {
-    this->circleDefaultScale = sf::Vector2f(1.f, size.y / (size.x * 1.f / 5.f));
-
-    this->left.setRadius(size.x * 1.f / 10.f); // Total diameter is 1/5
-    this->left.setScale(this->circleDefaultScale);
-
-    this->right.setRadius(size.x * 1.f / 10.f);
-    this->right.setScale(this->circleDefaultScale);
-
-    this->middle.setSize(sf::Vector2f(size.x * 4.f / 5.f, size.y));
-    this->middle.setPosition(sf::Vector2f(this->left.getGlobalBounds().left + this->left.getGlobalBounds().width / 2.f, this->left.getGlobalBounds().top));
-    
-    this->right.setPosition(sf::Vector2f(this->middle.getGlobalBounds().left + this->middle.getGlobalBounds().width - this->right.getGlobalBounds().width / 2.f, this->middle.getGlobalBounds().top));
+    this->setSize(size);
 }
 
-PillShape::~PillShape()
+void CapsuleShape::setSize(sf::Vector2f size)
 {
+    if (size.x < 0.f)
+    {
+        size.x = 0.f;
+    }
+    if (size.y < 0.f)
+    {
+        size.y = 0.f;
+    }
+
+    sf::Vector2f radius;
+    radius.x = size.x * 1.f / 10.f;
+    radius.y = size.y * 1.f / 2.f;
+
+
+    for (int i = 0; i < 19; i++)
+    {
+        float angle = i * 2 * pi / 36 - pi / 2;
+        this->setPoint(i, sf::Vector2f((size.x * 4.f / 5.f) + radius.x + std::cos(angle) * radius.x, radius.y + std::sin(angle) * radius.y));
+    }
+
+    this->setPoint(19, sf::Vector2f(this->getPoint(18).x - (size.x * 3.f / 5.f), this->getPoint(18).y));
+
+    for (int i = 20; i < 38; i++)
+    {
+        float angle = (i - 1) * 2 * pi / 36 - pi / 2;
+        this->setPoint(i, sf::Vector2f(radius.x + std::cos(angle) * radius.x, radius.y + std::sin(angle) * radius.y));
+    }
+    this->sf::ConvexShape::update();
 }
 
-void PillShape::setPosition(sf::Vector2f position)
+void CapsuleShape::setPointCount(std::size_t count)
 {
-    this->left.setPosition(position);
-    this->middle.setPosition(sf::Vector2f(this->left.getGlobalBounds().left + this->left.getGlobalBounds().width / 2.f, this->left.getGlobalBounds().top));
-    this->right.setPosition(sf::Vector2f(this->middle.getGlobalBounds().left + this->middle.getGlobalBounds().width - this->right.getGlobalBounds().width / 2.f, this->middle.getGlobalBounds().top));
-}
-
-void PillShape::setSize(sf::Vector2f size)
-{
-    sf::Vector2f currentScale = this->left.getScale();
-    currentScale = sf::Vector2f(currentScale.x / this->circleDefaultScale.x, currentScale.y / this->circleDefaultScale.y);
-
-    this->circleDefaultScale = sf::Vector2f(1.f, size.y / (size.x * 1.f / 5.f));
-
-
-    this->left.setRadius(size.x * 1.f / 10.f);
-    this->right.setRadius(size.x * 1.f / 10.f);
-    this->middle.setSize(sf::Vector2f(size.x * 4.f / 5.f, size.y));
-
-    this->setScale(currentScale);
-}
-
-void PillShape::setScale(sf::Vector2f scale)
-{
-    this->left.setScale(sf::Vector2f(this->circleDefaultScale.x * scale.x, this->circleDefaultScale.y * scale.y));
-    this->right.setScale(sf::Vector2f(this->circleDefaultScale.x * scale.x, this->circleDefaultScale.y * scale.y));
-    this->middle.setScale(scale);
-}
-
-void PillShape::setFillColor(sf::Color color)
-{
-    this->left.setFillColor(color);
-    this->middle.setFillColor(color);
-    this->right.setFillColor(color);
-}
-
-sf::FloatRect PillShape::getGlobalBounds()
-{
-    float width;
-    width = this->left.getGlobalBounds().width / 2.f + this->middle.getGlobalBounds().width + this->right.getGlobalBounds().width / 2.f;
-    width = std::ceil(width);
-
-    return sf::FloatRect(this->left.getGlobalBounds().left, this->left.getGlobalBounds().top, width, this->middle.getGlobalBounds().height);
-}
-
-void PillShape::draw(sf::RenderTarget* target)
-{
-    target->draw(this->left);
-    target->draw(this->middle);
-    target->draw(this->right);
+    this->sf::ConvexShape::setPointCount(38);
 }

@@ -10,4 +10,5 @@ void Component::Bar::Progress::render(sf::RenderTarget* target)
 {
 	target->draw(base);
 	target->draw(layer);
+	target->draw(border);
 }
